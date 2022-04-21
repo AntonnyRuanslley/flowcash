@@ -1,0 +1,83 @@
+import 'package:cas/models/transaction.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+class TransactionForm extends StatelessWidget {
+  final Transaction transaction;
+  final int permissao = 2;
+
+  TransactionForm(this.transaction);
+
+  bool? _banlacePos(type) {
+    if (type == 1) {
+      return true;
+    }
+    return false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 2,
+      child: ListTile(
+        leading: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.secondary,
+            borderRadius: BorderRadius.circular(100),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey,
+                offset: Offset(2, 2),
+                blurRadius: 3,
+              ),
+            ],
+          ),
+          child: CircleAvatar(
+            radius: 20,
+            child: Icon(
+              _banlacePos(transaction.type)!
+                  ? Icons.arrow_downward_rounded
+                  : Icons.arrow_upward_rounded,
+              color: _banlacePos(transaction.type)! ? Colors.green : Colors.red,
+            ),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+          ),
+        ),
+        title: Text(
+          transaction.category,
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        subtitle: Text(
+          transaction.description,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        trailing: Container(
+          width: 85,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(
+                NumberFormat(
+                        'R\$ ' +
+                            (_banlacePos(transaction.type)! ? '+' : '-') +
+                            '#.00',
+                        'pt-BR')
+                    .format(transaction.value),
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
