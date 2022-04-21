@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 
 class TransactionForm extends StatelessWidget {
   final Transaction transaction;
-  final int permissao = 2;
 
   TransactionForm(this.transaction);
 
@@ -18,7 +17,6 @@ class TransactionForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 2,
       child: ListTile(
         leading: Container(
           decoration: BoxDecoration(
@@ -26,8 +24,8 @@ class TransactionForm extends StatelessWidget {
             borderRadius: BorderRadius.circular(100),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey,
-                offset: Offset(2, 2),
+                color: Color.fromARGB(255, 213, 210, 210),
+                offset: Offset(1, 1),
                 blurRadius: 3,
               ),
             ],
@@ -57,19 +55,16 @@ class TransactionForm extends StatelessWidget {
           ),
         ),
         trailing: Container(
-          width: 85,
+          width: 90,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
-                NumberFormat(
-                        'R\$ ' +
-                            (_banlacePos(transaction.type)! ? '+' : '-') +
-                            '#.00',
-                        'pt-BR')
-                    .format(transaction.value),
+                NumberFormat(' R\$ #.00', 'pt-BR').format(transaction.value),
                 style: TextStyle(
-                  color: Colors.red,
+                  color: _banlacePos(transaction.type)!
+                      ? Colors.green
+                      : Colors.red,
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
                 ),

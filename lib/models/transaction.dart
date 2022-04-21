@@ -5,7 +5,7 @@ class Transaction {
   final DateTime date;
   final String status;
   final double value;
-  final double type;
+  final int type;
 
   Transaction({
     required this.id,
