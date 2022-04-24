@@ -1,34 +1,20 @@
-import 'package:cas/views/user_list.dart';
-
 import '../data/dummy_transaction.dart';
 import '../models/transaction.dart';
-import '../components/transaction_form.dart';
+import '../components/transactions_file.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'dart:math';
 
-class TransactionList extends StatefulWidget {
-  const TransactionList({Key? key}) : super(key: key);
+class TransactionsList extends StatefulWidget {
+  const TransactionsList({Key? key}) : super(key: key);
 
   @override
-  _TransactionListState createState() => _TransactionListState();
+  State<TransactionsList> createState() => _TransactionsListState();
 }
 
-class _TransactionListState extends State<TransactionList> {
-  int _selectedIndex = 0;
-
-  static const List<Widget> _widgetOptions = <Widget>[
-    UserList(),
-  ];
-
-  void _onBottom(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
+class _TransactionsListState extends State<TransactionsList> {
   double size() {
     return 17;
   }
@@ -62,6 +48,15 @@ class _TransactionListState extends State<TransactionList> {
       }
     }
 
+    _statusPendent(String status) {
+      var listPendents = _transaction.map((listPendents) {
+        if (listPendents.status == status) {
+          return listPendents.status;
+        }
+      });
+      return listPendents.length;
+    }
+
     _addTrasanction(String category, String description, DateTime date,
         String status, double value, int type) {
       final newTransaction = Transaction(
@@ -82,11 +77,10 @@ class _TransactionListState extends State<TransactionList> {
     }
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary,
       body: SafeArea(
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Colors.grey[50],
           ),
           child: Column(
             children: [
@@ -174,7 +168,7 @@ class _TransactionListState extends State<TransactionList> {
                                       color: Colors.green,
                                     ),
                                     Text(
-                                      'Receita:',
+                                      'Receita',
                                       style: TextStyle(
                                         fontSize: size(),
                                       ),
@@ -188,7 +182,7 @@ class _TransactionListState extends State<TransactionList> {
                                       color: Colors.red,
                                     ),
                                     Text(
-                                      'Despesa:',
+                                      'Despesa',
                                       style: TextStyle(
                                         fontSize: size(),
                                       ),
@@ -206,7 +200,7 @@ class _TransactionListState extends State<TransactionList> {
                                               : Colors.red,
                                     ),
                                     Text(
-                                      'Saldo:',
+                                      'Saldo',
                                       style: TextStyle(
                                         fontSize: size(),
                                       ),
@@ -262,12 +256,36 @@ class _TransactionListState extends State<TransactionList> {
                   ),
                 ],
               ),
+              Padding(
+                padding: EdgeInsetsDirectional.only(
+                    start: 17, top: 4, end: 17, bottom: 3),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Status',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      '${_statusPendent('Pendente')} Pendentes ${_statusPendent('Aprovado')} Aprovados',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Expanded(
                 child: Container(
                   child: ListView.builder(
                     itemCount: transactions.length,
                     itemBuilder: (ctx, i) =>
-                        TransactionForm(transactions.values.elementAt(i)),
+                        TransactionsFile(transactions.values.elementAt(i)),
                   ),
                 ),
               ),
@@ -284,24 +302,6 @@ class _TransactionListState extends State<TransactionList> {
         elevation: 8,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Usuários',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list_sharp),
-            label: 'Movimentação',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.check),
-            label: 'Aprovar',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onBottom,
-      ),
     );
   }
 }

@@ -1,5 +1,4 @@
-import 'views/user_list.dart';
-import 'views/transaction_list.dart';
+import 'views/home.dart';
 import 'components/login.dart';
 
 import 'package:flutter/material.dart';
@@ -17,7 +16,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'Cast',
-      home: loginOn ? /*UserList()*/ TransactionList() : Login(),
+      home: loginOn ? Home() : Login(),
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate

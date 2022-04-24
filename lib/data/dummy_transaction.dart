@@ -1,4 +1,4 @@
-import 'package:cas/models/transaction.dart';
+import '../models/transaction.dart';
 
 final DUMMY_TRANSACTION = {
   '1': Transaction(
