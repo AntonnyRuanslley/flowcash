@@ -3,7 +3,7 @@ class Transaction {
   final String category;
   final String description;
   final DateTime date;
-  final String status;
+  final int status;
   final double value;
   final int type;
 

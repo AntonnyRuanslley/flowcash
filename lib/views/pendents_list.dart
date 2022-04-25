@@ -1,3 +1,5 @@
+import 'package:cas/models/transaction.dart';
+
 import '../components/transactions_file.dart';
 import '../data/dummy_transaction.dart';
 
@@ -13,13 +15,18 @@ class PendentsList extends StatefulWidget {
 class _PendentsListState extends State<PendentsList> {
   @override
   Widget build(BuildContext context) {
-    final _transactions = {...DUMMY_TRANSACTION};
-    final _transaction = _transactions.values;
-    final _pendents = _transaction.map((pendent) {
-      if (pendent.status == "Aprovado") {
-        return pendent;
-      }
-    });
+    final List<Transaction> _transactions = [...DUMMY_TRANSACTION];
+
+    final List<Transaction>? _pendents = _transactions
+        .map(
+          (pendent) {
+            if (pendent.status == 2) {
+              return pendent;
+            }
+          },
+        )
+        .cast<Transaction>()
+        .toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -30,11 +37,12 @@ class _PendentsListState extends State<PendentsList> {
           ),
         ),
       ),
-      body: ListView.builder(
-        itemCount: _transactions.length,
-        itemBuilder: (ctx, i) =>
-            TransactionsFile(_transactions.values.elementAt(i)),
-      ),
+      body: _pendents!.isEmpty
+          ? const Text("Sem pendencias")
+          : ListView.builder(
+              itemCount: _pendents.length,
+              itemBuilder: (ctx, i) => TransactionsFile(_pendents.elementAt(i)),
+            ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).colorScheme.primary,
         child: Icon(

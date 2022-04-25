@@ -12,7 +12,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _actualView = 1;
+  int _actualView = 2;
 
   void _onBottom(int index) {
     setState(() {
