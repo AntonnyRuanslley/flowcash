@@ -12,7 +12,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _actualView = 2;
+  int _actualView = 1;
 
   void _onBottom(int index) {
     setState(() {
@@ -29,7 +29,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary,
       body: _views[_actualView],
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[

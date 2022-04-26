@@ -1,16 +1,13 @@
+import 'package:cas/components/transaction_form.dart';
 import 'package:cas/components/status.dart';
 import 'package:cas/components/table_values.dart';
 
 import '../data/dummy_transaction.dart';
 
-import '../models/transaction.dart';
-
 import '../components/day_flow.dart';
 import '../components/transactions_file.dart';
 
 import 'package:flutter/material.dart';
-
-import 'dart:math';
 
 class TransactionsList extends StatefulWidget {
   const TransactionsList({Key? key}) : super(key: key);
@@ -20,30 +17,20 @@ class TransactionsList extends StatefulWidget {
 }
 
 class _TransactionsListState extends State<TransactionsList> {
-  final _transactions = {...DUMMY_TRANSACTION};
+  final _transactions = [...DUMMY_TRANSACTION];
+
+  _addTransaction() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return TransanctionForm();
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
-    _addTrasanction(String category, String description, DateTime date,
-        int status, double value, int type) {
-      final newTransaction = Transaction(
-        id: 'T' + Random().nextDouble().toString(),
-        category: category,
-        description: description,
-        date: date,
-        status: status,
-        type: type,
-        value: value,
-      );
-
-      /*setState(() {
-      _transaction.add(newTransaction);
-    });
-
-    Navigator.of(context).pop();*/
-    }
-
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: SafeArea(
         child: Container(
           decoration: BoxDecoration(
@@ -76,7 +63,7 @@ class _TransactionsListState extends State<TransactionsList> {
         child: Icon(
           Icons.add,
         ),
-        onPressed: () {},
+        onPressed: () => _addTransaction(),
         elevation: 8,
       ),
       floatingActionButtonLocation:
