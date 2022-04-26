@@ -17,16 +17,13 @@ class _PendentsListState extends State<PendentsList> {
   Widget build(BuildContext context) {
     final List<Transaction> _transactions = [...DUMMY_TRANSACTION];
 
-    final List<Transaction>? _pendents = _transactions
-        .map(
-          (pendent) {
-            if (pendent.status == 2) {
-              return pendent;
-            }
-          },
-        )
-        .cast<Transaction>()
-        .toList();
+    _pendentsList() {
+      var aux = _transactions;
+      aux.removeWhere((tr) => tr.status == 2);
+      return aux;
+    }
+
+    final List<Transaction> _pendents = _pendentsList();
 
     return Scaffold(
       appBar: AppBar(
@@ -37,7 +34,7 @@ class _PendentsListState extends State<PendentsList> {
           ),
         ),
       ),
-      body: _pendents!.isEmpty
+      body: _pendents.isEmpty
           ? const Text("Sem pendencias")
           : ListView.builder(
               itemCount: _pendents.length,
