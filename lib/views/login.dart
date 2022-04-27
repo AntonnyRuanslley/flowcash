@@ -62,7 +62,7 @@ class _LoginState extends State<Login> {
                               borderRadius: BorderRadius.circular(width * 0.7),
                             ),
                             focusedBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(70),
+                              borderRadius: BorderRadius.circular(width * 0.7),
                             ),
                             filled: true,
                             fillColor: Theme.of(context).colorScheme.secondary,
@@ -78,7 +78,15 @@ class _LoginState extends State<Login> {
                           obscureText: !passwordVisibility,
                           //onSubmitted: (_) => _submitForm(),
                           decoration: InputDecoration(
-                            labelText: 'Insira sua senha',
+                            hintText: 'Insira sua senha',
+                            hintStyle: TextStyle(
+                              fontSize: width * 0.03,
+                            ),
+                            contentPadding: EdgeInsets.only(
+                                left: width * 0.04,
+                                top: width * 0.07,
+                                bottom: width * 0.025,
+                                right: width * 0.05),
                             enabledBorder: UnderlineInputBorder(
                               borderRadius: BorderRadius.circular(100),
                             ),
