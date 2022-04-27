@@ -41,7 +41,7 @@ class TransactionsFile extends StatelessWidget {
         ),
       ),
       title: Text(
-        transaction.category,
+        '${transaction.category} - ${transaction.status}',
         style: TextStyle(
           fontSize: 15,
           fontWeight: FontWeight.bold,

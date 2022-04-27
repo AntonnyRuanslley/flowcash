@@ -15,15 +15,22 @@ class PendentsList extends StatefulWidget {
 class _PendentsListState extends State<PendentsList> {
   @override
   Widget build(BuildContext context) {
-    final List<Transaction> _transactions = [...DUMMY_TRANSACTION];
+    List<Transaction> _transactions = [...DUMMY_TRANSACTION];
 
     _pendentsList() {
-      var aux = _transactions;
-      aux.removeWhere((tr) => tr.status == 2);
-      return aux;
+      _transactions.removeWhere((tr) => tr.status == 2);
+      return _transactions;
     }
 
     final List<Transaction> _pendents = _pendentsList();
+
+    _toApprove() {
+      setState(() {
+        for (int i = 0; i < _transactions.length; i++) {
+          _transactions[i].status = 2;
+        }
+      });
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -45,7 +52,7 @@ class _PendentsListState extends State<PendentsList> {
         child: Icon(
           Icons.check,
         ),
-        onPressed: () {},
+        onPressed: () => _toApprove(),
         elevation: 8,
       ),
     );

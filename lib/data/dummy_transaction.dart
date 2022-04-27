@@ -1,6 +1,6 @@
 import '../models/transaction.dart';
 
-final List<Transaction> DUMMY_TRANSACTION = [
+List<Transaction> DUMMY_TRANSACTION = [
   Transaction(
       id: 'T1',
       category: 'Salário',

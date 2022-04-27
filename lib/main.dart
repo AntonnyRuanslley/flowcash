@@ -1,5 +1,5 @@
-import 'views/home.dart';
-import 'views/login.dart';
+import 'package:cas/loading.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -11,12 +11,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool loginOn = true;
     final ThemeData tema = ThemeData();
-
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Cast',
-      home: loginOn ? Home() : Login(),
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate
@@ -34,6 +32,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
+      home: Loading(),
     );
   }
 }

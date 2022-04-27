@@ -1,3 +1,5 @@
+import 'package:cas/components/category_form.dart';
+
 import '../data/dummy_transaction.dart';
 
 import '../models/transaction.dart';
@@ -12,12 +14,14 @@ class TransanctionForm extends StatefulWidget {
   State<TransanctionForm> createState() => _TransanctionFormState();
 }
 
-enum SingingCharacter { expense, recipe }
+enum Type { expense, recipe }
 
 class _TransanctionFormState extends State<TransanctionForm> {
   final _titleController = TextEditingController();
   final _valeuController = TextEditingController();
   DateTime _selectDate = DateTime.now();
+
+  Type? _character = Type.expense;
 
   _addTrasanction(String category, String description, DateTime date,
       int status, double value, int type) {
@@ -69,11 +73,18 @@ class _TransanctionFormState extends State<TransanctionForm> {
     });
   }
 
-  SingingCharacter? _character = SingingCharacter.expense;
+  _openCategoryFormModal(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return CategoryForm();
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+
     return AlertDialog(
       backgroundColor: Theme.of(context).colorScheme.primary,
       shape: RoundedRectangleBorder(
@@ -91,7 +102,7 @@ class _TransanctionFormState extends State<TransanctionForm> {
         child: Container(
           height: width * 1,
           child: Padding(
-            padding: EdgeInsets.all(5),
+            padding: EdgeInsets.all(4),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -137,7 +148,7 @@ class _TransanctionFormState extends State<TransanctionForm> {
                         color: Theme.of(context).colorScheme.secondary,
                         size: width * 0.075,
                       ),
-                      onPressed: () {},
+                      onPressed: () => _openCategoryFormModal(context),
                     ),
                     Flexible(
                       child: TextField(
@@ -218,52 +229,59 @@ class _TransanctionFormState extends State<TransanctionForm> {
                     )
                   ],
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Tipo",
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontSize: width * 0.047),
-                    ),
-                    ListTile(
-                      title: Text(
-                        'Despesa',
+                Container(
+                  height: width * 0.28,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Tipo",
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.secondary,
-                            fontSize: width * 0.045),
+                            fontSize: width * 0.05),
                       ),
-                      leading: Radio<SingingCharacter>(
-                        activeColor: Colors.white,
-                        value: SingingCharacter.expense,
-                        groupValue: _character,
-                        onChanged: (SingingCharacter? value) {
-                          setState(() {
-                            _character = value;
-                          });
-                        },
+                      Flexible(
+                        child: ListTile(
+                          title: Text(
+                            'Despesa',
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontSize: width * 0.045),
+                          ),
+                          leading: Radio<Type>(
+                            activeColor: Colors.white,
+                            value: Type.expense,
+                            groupValue: _character,
+                            onChanged: (Type? value) {
+                              setState(() {
+                                _character = value;
+                              });
+                            },
+                          ),
+                        ),
                       ),
-                    ),
-                    ListTile(
-                      title: Text(
-                        'Receita',
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary,
-                            fontSize: width * 0.045),
-                      ),
-                      leading: Radio<SingingCharacter>(
-                        activeColor: Colors.white,
-                        value: SingingCharacter.recipe,
-                        groupValue: _character,
-                        onChanged: (SingingCharacter? value) {
-                          setState(() {
-                            _character = value;
-                          });
-                        },
-                      ),
-                    )
-                  ],
+                      Flexible(
+                        child: ListTile(
+                          title: Text(
+                            'Receita',
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontSize: width * 0.045),
+                          ),
+                          leading: Radio<Type>(
+                            activeColor: Colors.white,
+                            value: Type.recipe,
+                            groupValue: _character,
+                            onChanged: (Type? value) {
+                              setState(() {
+                                _character = value;
+                              });
+                            },
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -296,52 +314,39 @@ class _TransanctionFormState extends State<TransanctionForm> {
       ),
       actions: [
         Padding(
-          padding: const EdgeInsets.only(left: 13, right: 13, bottom: 12),
+          padding: const EdgeInsets.only(left: 13, right: 17, bottom: 10),
           child: Container(
             width: width * 1,
-            padding: const EdgeInsets.all(5),
+            padding: const EdgeInsets.all(3),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(
+                TextButton(
+                    child: Text(
+                      'Cancelar',
+                      style: TextStyle(
                           color: Theme.of(context).colorScheme.secondary,
-                          width: 2),
-                      borderRadius: BorderRadius.circular(15)),
-                  child: TextButton(
-                      child: Text(
-                        'Cancelar',
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary,
-                            fontSize: width * 0.047,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      }),
-                ),
-                SizedBox(
-                  width: width * 0.03,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Theme.of(context).colorScheme.secondary,
-                          width: 2),
-                      borderRadius: BorderRadius.circular(15)),
-                  child: TextButton(
-                      child: Text(
-                        'Adicionar',
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary,
-                            fontSize: width * 0.047,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      }),
-                ),
+                          fontSize: width * 0.047,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    }),
+                SizedBox(width: width * 0.03),
+                TextButton(
+                    child: Text(
+                      'Adicionar',
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontSize: width * 0.047,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    style: TextButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    }),
               ],
             ),
           ),

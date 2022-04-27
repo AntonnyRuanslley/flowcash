@@ -4,6 +4,7 @@ class User {
   final String email;
   final String password;
   final int permission;
+  String? token;
 
   User({
     required this.id,
@@ -11,5 +12,6 @@ class User {
     required this.email,
     required this.password,
     required this.permission,
+    this.token,
   });
 }

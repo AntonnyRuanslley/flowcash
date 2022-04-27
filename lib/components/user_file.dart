@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 class UserFiles extends StatelessWidget {
   final User users;
-  final int permissao = 2;
   UserFiles(this.users);
 
   @override
@@ -17,27 +16,14 @@ class UserFiles extends StatelessWidget {
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-      title: Text('${users.name} - $permissao'),
+      title: Text(users.name),
       subtitle: Text(users.email),
-      trailing: Container(
-        width: 100,
-        child: Row(
-          children: [
-            IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.edit,
-                  color: Colors.blue,
-                )),
-            IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.delete,
-                  color: Colors.red,
-                )),
-          ],
-        ),
-      ),
+      trailing: IconButton(
+          onPressed: () {},
+          icon: Icon(
+            Icons.delete,
+            color: Colors.red,
+          )),
     );
   }
 }

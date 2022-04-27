@@ -17,12 +17,6 @@ class UsersList extends StatelessWidget {
             color: Theme.of(context).colorScheme.secondary,
           ),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: ListView.builder(
         itemCount: users.length,
