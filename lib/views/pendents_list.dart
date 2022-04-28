@@ -16,6 +16,7 @@ class _PendentsListState extends State<PendentsList> {
   @override
   Widget build(BuildContext context) {
     List<Transaction> _transactions = [...DUMMY_TRANSACTION];
+    var width = MediaQuery.of(context).size.height;
 
     _pendentsList() {
       _transactions.removeWhere((tr) => tr.status == 2);
@@ -42,7 +43,34 @@ class _PendentsListState extends State<PendentsList> {
         ),
       ),
       body: _pendents.isEmpty
-          ? const Text("Sem pendencias")
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: width * 0.01),
+                    child: Container(
+                      height: width * 0.3,
+                      child: const Image(
+                        image: AssetImage(
+                          'assets/images/vazio.png',
+                        ),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: Text(
+                      'Sem pendencias!',
+                      style: TextStyle(
+                        fontSize: width * 0.055,
+                        color: Colors.black,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
           : ListView.builder(
               itemCount: _pendents.length,
               itemBuilder: (ctx, i) => TransactionsFile(_pendents.elementAt(i)),

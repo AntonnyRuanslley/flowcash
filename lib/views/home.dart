@@ -1,3 +1,4 @@
+import 'package:cas/components/settings.dart';
 import 'package:cas/views/transactions_list.dart';
 import 'package:cas/views/users_list.dart';
 import 'package:cas/views/pendents_list.dart';
@@ -24,6 +25,7 @@ class _HomeState extends State<Home> {
     UsersList(),
     TransactionsList(),
     PendentsList(),
+    Settings(),
   ];
 
   @override
@@ -33,7 +35,9 @@ class _HomeState extends State<Home> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(
+              Icons.person,
+            ),
             label: 'Usuários',
           ),
           BottomNavigationBarItem(
@@ -48,6 +52,7 @@ class _HomeState extends State<Home> {
         currentIndex: _actualView,
         onTap: _onBottom,
       ),
+      drawer: Settings(),
     );
   }
 }
