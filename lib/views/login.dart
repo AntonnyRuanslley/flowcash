@@ -49,10 +49,10 @@ class _LoginState extends State<Login> {
 
     _aligment() {
       return EdgeInsets.only(
-          left: width * 0.032,
-          top: width * 0.07,
-          bottom: width * 0.017,
-          right: width * 0.05);
+          left: (width * _heightTextFild0) * 0.55,
+          top: (width * _heightTextFild0) * 0.5,
+          bottom: (width * _heightTextFild0) * 0.27,
+          right: (width * _heightTextFild0) * 0.55);
     }
 
     _border() {

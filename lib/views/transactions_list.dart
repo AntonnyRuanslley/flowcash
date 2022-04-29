@@ -1,9 +1,8 @@
-import 'package:cas/components/transaction_form.dart';
-import 'package:cas/components/status.dart';
-import 'package:cas/components/table_values.dart';
-
 import '../data/dummy_transaction.dart';
 
+import '../components/add_transaction.dart';
+import '../components/status.dart';
+import '../components/table_values.dart';
 import '../components/day_flow.dart';
 import '../components/transactions_file.dart';
 
@@ -17,14 +16,14 @@ class TransactionsList extends StatefulWidget {
 }
 
 class _TransactionsListState extends State<TransactionsList> {
-  final _transactions = [...DUMMY_TRANSACTION];
-
   _addTransaction() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return TransanctionForm();
-        });
+    setState(() {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AddTransaction();
+          });
+    });
   }
 
   @override
@@ -41,16 +40,16 @@ class _TransactionsListState extends State<TransactionsList> {
               Stack(
                 children: [
                   DayFlow(),
-                  TableValues(_transactions),
+                  TableValues(DUMMY_TRANSACTION),
                 ],
               ),
-              Status(_transactions),
+              Status(DUMMY_TRANSACTION),
               Expanded(
                 child: Container(
                   child: ListView.builder(
-                    itemCount: _transactions.length,
+                    itemCount: DUMMY_TRANSACTION.length,
                     itemBuilder: (ctx, i) =>
-                        TransactionsFile(_transactions.elementAt(i)),
+                        TransactionsFile(DUMMY_TRANSACTION.elementAt(i)),
                   ),
                 ),
               ),

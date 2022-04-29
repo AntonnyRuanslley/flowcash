@@ -1,6 +1,6 @@
 import 'package:cas/models/user.dart';
 
-List<User> DUMMY_USERS = [
+final List<User> DUMMY_USERS = [
   User(
       id: 'U1',
       name: 'Antonny',

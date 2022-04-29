@@ -1,4 +1,9 @@
+import '../data/dummy_category.dart';
+import '../models/category.dart';
+
 import 'package:flutter/material.dart';
+
+import 'dart:math';
 
 class CategoryForm extends StatefulWidget {
   @override
@@ -6,11 +11,25 @@ class CategoryForm extends StatefulWidget {
 }
 
 class _CategoryFormState extends State<CategoryForm> {
-  final _categoryController = TextEditingController();
+  final _nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final sizeScreen = MediaQuery.of(context).size.width;
+
+    _addCategory(String name) {
+      if (name.isEmpty) {
+        return;
+      }
+      final newCategory = Category(
+        id: 'C' + Random().nextInt(100).toString(),
+        name: name,
+      );
+      setState(() {
+        DUMMY_CATEGORY.add(newCategory);
+      });
+      Navigator.of(context).pop();
+    }
 
     return AlertDialog(
       title: Text("Nova categoria"),
@@ -18,8 +37,8 @@ class _CategoryFormState extends State<CategoryForm> {
         child: Column(
           children: [
             TextField(
-              controller: _categoryController,
-              onSubmitted: (_) => {}, //_submitForm(),
+              controller: _nameController,
+              onSubmitted: (_) => _addCategory(_nameController.text),
               decoration: InputDecoration(
                 labelText: 'Nome',
               ),
@@ -32,7 +51,7 @@ class _CategoryFormState extends State<CategoryForm> {
                   TextButton(
                     child: Text('Cancelar',
                         style: TextStyle(
-                          fontSize: width * 0.047,
+                          fontSize: sizeScreen * 0.047,
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).colorScheme.primary,
                         )),
@@ -40,11 +59,11 @@ class _CategoryFormState extends State<CategoryForm> {
                       Navigator.of(context).pop();
                     },
                   ),
-                  SizedBox(width: width * 0.02),
+                  SizedBox(width: sizeScreen * 0.02),
                   TextButton(
                     child: Text('Adicionar',
                         style: TextStyle(
-                          fontSize: width * 0.047,
+                          fontSize: sizeScreen * 0.047,
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).colorScheme.secondary,
                         )),
@@ -52,7 +71,7 @@ class _CategoryFormState extends State<CategoryForm> {
                       backgroundColor: Theme.of(context).colorScheme.primary,
                     ),
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      _addCategory(_nameController.text);
                     },
                   ),
                 ],

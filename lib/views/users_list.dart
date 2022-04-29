@@ -12,9 +12,9 @@ class UsersList extends StatefulWidget {
 
 class _UsersListState extends State<UsersList> {
   _removeUser(String id) {
-    setState() {
+    setState(() {
       DUMMY_USERS.removeWhere((user) => user.id == id);
-    }
+    });
   }
 
   @override
