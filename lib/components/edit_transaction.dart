@@ -35,12 +35,6 @@ class _EditTransactionState extends State<EditTransaction> {
     Navigator.of(context).pop();
   }
 
-  _removeTransaction(String id) {
-    setState(() {
-      DUMMY_TRANSACTION.removeWhere((tr) => tr.id == id);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;

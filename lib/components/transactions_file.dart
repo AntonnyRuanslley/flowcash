@@ -1,12 +1,23 @@
-import 'package:cas/models/transaction.dart';
+import 'package:cas/data/dummy_transaction.dart';
+import 'package:cas/views/transactions_list.dart';
+
+import '../components/information_transaction.dart';
+
+import '../models/transaction.dart';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class TransactionsFile extends StatelessWidget {
+class TransactionsFile extends StatefulWidget {
   final Transaction transaction;
 
   TransactionsFile(this.transaction);
 
+  @override
+  State<TransactionsFile> createState() => _TransactionsFileState();
+}
+
+class _TransactionsFileState extends State<TransactionsFile> {
   bool? _banlacePos(type) {
     if (type == 1) {
       return true;
@@ -18,8 +29,25 @@ class TransactionsFile extends StatelessWidget {
   Widget build(BuildContext context) {
     final sizeScreen = MediaQuery.of(context).size.height;
 
+    _removeTransaction(String id) {
+      setState(() {
+        DUMMY_TRANSACTION.removeWhere((tr) => tr.id == id);
+      });
+    }
+
+    _openInformation() {
+      setState(() {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return InformationTransaction(
+                  widget.transaction, _removeTransaction);
+            });
+      });
+    }
+
     return TextButton(
-      onPressed: () {},
+      onPressed: () => _openInformation(),
       child: ListTile(
         leading: Container(
           decoration: BoxDecoration(
@@ -36,16 +64,18 @@ class TransactionsFile extends StatelessWidget {
           child: CircleAvatar(
             radius: 20,
             child: Icon(
-              _banlacePos(transaction.type)!
+              _banlacePos(widget.transaction.type)!
                   ? Icons.arrow_downward_rounded
                   : Icons.arrow_upward_rounded,
-              color: _banlacePos(transaction.type)! ? Colors.green : Colors.red,
+              color: _banlacePos(widget.transaction.type)!
+                  ? Colors.green
+                  : Colors.red,
             ),
             backgroundColor: Theme.of(context).colorScheme.secondary,
           ),
         ),
         title: Text(
-          transaction.category,
+          widget.transaction.category,
           style: TextStyle(
             fontSize: sizeScreen * 0.027,
             fontWeight: FontWeight.bold,
@@ -57,9 +87,10 @@ class TransactionsFile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
-                NumberFormat(' R\$ #.00', 'pt-BR').format(transaction.value),
+                NumberFormat(' R\$ #.00', 'pt-BR')
+                    .format(widget.transaction.value),
                 style: TextStyle(
-                  color: _banlacePos(transaction.type)!
+                  color: _banlacePos(widget.transaction.type)!
                       ? Colors.green
                       : Colors.red,
                   fontSize: sizeScreen * 0.027,
