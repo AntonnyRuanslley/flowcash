@@ -1,7 +1,8 @@
-import 'package:cas/models/transaction.dart';
+import '../models/transaction.dart';
+
+import '../data/dummy_transaction.dart';
 
 import '../components/transactions_file.dart';
-import '../data/dummy_transaction.dart';
 
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,12 @@ class _PendentsListState extends State<PendentsList> {
   Widget build(BuildContext context) {
     List<Transaction> _transactions = [...DUMMY_TRANSACTION];
     var width = MediaQuery.of(context).size.height;
+
+    _removeTransaction(String id) {
+      setState(() {
+        DUMMY_TRANSACTION.removeWhere((tr) => tr.id == id);
+      });
+    }
 
     _pendentsList() {
       _transactions.removeWhere((tr) => tr.status == 2);
@@ -50,7 +57,7 @@ class _PendentsListState extends State<PendentsList> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: width * 0.01),
                     child: Container(
-                      height: width * 0.3,
+                      height: width * 0.28,
                       child: const Image(
                         image: AssetImage(
                           'assets/images/vazio.png',
@@ -73,7 +80,8 @@ class _PendentsListState extends State<PendentsList> {
             )
           : ListView.builder(
               itemCount: _pendents.length,
-              itemBuilder: (ctx, i) => TransactionsFile(_pendents.elementAt(i)),
+              itemBuilder: (ctx, i) =>
+                  TransactionsFile(_pendents.elementAt(i), _removeTransaction),
             ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).colorScheme.primary,

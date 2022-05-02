@@ -1,14 +1,21 @@
+import 'package:cas/components/transaction_form.dart';
 import 'package:cas/data/dummy_transaction.dart';
 import 'package:cas/models/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class InformationTransaction extends StatelessWidget {
+class InformationTransaction extends StatefulWidget {
   Transaction transaction;
   final Function(String) onRemove;
+  final Function onEdit;
 
-  InformationTransaction(this.transaction, this.onRemove);
+  InformationTransaction(this.transaction, this.onRemove, this.onEdit);
 
+  @override
+  State<InformationTransaction> createState() => _InformationTransactionState();
+}
+
+class _InformationTransactionState extends State<InformationTransaction> {
   _openAlert(context, id) {
     showDialog(
       context: context,
@@ -33,13 +40,43 @@ class InformationTransaction extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
-                onRemove(id);
+                widget.onRemove(id);
               },
             ),
           ],
         );
       },
     );
+  }
+
+  /*_passEditMain(id, editDescription, editCategory, editValue, editType, editDate) {
+    onEdit(id, editDescription, editCategory, editValue, editType, editDate);
+  }*/
+  _editTrasanction(String id, String editDescription, String editCategory,
+      double editValue, int editType, DateTime editDate) {
+    for (var tr in DUMMY_TRANSACTION) {
+      if (tr.id == id) {
+        setState(() {
+          tr.category = editDescription;
+          tr.category = editCategory;
+          tr.value = editValue;
+          tr.type = editType;
+          tr.status = 1;
+          tr.date = editDate;
+        });
+        Navigator.pop(context);
+      }
+    }
+  }
+
+  _openForm(context, String id, String description, String category,
+      double value, int type, DateTime date) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return TransactionForm(_editTrasanction, false, id, description,
+              category, value, type, date);
+        });
   }
 
   @override
@@ -86,21 +123,27 @@ class InformationTransaction extends StatelessWidget {
         ),
       ),
       content: SizedBox(
-        height: sizeSreen * 0.75,
+        height: sizeSreen * 0.9,
         width: sizeSreen * 1,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _information("Descrição", transaction.description),
-            _information("Categoria", transaction.category),
-            _information("Tipo", transaction.type == 1 ? "Receita" : "Despesa"),
+            _information("Descrição", widget.transaction.description),
+            _information("Categoria", widget.transaction.category),
+            _information(
+                "Tipo", widget.transaction.type == 1 ? "Receita" : "Despesa"),
             _information(
                 "Valor",
-                NumberFormat('R\$ #.00', 'pt-BR').format(transaction.type == 1
-                    ? transaction.value
-                    : (transaction.value * -1))),
-            _information("Data da transação",
-                DateFormat('dd/MM/yy', 'pt-BR').format(transaction.date)),
+                NumberFormat('R\$ #.00', 'pt-BR').format(
+                    widget.transaction.type == 1
+                        ? widget.transaction.value
+                        : (widget.transaction.value * -1))),
+            _information(
+                "Data da transação",
+                DateFormat('dd/MM/yy', 'pt-BR')
+                    .format(widget.transaction.date)),
+            _information("Status",
+                widget.transaction.status == 1 ? "Pendente" : "Aprovado"),
           ],
         ),
       ),
@@ -123,20 +166,26 @@ class InformationTransaction extends StatelessWidget {
                         fontSize: sizeSreen * 0.051,
                         fontWeight: FontWeight.bold),
                   ),
-                  onPressed: () => _openAlert(context, transaction.id),
+                  onPressed: () => _openAlert(context, widget.transaction.id),
                 ),
                 SizedBox(width: sizeSreen * 0.03),
                 TextButton(
-                    child: Text(
-                      'Editar',
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontSize: sizeSreen * 0.051,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    }),
+                  child: Text(
+                    'Editar',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontSize: sizeSreen * 0.051,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: () => _openForm(
+                      context,
+                      widget.transaction.id,
+                      widget.transaction.description,
+                      widget.transaction.category,
+                      widget.transaction.value,
+                      widget.transaction.type,
+                      widget.transaction.date),
+                ),
               ],
             ),
           ),

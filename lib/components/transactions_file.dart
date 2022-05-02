@@ -1,6 +1,3 @@
-import 'package:cas/data/dummy_transaction.dart';
-import 'package:cas/views/transactions_list.dart';
-
 import '../components/information_transaction.dart';
 
 import '../models/transaction.dart';
@@ -10,8 +7,10 @@ import 'package:intl/intl.dart';
 
 class TransactionsFile extends StatefulWidget {
   final Transaction transaction;
+  final Function onRemove;
+  final Function? onEdit;
 
-  TransactionsFile(this.transaction);
+  TransactionsFile(this.transaction, this.onRemove, [this.onEdit]);
 
   @override
   State<TransactionsFile> createState() => _TransactionsFileState();
@@ -29,19 +28,22 @@ class _TransactionsFileState extends State<TransactionsFile> {
   Widget build(BuildContext context) {
     final sizeScreen = MediaQuery.of(context).size.height;
 
-    _removeTransaction(String id) {
-      setState(() {
-        DUMMY_TRANSACTION.removeWhere((tr) => tr.id == id);
-      });
+    _passMainRemove(String id) {
+      widget.onRemove(id);
     }
+
+    _passMainEdit(String id, String editDescription, String editCategory,
+      double editValue, int? editType, DateTime editDate) {
+    widget.onEdit;
+  }
+
 
     _openInformation() {
       setState(() {
         showDialog(
             context: context,
             builder: (context) {
-              return InformationTransaction(
-                  widget.transaction, _removeTransaction);
+              return InformationTransaction(widget.transaction, _passMainRemove, _passMainEdit);
             });
       });
     }

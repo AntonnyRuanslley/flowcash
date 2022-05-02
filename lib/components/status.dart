@@ -9,14 +9,26 @@ class Status extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _pendentOrOk(int status) {
-      var listSize = transaction.map((listSize) {
-        if (listSize.status == status) {
-          return 1;
-        }
-      });
-      return listSize
-          .map((values) => (values ?? 0))
-          .reduce((total, prox) => total + prox);
+      if (transaction.isEmpty) {
+        return 0;
+      } else {
+        var listSize = transaction.map((listSize) {
+          if (listSize.status == status) {
+            return 1;
+          }
+        });
+        return listSize
+            .map((values) => (values ?? 0))
+            .reduce((total, prox) => total + prox);
+      }
+    }
+
+    _pendents() {
+      return _pendentOrOk(1) == 1 ? 'Pendente' : 'Pendentes';
+    }
+
+    _ok() {
+      return _pendentOrOk(2) == 1 ? 'Aprovado' : 'Aprovados';
     }
 
     return Padding(
@@ -34,7 +46,7 @@ class Status extends StatelessWidget {
             ),
           ),
           Text(
-            '${_pendentOrOk(1)} Pendentes ${_pendentOrOk(2)} Aprovados',
+            '${_pendentOrOk(1)} ${_pendents()} ${_pendentOrOk(2)} ${_ok()}',
             style: TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.bold,

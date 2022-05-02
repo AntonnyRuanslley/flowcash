@@ -1,8 +1,11 @@
+import 'views/no_connection.dart';
+import 'views/home.dart';
+import 'views/login.dart';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'views/home.dart';
-import 'views/login.dart';
+import 'dart:io';
 
 class Loading extends StatefulWidget {
   const Loading({Key? key}) : super(key: key);
@@ -21,16 +24,32 @@ class _LoadingState extends State<Loading> {
     }
   }
 
+  Future<bool> _tryConnection() async {
+    try {
+      final response = await InternetAddress.lookup('www.google.com.br');
+      return true;
+    } on SocketException {
+      return false;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    _loginOn().then((value) {
+    _tryConnection().then((value) {
       if (value) {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Login()));
+        _loginOn().then((value) {
+          if (value) {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => Login()));
+          } else {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => Home()));
+          }
+        });
       } else {
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Home()));
+            context, MaterialPageRoute(builder: (context) => NoConnection()));
       }
     });
   }

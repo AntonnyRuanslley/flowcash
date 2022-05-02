@@ -15,14 +15,18 @@ class TableValues extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _recipeOrExpense(int type) {
-      var listValues = transaction.map((listValues) {
-        if (listValues.type == type) {
-          return listValues.value;
-        }
-      });
-      return listValues
-          .map((values) => (values ?? 0.0))
-          .reduce((total, prox) => total + prox);
+      if (transaction.isEmpty) {
+        return 0;
+      } else {
+        var listValues = transaction.map((listValues) {
+          if (listValues.type == type) {
+            return listValues.value;
+          }
+        });
+        return listValues
+            .map((values) => (values ?? 0.0))
+            .reduce((total, prox) => total + prox);
+      }
     }
 
     _balance() {

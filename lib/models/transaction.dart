@@ -1,11 +1,11 @@
 class Transaction {
-  final String id;
-  final String category;
-  final String description;
-  final DateTime date;
+  String id;
+  String category;
+  String description;
+  DateTime date;
   int status;
-  final double value;
-  final int type;
+  double value;
+  int type;
 
   Transaction({
     required this.id,
