@@ -1,3 +1,6 @@
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+
 import '../data/dummy_transaction.dart';
 
 import '../models/transaction.dart';
@@ -22,6 +25,33 @@ class TransactionsList extends StatefulWidget {
 class _TransactionsListState extends State<TransactionsList> {
   _addTrasanction(String description, String category, double value, int type,
       DateTime date) {
+    /*Future<bool> login() async {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      var url = Uri.parse('http://100.64.1.6:8000/transactions');
+      var answer = await http.post(
+        url,
+        body: {
+          'description' : description,
+          'category' : category, 
+          'value' : value,
+          'type' : type,
+          'date' : date,
+        },
+        head: {
+          'Authorization' : token,
+        }
+      );
+      if (answer.statusCode == 200) {
+        if (isChecked) {
+          await sharedPreferences.setString('token',
+              jsonDecode(answer.body)['token'].toString().split('|')[1]);
+        }
+        return true;
+      } else {
+        return false;
+      }
+    }*/
     final newTransaction = Transaction(
       id: 'T' + Random().nextInt(1000).toString(),
       category: category,
@@ -42,15 +72,6 @@ class _TransactionsListState extends State<TransactionsList> {
     setState(() {
       DUMMY_TRANSACTION.removeWhere((tr) => tr.id == id);
     });
-  }
-
-  void rebuildAllChildren(BuildContext context) {
-    void rebuild(Element el) {
-      el.markNeedsBuild();
-      el.visitChildren(rebuild);
-    }
-
-    (context as Element).visitChildren(rebuild);
   }
 
   _openForm() {
