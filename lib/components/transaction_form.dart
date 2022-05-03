@@ -36,17 +36,19 @@ class _TransactionFormState extends State<TransactionForm> {
   final _inputDescription = TextEditingController();
   final _inputValeu = TextEditingController();
   String? _inputCategory;
-  int _inputType = 1;
+  int? _inputType;
   DateTime _selectDate = DateTime.now();
 
   _submitForm() {
     String? description;
     String? category;
     double value;
+    int? type;
     if (widget.isAdd) {
       description = _inputDescription.text;
       category = _inputCategory;
       value = double.tryParse(_inputValeu.text) ?? 0.0;
+      type = _inputType;
       if (description.isEmpty || category == null || value <= 0) {
         return;
       }
@@ -58,9 +60,10 @@ class _TransactionFormState extends State<TransactionForm> {
       value = _inputValeu.text.isEmpty
           ? widget.editValue as double
           : double.tryParse(_inputValeu.text) ?? 0.0;
+      type = _inputType ?? widget.editType;
     }
     widget.onSubmit(widget.id, description, category,
-        _inputType == 2 ? (value * -1) : value, _inputType, _selectDate);
+        _inputType == 2 ? (value * -1) : value, type, _selectDate);
   }
 
   _showDatePicker() {
@@ -94,8 +97,10 @@ class _TransactionFormState extends State<TransactionForm> {
     });
   }
 
-  Type? _edit() {
-    return widget.editType == 1 ? Type.recipe : Type.expense;
+  _addType(int type) {
+    setState(() {
+      _inputType = type;
+    });
   }
 
   @override
@@ -207,8 +212,9 @@ class _TransactionFormState extends State<TransactionForm> {
                   ],
                 ),
                 SizedBox(
-                    height: sizeSreen * 0.28,
-                    child: TypeFile(_inputType, widget.isAdd)),
+                  height: sizeSreen * 0.28,
+                  child: TypeFile(_addType, widget.isAdd, widget.editType!),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

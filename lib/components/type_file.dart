@@ -3,17 +3,32 @@ import 'package:flutter/material.dart';
 enum Type { recipe, expense }
 
 class TypeFile extends StatefulWidget {
-  int inputType;
-  final bool isAdd;
+  final Function onSubmit;
+  bool isAdd;
+  int type;
 
-  TypeFile(this.inputType, this.isAdd);
+  TypeFile(
+    this.onSubmit,
+    this.isAdd,
+    this.type,
+  );
 
   @override
   State<TypeFile> createState() => _TypeFileState();
 }
 
 class _TypeFileState extends State<TypeFile> {
-  Type? _choice = Type.recipe;
+  Type? _choice;
+  int? inputType;
+
+  void initState() {
+    print(widget.type);
+    _choice = widget.isAdd
+        ? Type.recipe
+        : widget.type == 1
+            ? Type.recipe
+            : Type.expense;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +58,9 @@ class _TypeFileState extends State<TypeFile> {
               onChanged: (Type? value) {
                 setState(() {
                   _choice = value;
-                  widget.inputType = 1;
+                  inputType = 1;
                 });
+                widget.onSubmit(inputType);
               },
             ),
           ),
@@ -64,8 +80,9 @@ class _TypeFileState extends State<TypeFile> {
               onChanged: (Type? value) {
                 setState(() {
                   _choice = value;
-                  widget.inputType = 2;
+                  inputType = 2;
                 });
+                widget.onSubmit(inputType);
               },
             ),
           ),
