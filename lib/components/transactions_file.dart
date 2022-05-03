@@ -8,9 +8,8 @@ import 'package:intl/intl.dart';
 class TransactionsFile extends StatefulWidget {
   final Transaction transaction;
   final Function onRemove;
-  final Function? onEdit;
 
-  TransactionsFile(this.transaction, this.onRemove, [this.onEdit]);
+  TransactionsFile(this.transaction, this.onRemove);
 
   @override
   State<TransactionsFile> createState() => _TransactionsFileState();
@@ -32,18 +31,13 @@ class _TransactionsFileState extends State<TransactionsFile> {
       widget.onRemove(id);
     }
 
-    _passMainEdit(String id, String editDescription, String editCategory,
-      double editValue, int? editType, DateTime editDate) {
-    widget.onEdit;
-  }
-
-
     _openInformation() {
       setState(() {
         showDialog(
             context: context,
             builder: (context) {
-              return InformationTransaction(widget.transaction, _passMainRemove, _passMainEdit);
+              return InformationTransaction(
+                  widget.transaction, _passMainRemove);
             });
       });
     }
@@ -83,14 +77,16 @@ class _TransactionsFileState extends State<TransactionsFile> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        trailing: Container(
+        trailing: SizedBox(
           width: sizeScreen * 0.21,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
-                NumberFormat(' R\$ #.00', 'pt-BR')
-                    .format(widget.transaction.value),
+                NumberFormat(' R\$ #.00', 'pt-BR').format(
+                    widget.transaction.type == 1
+                        ? widget.transaction.value
+                        : widget.transaction.value * -1),
                 style: TextStyle(
                   color: _banlacePos(widget.transaction.type)!
                       ? Colors.green

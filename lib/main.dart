@@ -1,6 +1,4 @@
 import 'package:cas/loading.dart';
-import 'views/home.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -32,7 +30,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: Home(),
+      home: Loading(),
     );
   }
 }

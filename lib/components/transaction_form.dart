@@ -6,8 +6,6 @@ import '../components/category_form.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-enum Type { recipe, expense }
-
 class TransactionForm extends StatefulWidget {
   final Function onSubmit;
   final bool isAdd;
@@ -31,8 +29,6 @@ class TransactionForm extends StatefulWidget {
 }
 
 class _TransactionFormState extends State<TransactionForm> {
-  Type? _choice = Type.recipe;
-
   final _inputDescription = TextEditingController();
   final _inputValeu = TextEditingController();
   String? _inputCategory;
@@ -48,10 +44,11 @@ class _TransactionFormState extends State<TransactionForm> {
       description = _inputDescription.text;
       category = _inputCategory;
       value = double.tryParse(_inputValeu.text) ?? 0.0;
-      type = _inputType;
+      type = _inputType ?? 1;
       if (description.isEmpty || category == null || value <= 0) {
         return;
       }
+      widget.onSubmit(description, category, value, type, _selectDate);
     } else {
       description = _inputDescription.text.isEmpty
           ? widget.editDescription
@@ -61,9 +58,9 @@ class _TransactionFormState extends State<TransactionForm> {
           ? widget.editValue as double
           : double.tryParse(_inputValeu.text) ?? 0.0;
       type = _inputType ?? widget.editType;
+      widget.onSubmit(
+          widget.id, description, category, value, type, _selectDate);
     }
-    widget.onSubmit(widget.id, description, category,
-        _inputType == 2 ? (value * -1) : value, type, _selectDate);
   }
 
   _showDatePicker() {
@@ -179,8 +176,10 @@ class _TransactionFormState extends State<TransactionForm> {
                       onPressed: () => _openCategoryFormModal(context),
                     ),
                     Flexible(
-                      child: CategorysFile(
-                          _addCategory, widget.isAdd, widget.editCategory!),
+                      child: widget.isAdd
+                          ? CategorysFile(_addCategory, widget.isAdd)
+                          : CategorysFile(
+                              _addCategory, widget.isAdd, widget.editCategory!),
                     )
                   ],
                 ),
@@ -201,10 +200,8 @@ class _TransactionFormState extends State<TransactionForm> {
                         maxLines: 1,
                         decoration: _decoration(widget.isAdd
                             ? "0,00"
-                            : NumberFormat('#.00', 'pt-BR').format(
-                                widget.editType == 1
-                                    ? widget.editValue
-                                    : (widget.editValue! * -1))),
+                            : NumberFormat('#.00', 'pt-BR')
+                                .format(widget.editValue!)),
                         controller: _inputValeu,
                         onSubmitted: (_) => _submitForm(),
                       ),
@@ -213,7 +210,9 @@ class _TransactionFormState extends State<TransactionForm> {
                 ),
                 SizedBox(
                   height: sizeSreen * 0.28,
-                  child: TypeFile(_addType, widget.isAdd, widget.editType!),
+                  child: widget.isAdd
+                      ? TypeFile(_addType, widget.isAdd)
+                      : TypeFile(_addType, widget.isAdd, widget.editType!),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

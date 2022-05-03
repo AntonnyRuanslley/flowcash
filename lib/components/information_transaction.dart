@@ -1,15 +1,15 @@
 import 'package:cas/components/transaction_form.dart';
 import 'package:cas/data/dummy_transaction.dart';
 import 'package:cas/models/transaction.dart';
+import 'package:cas/views/home.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class InformationTransaction extends StatefulWidget {
   Transaction transaction;
   final Function(String) onRemove;
-  final Function onEdit;
 
-  InformationTransaction(this.transaction, this.onRemove, this.onEdit);
+  InformationTransaction(this.transaction, this.onRemove);
 
   @override
   State<InformationTransaction> createState() => _InformationTransactionState();
@@ -49,22 +49,31 @@ class _InformationTransactionState extends State<InformationTransaction> {
     );
   }
 
-  /*_passEditMain(id, editDescription, editCategory, editValue, editType, editDate) {
-    onEdit(id, editDescription, editCategory, editValue, editType, editDate);
-  }*/
   _editTrasanction(String id, String editDescription, String editCategory,
       double editValue, int editType, DateTime editDate) {
     for (var tr in DUMMY_TRANSACTION) {
       if (tr.id == id) {
         setState(() {
-          tr.category = editDescription;
+          tr.description = editDescription;
           tr.category = editCategory;
           tr.value = editValue;
           tr.type = editType;
           tr.status = 1;
           tr.date = editDate;
         });
-        Navigator.pop(context);
+
+        /*Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  InformationTransaction(widget.transaction, widget.onRemove)),
+        ).then((_) => setState(() {}));*/
+
+        //widget.onRefresh;
+        Navigator.of(context)
+            .push(new MaterialPageRoute(builder: (BuildContext context) {
+          return new Home();
+        }));
       }
     }
   }
@@ -134,10 +143,8 @@ class _InformationTransactionState extends State<InformationTransaction> {
                 "Tipo", widget.transaction.type == 1 ? "Receita" : "Despesa"),
             _information(
                 "Valor",
-                NumberFormat('R\$ #.00', 'pt-BR').format(
-                    widget.transaction.type == 1
-                        ? widget.transaction.value
-                        : (widget.transaction.value * -1))),
+                NumberFormat('R\$ #.00', 'pt-BR')
+                    .format(widget.transaction.value)),
             _information(
                 "Data da transação",
                 DateFormat('dd/MM/yy', 'pt-BR')

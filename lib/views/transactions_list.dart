@@ -44,6 +44,15 @@ class _TransactionsListState extends State<TransactionsList> {
     });
   }
 
+  void rebuildAllChildren(BuildContext context) {
+    void rebuild(Element el) {
+      el.markNeedsBuild();
+      el.visitChildren(rebuild);
+    }
+
+    (context as Element).visitChildren(rebuild);
+  }
+
   _openForm() {
     showDialog(
         context: context,

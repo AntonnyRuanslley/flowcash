@@ -8,7 +8,7 @@ final List<Transaction> DUMMY_TRANSACTION = [
       date: DateTime.now(),
       status: 1,
       type: 2,
-      value: -1200.00),
+      value: 1200.00),
   Transaction(
       id: 'T2',
       category: 'Conta',
@@ -16,7 +16,7 @@ final List<Transaction> DUMMY_TRANSACTION = [
       date: DateTime.now(),
       status: 1,
       type: 2,
-      value: -500.00),
+      value: 500.00),
   Transaction(
       id: 'T3',
       category: 'Salário',
@@ -24,7 +24,7 @@ final List<Transaction> DUMMY_TRANSACTION = [
       date: DateTime.now(),
       status: 1,
       type: 2,
-      value: -900.00),
+      value: 900.00),
   Transaction(
       id: 'T4',
       category: 'Pagamento',

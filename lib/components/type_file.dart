@@ -5,13 +5,13 @@ enum Type { recipe, expense }
 class TypeFile extends StatefulWidget {
   final Function onSubmit;
   bool isAdd;
-  int type;
+  int? type;
 
   TypeFile(
     this.onSubmit,
-    this.isAdd,
+    this.isAdd, [
     this.type,
-  );
+  ]);
 
   @override
   State<TypeFile> createState() => _TypeFileState();
@@ -19,10 +19,10 @@ class TypeFile extends StatefulWidget {
 
 class _TypeFileState extends State<TypeFile> {
   Type? _choice;
-  int? inputType;
+  int? inputType = 1;
 
+  @override
   void initState() {
-    print(widget.type);
     _choice = widget.isAdd
         ? Type.recipe
         : widget.type == 1

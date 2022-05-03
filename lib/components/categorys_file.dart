@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 class CategorysFile extends StatefulWidget {
   final Function(String) onSubmit;
   final bool isEdit;
-  final String category;
+  final String? category;
 
-  CategorysFile(this.onSubmit, this.isEdit, this.category);
+  CategorysFile(this.onSubmit, this.isEdit, [this.category]);
 
   @override
   State<CategorysFile> createState() => _CategorysFileState();
@@ -30,7 +30,7 @@ class _CategorysFileState extends State<CategorysFile> {
       ),
       child: DropdownButton(
         hint: Text(
-          widget.isEdit ? "Categoria" : widget.category,
+          widget.isEdit ? "Categoria" : widget.category!,
           style: TextStyle(
             fontSize: sizeScreen * 0.05,
             color: Colors.white54,

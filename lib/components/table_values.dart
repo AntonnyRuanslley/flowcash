@@ -30,7 +30,7 @@ class TableValues extends StatelessWidget {
     }
 
     _balance() {
-      return _recipeOrExpense(1) + _recipeOrExpense(2);
+      return _recipeOrExpense(1) - _recipeOrExpense(2);
     }
 
     _balancePos() {
@@ -133,7 +133,7 @@ class TableValues extends StatelessWidget {
                     _recipeOrExpense(2) == 0
                         ? 'R\$ 0,00'
                         : NumberFormat(' R\$ #.00', 'pt-BR')
-                            .format(_recipeOrExpense(2)),
+                            .format(_recipeOrExpense(2) * -1),
                     style: TextStyle(
                       color: Colors.red,
                       fontSize: size(),
