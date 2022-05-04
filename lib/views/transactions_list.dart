@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:cas/data/urls.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,6 +26,45 @@ class TransactionsList extends StatefulWidget {
 }
 
 class _TransactionsListState extends State<TransactionsList> {
+  List _transactions = [];
+
+  Future<void> getTransanctions() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var url = Uri.parse(urls['transactions']!);
+    var answer = await http.get(
+      url,
+      headers: {
+        "Authorization": "Bearer ${sharedPreferences.getString('token')}",
+      },
+    );
+
+    setState(() {
+      _transactions = jsonDecode(answer.body)['data'];
+    });
+  }
+
+  @override
+  void initState() {
+    getTransanctions();
+  }
+
+  /*Future<String> getCategories() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var url = Uri.parse(urls['categories']!);
+    var answer = await http.get(url, headers: {
+      "Authorization": "Bearer ${sharedPreferences.getString('token')}"
+    });
+    if (answer.statusCode == 200) {
+      setState(() {
+        _categories = jsonDecode(answer.body)['data'];
+      });
+      return "Sucesso!";
+    } else {
+      throw Exception('Erro ao carregar os dados, tente novamente mais tarde!');
+    }
+    
+  }*/
+
   _addTrasanction(String description, String category, double value, int type,
       DateTime date) {
     /*Future<bool> login() async {
@@ -98,13 +140,13 @@ class _TransactionsListState extends State<TransactionsList> {
               Stack(
                 children: [
                   DayFlow(),
-                  TableValues(DUMMY_TRANSACTION),
+                  TableValues(_transactions),
                 ],
               ),
-              Status(DUMMY_TRANSACTION),
+              Status(_transactions),
               Expanded(
                 child: Container(
-                  child: DUMMY_TRANSACTION.isEmpty
+                  child: _transactions.isEmpty
                       ? Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -133,10 +175,11 @@ class _TransactionsListState extends State<TransactionsList> {
                           ],
                         )
                       : ListView.builder(
-                          itemCount: DUMMY_TRANSACTION.length,
-                          itemBuilder: (ctx, i) => TransactionsFile(
-                              DUMMY_TRANSACTION.elementAt(i),
-                              _removeTransaction),
+                          itemCount: _transactions.length,
+                          itemBuilder: (ctx, i) {
+                            return TransactionsFile(
+                                _transactions[i], _removeTransaction);
+                          },
                         ),
                 ),
               ),

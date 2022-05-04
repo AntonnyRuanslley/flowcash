@@ -3,7 +3,7 @@ import '../models/transaction.dart';
 import 'package:flutter/material.dart';
 
 class Status extends StatelessWidget {
-  final Iterable<Transaction> transaction;
+  final List transaction;
 
   Status(this.transaction);
   @override
@@ -13,7 +13,7 @@ class Status extends StatelessWidget {
         return 0;
       } else {
         var listSize = transaction.map((listSize) {
-          if (listSize.status == status) {
+          if (listSize['status'] == status) {
             return 1;
           }
         });

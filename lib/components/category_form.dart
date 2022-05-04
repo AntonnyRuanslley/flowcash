@@ -1,9 +1,8 @@
-import '../data/dummy_category.dart';
-import '../models/category.dart';
+import 'package:cas/data/urls.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';
-
-import 'dart:math';
+import 'package:http/http.dart' as http;
 
 class CategoryForm extends StatefulWidget {
   @override
@@ -17,18 +16,27 @@ class _CategoryFormState extends State<CategoryForm> {
   Widget build(BuildContext context) {
     final sizeScreen = MediaQuery.of(context).size.width;
 
-    _addCategory(String name) {
+    Future<void> _postCategory(String name) async {
       if (name.isEmpty) {
         return;
       }
-      final newCategory = Category(
-        id: 'C' + Random().nextInt(100).toString(),
-        name: name,
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      var url = Uri.parse(urls['categories']!);
+      var answer = await http.post(
+        url,
+        body: {
+          "name": name,
+        },
+        headers: {
+          "Authorization": "Bearer ${sharedPreferences.getString('token')}",
+        },
       );
-      setState(() {
-        DUMMY_CATEGORY.add(newCategory);
-      });
-      Navigator.of(context).pop();
+      if (answer.statusCode == 201) {
+        Navigator.of(context).pop();
+      } else {
+        return;
+      }
     }
 
     return AlertDialog(
@@ -38,7 +46,7 @@ class _CategoryFormState extends State<CategoryForm> {
           children: [
             TextField(
               controller: _nameController,
-              onSubmitted: (_) => _addCategory(_nameController.text),
+              onSubmitted: (_) => _postCategory(_nameController.text),
               decoration: InputDecoration(
                 labelText: 'Nome',
               ),
@@ -71,7 +79,7 @@ class _CategoryFormState extends State<CategoryForm> {
                       backgroundColor: Theme.of(context).colorScheme.primary,
                     ),
                     onPressed: () {
-                      _addCategory(_nameController.text);
+                      _postCategory(_nameController.text);
                     },
                   ),
                 ],

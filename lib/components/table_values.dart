@@ -1,10 +1,10 @@
-import '../models/transaction.dart';
+//import '../models/transaction.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TableValues extends StatelessWidget {
-  final Iterable<Transaction> transaction;
+  final List transaction;
 
   TableValues(this.transaction);
 
@@ -19,8 +19,8 @@ class TableValues extends StatelessWidget {
         return 0;
       } else {
         var listValues = transaction.map((listValues) {
-          if (listValues.type == type) {
-            return listValues.value;
+          if (listValues['type'] == type) {
+            return listValues['value'];
           }
         });
         return listValues

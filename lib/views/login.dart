@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cas/data/urls.dart';
 import 'package:cas/views/home.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,12 +25,12 @@ class _LoginState extends State<Login> {
 
   Future<bool> login() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse('http://100.64.1.6:8000/api/login');
+    var url = Uri.parse(urls['login']!);
     var answer = await http.post(
       url,
       body: {
-        'email': _inputEmail.text,
-        'password': _inputPassword.text,
+        "email": _inputEmail.text,
+        "password": _inputPassword.text,
       },
     );
     if (answer.statusCode == 200) {

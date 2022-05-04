@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TransactionsFile extends StatefulWidget {
-  final Transaction transaction;
+  final transaction;
   final Function onRemove;
 
   TransactionsFile(this.transaction, this.onRemove);
@@ -31,7 +31,7 @@ class _TransactionsFileState extends State<TransactionsFile> {
       widget.onRemove(id);
     }
 
-    _openInformation() {
+    /*_openInformation() {
       setState(() {
         showDialog(
             context: context,
@@ -40,10 +40,10 @@ class _TransactionsFileState extends State<TransactionsFile> {
                   widget.transaction, _passMainRemove);
             });
       });
-    }
+    }*/
 
     return TextButton(
-      onPressed: () => _openInformation(),
+      onPressed: () => {}, //_openInformation(),
       child: ListTile(
         leading: Container(
           decoration: BoxDecoration(
@@ -60,23 +60,23 @@ class _TransactionsFileState extends State<TransactionsFile> {
           child: CircleAvatar(
             radius: 20,
             child: Icon(
-              _banlacePos(widget.transaction.type)!
+              _banlacePos(widget.transaction['type'])!
                   ? Icons.arrow_downward_rounded
                   : Icons.arrow_upward_rounded,
-              color: _banlacePos(widget.transaction.type)!
+              color: _banlacePos(widget.transaction['type'])!
                   ? Colors.green
                   : Colors.red,
             ),
             backgroundColor: Theme.of(context).colorScheme.secondary,
           ),
         ),
-        title: Text(
-          widget.transaction.category,
+        /*title: Text(
+          widget.transaction['category_id'],
           style: TextStyle(
             fontSize: sizeScreen * 0.027,
             fontWeight: FontWeight.bold,
           ),
-        ),
+        ),*/ //MEXER
         trailing: SizedBox(
           width: sizeScreen * 0.21,
           child: Row(
@@ -84,11 +84,11 @@ class _TransactionsFileState extends State<TransactionsFile> {
             children: [
               Text(
                 NumberFormat(' R\$ #.00', 'pt-BR').format(
-                    widget.transaction.type == 1
-                        ? widget.transaction.value
-                        : widget.transaction.value * -1),
+                    widget.transaction['type'] == 1
+                        ? widget.transaction['value']
+                        : widget.transaction['value'] * -1),
                 style: TextStyle(
-                  color: _banlacePos(widget.transaction.type)!
+                  color: _banlacePos(widget.transaction['type'])!
                       ? Colors.green
                       : Colors.red,
                   fontSize: sizeScreen * 0.027,

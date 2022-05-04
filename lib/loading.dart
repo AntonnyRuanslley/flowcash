@@ -27,7 +27,7 @@ class _LoadingState extends State<Loading> {
 
   Future<bool> _tryConnection() async {
     try {
-      final response = await InternetAddress.lookup('www.google.com.br');
+      final response = await InternetAddress.lookup(urls['testing_conection']!);
       return true;
     } on SocketException {
       return false;
