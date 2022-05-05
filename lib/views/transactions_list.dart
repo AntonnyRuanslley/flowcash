@@ -1,8 +1,5 @@
 import 'dart:convert';
-
-import 'package:cas/data/urls.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
+import 'dart:math';
 
 import '../data/dummy_transaction.dart';
 
@@ -15,8 +12,9 @@ import '../components/day_flow.dart';
 import '../components/transactions_file.dart';
 
 import 'package:flutter/material.dart';
-
-import 'dart:math';
+import 'package:cas/data/urls.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class TransactionsList extends StatefulWidget {
   const TransactionsList({Key? key}) : super(key: key);
@@ -37,10 +35,11 @@ class _TransactionsListState extends State<TransactionsList> {
         "Authorization": "Bearer ${sharedPreferences.getString('token')}",
       },
     );
-
-    setState(() {
-      _transactions = jsonDecode(answer.body)['data'];
-    });
+    if (answer.statusCode == 200) {
+      setState(() {
+        _transactions = jsonDecode(answer.body)['data'];
+      });
+    }
   }
 
   @override
@@ -48,65 +47,9 @@ class _TransactionsListState extends State<TransactionsList> {
     getTransanctions();
   }
 
-  /*Future<String> getCategories() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse(urls['categories']!);
-    var answer = await http.get(url, headers: {
-      "Authorization": "Bearer ${sharedPreferences.getString('token')}"
-    });
-    if (answer.statusCode == 200) {
-      setState(() {
-        _categories = jsonDecode(answer.body)['data'];
-      });
-      return "Sucesso!";
-    } else {
-      throw Exception('Erro ao carregar os dados, tente novamente mais tarde!');
-    }
-    
-  }*/
-
-  _addTrasanction(String description, String category, double value, int type,
-      DateTime date) {
-    /*Future<bool> login() async {
-      SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
-      var url = Uri.parse('http://100.64.1.6:8000/transactions');
-      var answer = await http.post(
-        url,
-        body: {
-          'description' : description,
-          'category' : category, 
-          'value' : value,
-          'type' : type,
-          'date' : date,
-        },
-        head: {
-          'Authorization' : token,
-        }
-      );
-      if (answer.statusCode == 200) {
-        if (isChecked) {
-          await sharedPreferences.setString('token',
-              jsonDecode(answer.body)['token'].toString().split('|')[1]);
-        }
-        return true;
-      } else {
-        return false;
-      }
-    }*/
-    final newTransaction = Transaction(
-      id: 'T' + Random().nextInt(1000).toString(),
-      category: category,
-      description: description,
-      date: date,
-      status: 1,
-      type: type,
-      value: value,
-    );
-    setState(() {
-      DUMMY_TRANSACTION.add(newTransaction);
-    });
-
+  _refresh() {
+    print("blz2");
+    setState(() {});
     Navigator.of(context).pop();
   }
 
@@ -120,7 +63,7 @@ class _TransactionsListState extends State<TransactionsList> {
     showDialog(
         context: context,
         builder: (context) {
-          return TransactionForm(_addTrasanction, true);
+          return TransactionForm(_refresh, true);
         });
   }
 

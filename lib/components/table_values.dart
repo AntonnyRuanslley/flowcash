@@ -8,12 +8,18 @@ class TableValues extends StatelessWidget {
 
   TableValues(this.transaction);
 
-  double size() {
-    return 17;
-  }
-
   @override
   Widget build(BuildContext context) {
+    final sizeScreen = MediaQuery.of(context).size.height;
+
+    double fontSize() {
+      return sizeScreen * 0.029;
+    }
+
+    double fontIcon() {
+      return sizeScreen * 0.04;
+    }
+
     _recipeOrExpense(int type) {
       if (transaction.isEmpty) {
         return 0;
@@ -43,10 +49,10 @@ class TableValues extends StatelessWidget {
 
     return Padding(
       padding:
-          EdgeInsetsDirectional.only(start: 10, top: 72, end: 10, bottom: 5),
+          EdgeInsetsDirectional.only(start: 10, top: 70, end: 10, bottom: 5),
       child: Container(
-        height: 120,
-        width: 350,
+        height: sizeScreen * 0.19,
+        width: MediaQuery.of(context).size.width * 1,
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.secondary,
           borderRadius: BorderRadius.circular(20),
@@ -72,11 +78,12 @@ class TableValues extends StatelessWidget {
                       Icon(
                         Icons.arrow_downward_rounded,
                         color: Colors.green,
+                        size: fontIcon(),
                       ),
                       Text(
                         'Receita',
                         style: TextStyle(
-                          fontSize: size(),
+                          fontSize: fontSize(),
                         ),
                       ),
                     ],
@@ -86,11 +93,12 @@ class TableValues extends StatelessWidget {
                       Icon(
                         Icons.arrow_upward_rounded,
                         color: Colors.red,
+                        size: fontIcon(),
                       ),
                       Text(
                         'Despesa',
                         style: TextStyle(
-                          fontSize: size(),
+                          fontSize: fontSize(),
                         ),
                       ),
                     ],
@@ -104,11 +112,12 @@ class TableValues extends StatelessWidget {
                             : _balancePos()
                                 ? Colors.green
                                 : Colors.red,
+                        size: fontIcon(),
                       ),
                       Text(
                         'Saldo',
                         style: TextStyle(
-                          fontSize: size(),
+                          fontSize: fontSize(),
                         ),
                       ),
                     ],
@@ -126,7 +135,7 @@ class TableValues extends StatelessWidget {
                             .format(_recipeOrExpense(1)),
                     style: TextStyle(
                       color: Colors.green,
-                      fontSize: size(),
+                      fontSize: fontSize(),
                     ),
                   ),
                   Text(
@@ -136,7 +145,7 @@ class TableValues extends StatelessWidget {
                             .format(_recipeOrExpense(2) * -1),
                     style: TextStyle(
                       color: Colors.red,
-                      fontSize: size(),
+                      fontSize: fontSize(),
                     ),
                   ),
                   Text(
@@ -149,7 +158,7 @@ class TableValues extends StatelessWidget {
                           : _balancePos()
                               ? Colors.green
                               : Colors.red,
-                      fontSize: size(),
+                      fontSize: fontSize(),
                     ),
                   ),
                 ],

@@ -1,18 +1,23 @@
+import 'dart:convert';
+
 import 'package:cas/components/categorys_file.dart';
 import 'package:cas/components/type_file.dart';
+import 'package:cas/data/urls.dart';
 
 import '../components/category_form.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TransactionForm extends StatefulWidget {
-  final Function onSubmit;
+  final Function() onSubmit;
   final bool isAdd;
 
   final String? id;
   final String? editDescription;
-  final String? editCategory;
+  final int? editCategory;
   final double? editValue;
   final int? editType;
   final DateTime? editDate;
@@ -31,13 +36,57 @@ class TransactionForm extends StatefulWidget {
 class _TransactionFormState extends State<TransactionForm> {
   final _inputDescription = TextEditingController();
   final _inputValeu = TextEditingController();
-  String? _inputCategory;
+  int? _inputCategory;
   int? _inputType;
   DateTime _selectDate = DateTime.now();
 
+  Future<void> postTransaction() async {
+    var description = _inputDescription.text;
+    var category = _inputCategory!;
+    var value = double.tryParse(_inputValeu.text) ?? 0.0;
+    var type = _inputType ?? 1;
+    if (description.isEmpty || category == null || value <= 0) {
+      return;
+    }
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var url = Uri.parse(urls['user_logged']!);
+    var answer = await http.get(url, headers: {
+      "Authorization": "Bearer ${sharedPreferences.getString('token')}",
+    });
+    if (answer.statusCode == 200) {
+      String user_id = jsonDecode(answer.body)['id'].toString();
+      url = Uri.parse(urls['transactions']!);
+      answer = await http.post(
+        url,
+        body: {
+          "description": description,
+          "category_id": category.toString(),
+          "value": value.toString(),
+          "type": type.toString(),
+          "status": 1.toString(),
+          "date": _selectDate.toString(),
+          "user_id": user_id,
+        },
+        headers: {
+          "Authorization": "Bearer ${sharedPreferences.getString('token')}",
+        },
+      );
+      if (answer.statusCode == 201) {
+        widget.onSubmit;
+        print("blz1");
+        Navigator.of(context).pop();
+      } else {
+        return;
+      }
+    } else {
+      print(answer.statusCode);
+      return;
+    }
+  }
+
   _submitForm() {
-    String? description;
-    String? category;
+    /*String? description;
+    int? category;
     double value;
     int? type;
     if (widget.isAdd) {
@@ -60,7 +109,7 @@ class _TransactionFormState extends State<TransactionForm> {
       type = _inputType ?? widget.editType;
       widget.onSubmit(
           widget.id, description, category, value, type, _selectDate);
-    }
+    }*/
   }
 
   _showDatePicker() {
@@ -88,7 +137,7 @@ class _TransactionFormState extends State<TransactionForm> {
         });
   }
 
-  _addCategory(String category) {
+  _addCategory(int category) {
     setState(() {
       _inputCategory = category;
     });
@@ -176,10 +225,9 @@ class _TransactionFormState extends State<TransactionForm> {
                       onPressed: () => _openCategoryFormModal(context),
                     ),
                     Flexible(
-                      child: widget.isAdd
-                          ? CategorysFile(_addCategory, widget.isAdd)
-                          : CategorysFile(
-                              _addCategory, widget.isAdd, widget.editCategory!),
+                      child: CategorysFile(_addCategory),
+                      /*: CategorysFile(
+                              _addCategory, widget.isAdd, widget.editCategory!),*/
                     )
                   ],
                 ),
@@ -269,7 +317,7 @@ class _TransactionFormState extends State<TransactionForm> {
                                 Theme.of(context).colorScheme.secondary,
                           ),
                           onPressed: () {
-                            _submitForm();
+                            postTransaction();
                           }),
                     ],
                   ),

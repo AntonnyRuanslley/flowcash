@@ -2,15 +2,15 @@ import '../models/category.dart';
 
 final List<Category> DUMMY_CATEGORY = [
   Category(
-    id: 'C1',
+    id: 1,
     name: 'Conta',
   ),
   Category(
-    id: 'C2',
+    id: 2,
     name: 'Pagamento',
   ),
   Category(
-    id: 'C3',
+    id: 3,
     name: 'Salário',
   ),
 ];

@@ -1,15 +1,21 @@
-import 'package:cas/components/transaction_form.dart';
+//import 'package:cas/components/transaction_form.dart';
 import 'package:cas/data/dummy_transaction.dart';
-import 'package:cas/models/transaction.dart';
+import 'package:cas/data/urls.dart';
+
+///import 'package:cas/models/transaction.dart';
 import 'package:cas/views/home.dart';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class InformationTransaction extends StatefulWidget {
-  Transaction transaction;
+  final transaction;
+  final category;
   final Function(String) onRemove;
 
-  InformationTransaction(this.transaction, this.onRemove);
+  InformationTransaction(this.transaction, this.category, this.onRemove);
 
   @override
   State<InformationTransaction> createState() => _InformationTransactionState();
@@ -37,16 +43,32 @@ class _InformationTransactionState extends State<InformationTransaction> {
                 }),
             TextButton(
               child: const Text('Excluir'),
-              onPressed: () {
+              onPressed: () async {
+                deleteTransanction(id);
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
-                widget.onRemove(id);
               },
             ),
           ],
         );
       },
     );
+  }
+
+  Future<void> deleteTransanction(id) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var url = Uri.parse("${urls['transactions']!}/$id");
+    var answer = await http.delete(
+      url,
+      headers: {
+        "Authorization": "Bearer ${sharedPreferences.getString('token')}"
+      },
+    );
+    if (answer.statusCode == 204) {
+      print('excluiu');
+    } else {
+      print('deu merda');
+    }
   }
 
   _editTrasanction(String id, String editDescription, String editCategory,
@@ -78,7 +100,7 @@ class _InformationTransactionState extends State<InformationTransaction> {
     }
   }
 
-  _openForm(context, String id, String description, String category,
+  /*_openForm(context, String id, String description, String category,
       double value, int type, DateTime date) {
     showDialog(
         context: context,
@@ -87,7 +109,7 @@ class _InformationTransactionState extends State<InformationTransaction> {
               category, value, type, date);
         });
   }
-
+*/
   @override
   Widget build(BuildContext context) {
     final sizeSreen = MediaQuery.of(context).size.width;
@@ -137,20 +159,20 @@ class _InformationTransactionState extends State<InformationTransaction> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _information("Descrição", widget.transaction.description),
-            _information("Categoria", widget.transaction.category),
-            _information(
-                "Tipo", widget.transaction.type == 1 ? "Receita" : "Despesa"),
+            _information("Descrição", widget.transaction['description']),
+            _information("Categoria", widget.category.toString()),
+            _information("Tipo",
+                widget.transaction['type'] == 1 ? "Receita" : "Despesa"),
             _information(
                 "Valor",
                 NumberFormat('R\$ #.00', 'pt-BR')
-                    .format(widget.transaction.value)),
+                    .format(widget.transaction['value'])),
             _information(
                 "Data da transação",
                 DateFormat('dd/MM/yy', 'pt-BR')
-                    .format(widget.transaction.date)),
+                    .format(DateTime.parse(widget.transaction['date']))),
             _information("Status",
-                widget.transaction.status == 1 ? "Pendente" : "Aprovado"),
+                widget.transaction['status'] == 1 ? "Pendente" : "Aprovado"),
           ],
         ),
       ),
@@ -173,26 +195,28 @@ class _InformationTransactionState extends State<InformationTransaction> {
                         fontSize: sizeSreen * 0.051,
                         fontWeight: FontWeight.bold),
                   ),
-                  onPressed: () => _openAlert(context, widget.transaction.id),
+                  onPressed: () =>
+                      _openAlert(context, widget.transaction['id']),
                 ),
                 SizedBox(width: sizeSreen * 0.03),
                 TextButton(
-                  child: Text(
-                    'Editar',
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontSize: sizeSreen * 0.051,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  onPressed: () => _openForm(
+                    child: Text(
+                      'Editar',
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary,
+                          fontSize: sizeSreen * 0.051,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    onPressed: () =>
+                        {} /*_openForm(
                       context,
-                      widget.transaction.id,
-                      widget.transaction.description,
-                      widget.transaction.category,
-                      widget.transaction.value,
-                      widget.transaction.type,
-                      widget.transaction.date),
-                ),
+                      widget.transaction["id"],
+                      widget.transaction["description"],
+                      //widget.transaction["category"],
+                      widget.transaction["value"],
+                      widget.transaction["type"],
+                      widget.transaction["date"]),*/
+                    ),
               ],
             ),
           ),

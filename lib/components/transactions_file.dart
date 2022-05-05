@@ -1,9 +1,17 @@
+import 'package:cas/models/category.dart';
+
 import '../components/information_transaction.dart';
 
-import '../models/transaction.dart';
+//import '../models/transaction.dart';
+
+import 'package:cas/data/urls.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+
+import 'dart:convert';
 
 class TransactionsFile extends StatefulWidget {
   final transaction;
@@ -16,6 +24,32 @@ class TransactionsFile extends StatefulWidget {
 }
 
 class _TransactionsFileState extends State<TransactionsFile> {
+  List categories = [];
+
+  Future<void> getCategory() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var url = Uri.parse(urls['categories']!);
+    var answer = await http.get(
+      url,
+      headers: {
+        "Authorization": "Bearer ${sharedPreferences.getString('token')}",
+      },
+    );
+    if (answer.statusCode == 200) {
+      setState(() {
+        categories = jsonDecode(answer.body)['data'];
+      });
+    } else {
+      return;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getCategory();
+  }
+
   bool? _banlacePos(type) {
     if (type == 1) {
       return true;
@@ -27,23 +61,32 @@ class _TransactionsFileState extends State<TransactionsFile> {
   Widget build(BuildContext context) {
     final sizeScreen = MediaQuery.of(context).size.height;
 
+    _searchCategory(id) {
+      for (var category in categories) {
+        if (id == category['id']) {
+          return category['name'];
+        }
+      }
+    }
+
     _passMainRemove(String id) {
       widget.onRemove(id);
     }
 
-    /*_openInformation() {
+    _openInformation(category) {
       setState(() {
         showDialog(
             context: context,
             builder: (context) {
               return InformationTransaction(
-                  widget.transaction, _passMainRemove);
+                  widget.transaction, category, _passMainRemove);
             });
       });
-    }*/
+    }
 
     return TextButton(
-      onPressed: () => {}, //_openInformation(),
+      onPressed: () => _openInformation(
+          _searchCategory(widget.transaction['category_id']).toString()),
       child: ListTile(
         leading: Container(
           decoration: BoxDecoration(
@@ -70,13 +113,25 @@ class _TransactionsFileState extends State<TransactionsFile> {
             backgroundColor: Theme.of(context).colorScheme.secondary,
           ),
         ),
-        /*title: Text(
-          widget.transaction['category_id'],
+        title: Text(
+          _searchCategory(widget.transaction['category_id']).toString(),
           style: TextStyle(
             fontSize: sizeScreen * 0.027,
             fontWeight: FontWeight.bold,
           ),
-        ),*/ //MEXER
+        ),
+
+        // FutureBuilder(
+        //     future: getCategory(widget.transaction['category_id']),
+        //     builder: (context, category) {
+        //       return Text(
+        //         category.data!.toString(),
+        //         style: TextStyle(
+        //           fontSize: sizeScreen * 0.027,
+        //           fontWeight: FontWeight.bold,
+        //         ),
+        //       );
+        //     }),
         trailing: SizedBox(
           width: sizeScreen * 0.21,
           child: Row(

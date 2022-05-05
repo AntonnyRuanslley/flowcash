@@ -30,13 +30,18 @@ class _DayFlowState extends State<DayFlow> {
 
   @override
   Widget build(BuildContext context) {
+    final sizeScreen = MediaQuery.of(context).size.height;
+
     return Container(
-      height: 145,
+      height: sizeScreen * 0.22,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primary,
       ),
       child: Padding(
-        padding: EdgeInsetsDirectional.only(start: 17, top: 10, end: 17),
+        padding: EdgeInsetsDirectional.only(
+            start: sizeScreen * 0.035,
+            top: sizeScreen * 0.02,
+            end: sizeScreen * 0.035),
         child: Column(
           children: [
             Row(
@@ -46,7 +51,7 @@ class _DayFlowState extends State<DayFlow> {
                   'Fluxo do dia:',
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.secondary,
-                    fontSize: 24,
+                    fontSize: sizeScreen * 0.042,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -56,7 +61,7 @@ class _DayFlowState extends State<DayFlow> {
                       icon: Icon(
                         Icons.date_range_outlined,
                         color: Colors.white,
-                        size: 23,
+                        size: sizeScreen * 0.04,
                       ),
                       onPressed: _showDatePicker,
                     ),
@@ -64,7 +69,7 @@ class _DayFlowState extends State<DayFlow> {
                       DateFormat("dd/MM/yy", "pt_BR").format(_selectDate),
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.secondary,
-                        fontSize: 19,
+                        fontSize: sizeScreen * 0.035,
                       ),
                     ),
                   ],
