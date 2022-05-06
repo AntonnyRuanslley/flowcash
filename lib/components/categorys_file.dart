@@ -11,10 +11,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class CategorysFile extends StatefulWidget {
   final Function(int) onSubmit;
-  //final bool isEdit;
-  final int? category;
+  final bool isEdit;
+  final String? category;
 
-  CategorysFile(this.onSubmit, /*this.isEdit, */ [this.category]);
+  CategorysFile(this.onSubmit, this.isEdit, [this.category]);
 
   @override
   State<CategorysFile> createState() => _CategorysFileState();
@@ -58,7 +58,7 @@ class _CategorysFileState extends State<CategorysFile> {
       ),
       child: DropdownButton(
         hint: Text(
-          /*widget.isEdit ? */ "Categoria", //: "${widget.category!}" MEXER
+          widget.isEdit ? widget.category! : "Categoria",
           style: TextStyle(
             fontSize: sizeScreen * 0.05,
             color: Colors.white54,
@@ -81,7 +81,7 @@ class _CategorysFileState extends State<CategorysFile> {
           );
         }).toList(),
         onChanged: (int? newCategory) {
-          setState(() { 
+          setState(() {
             _category = newCategory!;
           });
           widget.onSubmit(_category!);

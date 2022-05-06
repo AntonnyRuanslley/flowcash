@@ -1,4 +1,4 @@
-//import 'package:cas/components/transaction_form.dart';
+import 'package:cas/components/transaction_form.dart';
 import 'package:cas/data/dummy_transaction.dart';
 import 'package:cas/data/urls.dart';
 
@@ -100,16 +100,14 @@ class _InformationTransactionState extends State<InformationTransaction> {
     }
   }
 
-  /*_openForm(context, String id, String description, String category,
-      double value, int type, DateTime date) {
+  _openForm(context) {
     showDialog(
         context: context,
         builder: (context) {
-          return TransactionForm(_editTrasanction, false, id, description,
-              category, value, type, date);
+          return TransactionForm(false, widget.transaction, widget.category);
         });
   }
-*/
+
   @override
   Widget build(BuildContext context) {
     final sizeSreen = MediaQuery.of(context).size.width;
@@ -200,23 +198,15 @@ class _InformationTransactionState extends State<InformationTransaction> {
                 ),
                 SizedBox(width: sizeSreen * 0.03),
                 TextButton(
-                    child: Text(
-                      'Editar',
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontSize: sizeSreen * 0.051,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    onPressed: () =>
-                        {} /*_openForm(
-                      context,
-                      widget.transaction["id"],
-                      widget.transaction["description"],
-                      //widget.transaction["category"],
-                      widget.transaction["value"],
-                      widget.transaction["type"],
-                      widget.transaction["date"]),*/
-                    ),
+                  child: Text(
+                    'Editar',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontSize: sizeSreen * 0.051,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: () => _openForm(context),
+                ),
               ],
             ),
           ),

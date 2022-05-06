@@ -1,15 +1,11 @@
 import 'dart:convert';
-import 'dart:math';
-
-import '../data/dummy_transaction.dart';
-
-import '../models/transaction.dart';
 
 import '../components/transaction_form.dart';
 import '../components/status.dart';
 import '../components/table_values.dart';
 import '../components/day_flow.dart';
 import '../components/transactions_file.dart';
+import '../components/settings.dart';
 
 import 'package:flutter/material.dart';
 import 'package:cas/data/urls.dart';
@@ -45,25 +41,18 @@ class _TransactionsListState extends State<TransactionsList> {
   @override
   void initState() {
     getTransanctions();
-  }
-
-  _refresh() {
-    print("blz2");
-    setState(() {});
-    Navigator.of(context).pop();
+    super.initState();
   }
 
   _removeTransaction(String id) {
-    setState(() {
-      DUMMY_TRANSACTION.removeWhere((tr) => tr.id == id);
-    });
+    setState(() {});
   }
 
   _openForm() {
     showDialog(
         context: context,
         builder: (context) {
-          return TransactionForm(_refresh, true);
+          return TransactionForm(true);
         });
   }
 
@@ -140,6 +129,7 @@ class _TransactionsListState extends State<TransactionsList> {
       ),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterFloat,
+      drawer: Settings(),
     );
   }
 }

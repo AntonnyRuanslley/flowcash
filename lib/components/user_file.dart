@@ -1,14 +1,15 @@
-import 'package:cas/models/user.dart';
+import 'package:cas/data/urls.dart';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class UserFiles extends StatelessWidget {
-  final User users;
-  final Function(String) onRemove;
+  final user;
 
-  UserFiles(this.users, this.onRemove);
+  UserFiles(this.user);
 
-  _openAlert(context, id) {
+  _openAlert(context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -30,14 +31,30 @@ class UserFiles extends StatelessWidget {
             TextButton(
               child: const Text('Excluir'),
               onPressed: () {
+                deleteUser();
                 Navigator.of(context).pop();
-                onRemove(id);
               },
             ),
           ],
         );
       },
     );
+  }
+
+  Future<void> deleteUser() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var url = Uri.parse("${urls['users']!}/${user['id']}");
+    var answer = await http.delete(
+      url,
+      headers: {
+        "Authorization": "Bearer ${sharedPreferences.getString('token')}"
+      },
+    );
+    if (answer.statusCode == 204) {
+      print('excluiu');
+    } else {
+      print('deu merda');
+    }
   }
 
   @override
@@ -50,10 +67,10 @@ class UserFiles extends StatelessWidget {
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-      title: Text(users.name),
-      subtitle: Text(users.email),
+      title: Text(user['name']),
+      subtitle: Text(user['email']),
       trailing: IconButton(
-          onPressed: () => _openAlert(context, users.id),
+          onPressed: () => _openAlert(context),
           icon: Icon(
             Icons.delete,
             color: Colors.red,

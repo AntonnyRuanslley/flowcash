@@ -1,5 +1,3 @@
-import 'package:cas/models/category.dart';
-
 import '../components/information_transaction.dart';
 
 //import '../models/transaction.dart';
@@ -46,8 +44,8 @@ class _TransactionsFileState extends State<TransactionsFile> {
 
   @override
   void initState() {
-    super.initState();
     getCategory();
+    super.initState();
   }
 
   bool? _banlacePos(type) {

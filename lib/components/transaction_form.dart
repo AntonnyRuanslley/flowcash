@@ -12,23 +12,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TransactionForm extends StatefulWidget {
-  final Function() onSubmit;
   final bool isAdd;
 
-  final String? id;
-  final String? editDescription;
-  final int? editCategory;
-  final double? editValue;
-  final int? editType;
-  final DateTime? editDate;
+  final transaction;
+  final category;
 
-  TransactionForm(this.onSubmit, this.isAdd,
-      [this.id,
-      this.editDescription,
-      this.editCategory,
-      this.editValue,
-      this.editType,
-      this.editDate]);
+  TransactionForm(this.isAdd, [this.transaction, this.category]);
   @override
   State<TransactionForm> createState() => _TransactionFormState();
 }
@@ -72,7 +61,6 @@ class _TransactionFormState extends State<TransactionForm> {
         },
       );
       if (answer.statusCode == 201) {
-        widget.onSubmit;
         print("blz1");
         Navigator.of(context).pop();
       } else {
@@ -84,38 +72,55 @@ class _TransactionFormState extends State<TransactionForm> {
     }
   }
 
-  _submitForm() {
-    /*String? description;
-    int? category;
-    double value;
-    int? type;
-    if (widget.isAdd) {
-      description = _inputDescription.text;
-      category = _inputCategory;
-      value = double.tryParse(_inputValeu.text) ?? 0.0;
-      type = _inputType ?? 1;
-      if (description.isEmpty || category == null || value <= 0) {
+  Future<void> putTransaction() async {
+    var description = _inputDescription.text.isEmpty
+        ? widget.transaction['description']
+        : _inputDescription.text;
+    var category = _inputCategory ?? widget.transaction['category_id'];
+    var value = _inputValeu.text.isEmpty
+        ? widget.transaction['value']
+        : double.tryParse(_inputValeu.text) ?? 0.0;
+    var type = _inputType ?? widget.transaction['type'];
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var url = Uri.parse(urls['user_logged']!);
+    var answer = await http.get(url, headers: {
+      "Authorization": "Bearer ${sharedPreferences.getString('token')}",
+    });
+    if (answer.statusCode == 200) {
+      String user_id = jsonDecode(answer.body)['id'].toString();
+      url = Uri.parse("${urls['transactions']!}/${widget.transaction['id']}");
+      answer = await http.patch(
+        url,
+        body: {
+          "description": description,
+          "category_id": category.toString(),
+          "value": value.toString(),
+          "type": type.toString(),
+          "status": 1.toString(),
+          "date": _selectDate.toString(),
+          "user_id": user_id,
+        },
+        headers: {
+          "Authorization": "Bearer ${sharedPreferences.getString('token')}",
+        },
+      );
+      if (answer.statusCode == 200) {
+        Navigator.of(context).pop();
+      } else {
         return;
       }
-      widget.onSubmit(description, category, value, type, _selectDate);
     } else {
-      description = _inputDescription.text.isEmpty
-          ? widget.editDescription
-          : _inputDescription.text;
-      category = _inputCategory ?? widget.editCategory;
-      value = _inputValeu.text.isEmpty
-          ? widget.editValue as double
-          : double.tryParse(_inputValeu.text) ?? 0.0;
-      type = _inputType ?? widget.editType;
-      widget.onSubmit(
-          widget.id, description, category, value, type, _selectDate);
-    }*/
+      print(answer.statusCode);
+      return;
+    }
   }
 
   _showDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: widget.isAdd ? _selectDate : widget.editDate!,
+      initialDate: widget.isAdd
+          ? _selectDate
+          : DateTime.parse(widget.transaction['date']!),
       firstDate: DateTime(2019),
       lastDate: DateTime.now(),
       locale: const Locale('pt', 'BR'),
@@ -210,9 +215,8 @@ class _TransactionFormState extends State<TransactionForm> {
                       TextStyle(color: Theme.of(context).colorScheme.secondary),
                   decoration: widget.isAdd
                       ? _decoration("Descrição")
-                      : _decoration(widget.editDescription!),
+                      : _decoration(widget.transaction['description']!),
                   controller: _inputDescription,
-                  onSubmitted: (_) => _submitForm(),
                 ),
                 Row(
                   children: [
@@ -225,9 +229,9 @@ class _TransactionFormState extends State<TransactionForm> {
                       onPressed: () => _openCategoryFormModal(context),
                     ),
                     Flexible(
-                      child: CategorysFile(_addCategory),
-                      /*: CategorysFile(
-                              _addCategory, widget.isAdd, widget.editCategory!),*/
+                      child: widget.isAdd
+                          ? CategorysFile(_addCategory, false)
+                          : CategorysFile(_addCategory, true, widget.category!),
                     )
                   ],
                 ),
@@ -249,9 +253,8 @@ class _TransactionFormState extends State<TransactionForm> {
                         decoration: _decoration(widget.isAdd
                             ? "0,00"
                             : NumberFormat('#.00', 'pt-BR')
-                                .format(widget.editValue!)),
+                                .format(widget.transaction['value']!)),
                         controller: _inputValeu,
-                        onSubmitted: (_) => _submitForm(),
                       ),
                     )
                   ],
@@ -260,7 +263,8 @@ class _TransactionFormState extends State<TransactionForm> {
                   height: sizeSreen * 0.28,
                   child: widget.isAdd
                       ? TypeFile(_addType, widget.isAdd)
-                      : TypeFile(_addType, widget.isAdd, widget.editType!),
+                      : TypeFile(
+                          _addType, widget.isAdd, widget.transaction['type']!),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -276,7 +280,7 @@ class _TransactionFormState extends State<TransactionForm> {
                     Container(
                       width: sizeSreen * 0.45,
                       child: Text(
-                        'Data selecionada: ${DateFormat('dd/MM/y', "pt_BR").format(_selectDate)}',
+                        'Data selecionada: ${DateFormat('dd/MM/y', "pt_BR").format(widget.isAdd ? _selectDate : DateTime.parse(widget.transaction['date']))}',
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
@@ -317,7 +321,7 @@ class _TransactionFormState extends State<TransactionForm> {
                                 Theme.of(context).colorScheme.secondary,
                           ),
                           onPressed: () {
-                            postTransaction();
+                            widget.isAdd ? postTransaction() : putTransaction();
                           }),
                     ],
                   ),

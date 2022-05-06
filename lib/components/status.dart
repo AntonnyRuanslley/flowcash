@@ -23,7 +23,7 @@ class Status extends StatelessWidget {
       }
     }
 
-    _pendents() {
+    _pendent() {
       return _pendentOrOk(1) == 1 ? 'Pendente' : 'Pendentes';
     }
 
@@ -46,7 +46,7 @@ class Status extends StatelessWidget {
             ),
           ),
           Text(
-            '${_pendentOrOk(1)} ${_pendents()} ${_pendentOrOk(2)} ${_ok()}',
+            '${_pendentOrOk(1)} ${_pendent()} ${_pendentOrOk(2)} ${_ok()}',
             style: TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.bold,

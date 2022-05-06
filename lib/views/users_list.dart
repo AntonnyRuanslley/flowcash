@@ -1,7 +1,14 @@
+import 'dart:convert';
+import 'dart:async';
+
+import 'package:cas/data/urls.dart';
+import 'package:cas/data/users.dart';
+
 import '../components/user_file.dart';
-import '../data/dummy_users.dart';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class UsersList extends StatefulWidget {
   const UsersList({Key? key}) : super(key: key);
@@ -11,10 +18,40 @@ class UsersList extends StatefulWidget {
 }
 
 class _UsersListState extends State<UsersList> {
-  _removeUser(String id) {
-    setState(() {
-      DUMMY_USERS.removeWhere((user) => user.id == id);
-    });
+  List _users = [];
+  Timer? timer;
+
+  Future<void> getUsers() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var url = Uri.parse(urls['users']!);
+    var answer = await http.get(
+      url,
+      headers: {
+        "Authorization": "Bearer ${sharedPreferences.getString('token')}",
+      },
+    );
+    if (answer.statusCode == 200) {
+      setState(() {
+        _users = jsonDecode(answer.body)['data'];
+      });
+    } else {
+      return;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState;
+    getUsers();
+    /*timer = Timer(
+      const Duration(seconds: 3),
+      () {
+        Center(
+            child: CircularProgressIndicator(
+          color: Theme.of(context).colorScheme.primary,
+        ));
+      },
+    );*/
   }
 
   @override
@@ -30,7 +67,7 @@ class _UsersListState extends State<UsersList> {
           ),
         ),
       ),
-      body: DUMMY_USERS.isEmpty
+      body: _users.isEmpty
           ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -57,9 +94,8 @@ class _UsersListState extends State<UsersList> {
               ),
             )
           : ListView.builder(
-              itemCount: DUMMY_USERS.length,
-              itemBuilder: (ctx, i) =>
-                  UserFiles(DUMMY_USERS.elementAt(i), _removeUser),
+              itemCount: _users.length,
+              itemBuilder: (ctx, i) => UserFiles(_users.elementAt(i)),
             ),
     );
   }
