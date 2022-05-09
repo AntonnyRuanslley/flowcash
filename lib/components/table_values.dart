@@ -49,7 +49,7 @@ class TableValues extends StatelessWidget {
 
     return Padding(
       padding:
-          EdgeInsetsDirectional.only(start: 10, top: 70, end: 10, bottom: 5),
+          EdgeInsetsDirectional.only(start: 10, top: 60, end: 10, bottom: 5),
       child: Container(
         height: sizeScreen * 0.19,
         width: MediaQuery.of(context).size.width * 1,

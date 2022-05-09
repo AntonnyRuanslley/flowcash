@@ -6,9 +6,10 @@ import '../components/table_values.dart';
 import '../components/day_flow.dart';
 import '../components/transactions_file.dart';
 import '../components/settings.dart';
+import 'package:cas/data/urls.dart';
 
 import 'package:flutter/material.dart';
-import 'package:cas/data/urls.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,11 +21,13 @@ class TransactionsList extends StatefulWidget {
 }
 
 class _TransactionsListState extends State<TransactionsList> {
+  DateTime _selectDate = DateTime.now();
   List _transactions = [];
+  Future<String>? getTransaction;
 
-  Future<void> getTransanctions() async {
+  Future<String> _getTransanctions() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse(urls['transactions']!);
+    var url = Uri.parse("${urls['transactions']!}?date=${_selectDate}");
     var answer = await http.get(
       url,
       headers: {
@@ -32,20 +35,31 @@ class _TransactionsListState extends State<TransactionsList> {
       },
     );
     if (answer.statusCode == 200) {
+      print(answer.statusCode);
       setState(() {
         _transactions = jsonDecode(answer.body)['data'];
       });
+      return "Sucesso";
+    } else {
+      print(answer.statusCode);
+      return "Erro";
     }
   }
 
-  @override
-  void initState() {
-    getTransanctions();
+  _refresh(String id) {
+    setState(() {});
+  }
+
+  initState() {
+    getTransaction = _getTransanctions();
     super.initState();
   }
 
-  _removeTransaction(String id) {
-    setState(() {});
+  _selectedDate(_newDate) {
+    setState(() {
+      _selectDate = _newDate;
+      getTransaction = _getTransanctions();
+    });
   }
 
   _openForm() {
@@ -71,48 +85,65 @@ class _TransactionsListState extends State<TransactionsList> {
             children: [
               Stack(
                 children: [
-                  DayFlow(),
+                  DayFlow(_selectedDate, _selectDate),
                   TableValues(_transactions),
                 ],
               ),
               Status(_transactions),
               Expanded(
-                child: Container(
-                  child: _transactions.isEmpty
-                      ? Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: sizeScreen * 0.01),
-                              child: Container(
-                                height: sizeScreen * 0.25,
-                                child: const Image(
-                                  image: AssetImage(
-                                    'assets/images/vazio.png',
-                                  ),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              child: Text(
-                                'Sem transações!',
-                                style: TextStyle(
-                                  fontSize: sizeScreen * 0.05,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            )
-                          ],
-                        )
-                      : ListView.builder(
-                          itemCount: _transactions.length,
-                          itemBuilder: (ctx, i) {
-                            return TransactionsFile(
-                                _transactions[i], _removeTransaction);
-                          },
+                child: FutureBuilder<String>(
+                  future: getTransaction,
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                            color: Theme.of(context).colorScheme.primary),
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 16),
+                          child: Text('Erro: ${snapshot.error}'),
                         ),
+                      );
+                    }
+                    return _transactions.isEmpty
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: sizeScreen * 0.01),
+                                child: Container(
+                                  height: sizeScreen * 0.25,
+                                  child: const Image(
+                                    image: AssetImage(
+                                      'assets/images/vazio.png',
+                                    ),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: Text(
+                                  'Sem transações!',
+                                  style: TextStyle(
+                                    fontSize: sizeScreen * 0.05,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              )
+                            ],
+                          )
+                        : ListView.builder(
+                            itemCount: _transactions.length,
+                            itemBuilder: (ctx, i) {
+                              return TransactionsFile(
+                                  _transactions[i], _refresh);
+                            },
+                          );
+                  },
                 ),
               ),
             ],

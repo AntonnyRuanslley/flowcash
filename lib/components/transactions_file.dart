@@ -1,4 +1,4 @@
-import '../components/information_transaction.dart';
+import 'transaction_information.dart';
 
 //import '../models/transaction.dart';
 
@@ -76,7 +76,7 @@ class _TransactionsFileState extends State<TransactionsFile> {
         showDialog(
             context: context,
             builder: (context) {
-              return InformationTransaction(
+              return TransactionInformation(
                   widget.transaction, category, _passMainRemove);
             });
       });
@@ -118,18 +118,6 @@ class _TransactionsFileState extends State<TransactionsFile> {
             fontWeight: FontWeight.bold,
           ),
         ),
-
-        // FutureBuilder(
-        //     future: getCategory(widget.transaction['category_id']),
-        //     builder: (context, category) {
-        //       return Text(
-        //         category.data!.toString(),
-        //         style: TextStyle(
-        //           fontSize: sizeScreen * 0.027,
-        //           fontWeight: FontWeight.bold,
-        //         ),
-        //       );
-        //     }),
         trailing: SizedBox(
           width: sizeScreen * 0.21,
           child: Row(

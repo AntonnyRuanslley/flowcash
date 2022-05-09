@@ -1,20 +1,27 @@
+import 'package:cas/components/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DayFlow extends StatefulWidget {
-  const DayFlow({Key? key}) : super(key: key);
+  Function selectedDate;
+  DateTime oldDate;
+  DayFlow(this.selectedDate, this.oldDate);
 
   @override
   State<DayFlow> createState() => _DayFlowState();
 }
 
 class _DayFlowState extends State<DayFlow> {
-  DateTime _selectDate = DateTime.now();
+  DateTime? _inputDate;
+
+  initState() {
+    _inputDate = widget.oldDate;
+  }
 
   _showDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: widget.oldDate,
       firstDate: DateTime(2021),
       lastDate: DateTime.now(),
       locale: const Locale('pt', 'BR'),
@@ -23,8 +30,9 @@ class _DayFlowState extends State<DayFlow> {
         return;
       }
       setState(() {
-        _selectDate = pickedDate;
+        _inputDate = pickedDate;
       });
+      widget.selectedDate(_inputDate);
     });
   }
 
@@ -39,14 +47,21 @@ class _DayFlowState extends State<DayFlow> {
       ),
       child: Padding(
         padding: EdgeInsetsDirectional.only(
-            start: sizeScreen * 0.035,
-            top: sizeScreen * 0.02,
+            start: sizeScreen * 0.018,
+            top: sizeScreen * 0.01,
             end: sizeScreen * 0.035),
         child: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                IconButton(
+                  icon: Icon(
+                    Icons.menu,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                  onPressed: () => Settings(),
+                ),
                 Text(
                   'Fluxo do dia:',
                   style: TextStyle(
@@ -66,7 +81,7 @@ class _DayFlowState extends State<DayFlow> {
                       onPressed: _showDatePicker,
                     ),
                     Text(
-                      DateFormat("dd/MM/yy", "pt_BR").format(_selectDate),
+                      DateFormat("dd/MM/yy", "pt_BR").format(_inputDate!),
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.secondary,
                         fontSize: sizeScreen * 0.035,

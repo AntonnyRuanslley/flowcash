@@ -1,63 +1,23 @@
-import 'package:cas/components/transaction_form.dart';
-import 'package:cas/data/dummy_transaction.dart';
+import 'package:cas/components/user_edit.dart';
 import 'package:cas/data/urls.dart';
 
-///import 'package:cas/models/transaction.dart';
-import 'package:cas/views/home.dart';
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-class InformationTransaction extends StatefulWidget {
-  final transaction;
-  final category;
-  final Function(String) onRemove;
+class UserInformation extends StatefulWidget {
+  final user;
 
-  InformationTransaction(this.transaction, this.category, this.onRemove);
+  UserInformation(this.user);
 
   @override
-  State<InformationTransaction> createState() => _InformationTransactionState();
+  State<UserInformation> createState() => _UserInformationState();
 }
 
-class _InformationTransactionState extends State<InformationTransaction> {
-  _openAlert(context, id) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Deseja realmente excluir?'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: const [
-                Text('A transação será excluída permanentemente!'),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-                child: const Text('Cancelar'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                }),
-            TextButton(
-              child: const Text('Excluir'),
-              onPressed: () async {
-                deleteTransanction(id);
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> deleteTransanction(id) async {
+class _UserInformationState extends State<UserInformation> {
+  Future<void> _deleteUser() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse("${urls['transactions']!}/$id");
+    var url = Uri.parse("${urls['users']!}/${widget.user['id']}");
     var answer = await http.delete(
       url,
       headers: {
@@ -71,40 +31,43 @@ class _InformationTransactionState extends State<InformationTransaction> {
     }
   }
 
-  _editTrasanction(String id, String editDescription, String editCategory,
-      double editValue, int editType, DateTime editDate) {
-    for (var tr in DUMMY_TRANSACTION) {
-      if (tr.id == id) {
-        setState(() {
-          tr.description = editDescription;
-          tr.category = editCategory;
-          tr.value = editValue;
-          tr.type = editType;
-          tr.status = 1;
-          tr.date = editDate;
-        });
-
-        /*Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  InformationTransaction(widget.transaction, widget.onRemove)),
-        ).then((_) => setState(() {}));*/
-
-        //widget.onRefresh;
-        Navigator.of(context)
-            .push(new MaterialPageRoute(builder: (BuildContext context) {
-          return new Home();
-        }));
-      }
-    }
+  _openAlert(context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Deseja realmente excluir?'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const [
+                Text('O usuário será excluido permanentemente!'),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+                child: const Text('Cancelar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }),
+            TextButton(
+              child: const Text('Excluir'),
+              onPressed: () {
+                _deleteUser();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   _openForm(context) {
     showDialog(
         context: context,
         builder: (context) {
-          return TransactionForm(false, widget.transaction, widget.category);
+          return UserEdit(widget.user);
         });
   }
 
@@ -152,25 +115,12 @@ class _InformationTransactionState extends State<InformationTransaction> {
         ),
       ),
       content: SizedBox(
-        height: sizeSreen * 0.9,
-        width: sizeSreen * 1,
+        height: sizeSreen * 0.3,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _information("Descrição", widget.transaction['description']),
-            _information("Categoria", widget.category.toString()),
-            _information("Tipo",
-                widget.transaction['type'] == 1 ? "Receita" : "Despesa"),
-            _information(
-                "Valor",
-                NumberFormat('R\$ #.00', 'pt-BR')
-                    .format(widget.transaction['value'])),
-            _information(
-                "Data da transação",
-                DateFormat('dd/MM/yy', 'pt-BR')
-                    .format(DateTime.parse(widget.transaction['date']))),
-            _information("Status",
-                widget.transaction['status'] == 1 ? "Pendente" : "Aprovado"),
+            _information("Nome", widget.user['name']),
+            _information("E-mail", widget.user['email'].toString()),
           ],
         ),
       ),
@@ -193,8 +143,7 @@ class _InformationTransactionState extends State<InformationTransaction> {
                         fontSize: sizeSreen * 0.051,
                         fontWeight: FontWeight.bold),
                   ),
-                  onPressed: () =>
-                      _openAlert(context, widget.transaction['id']),
+                  onPressed: () => _openAlert(context),
                 ),
                 SizedBox(width: sizeSreen * 0.03),
                 TextButton(

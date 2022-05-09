@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:async';
 
+import 'package:cas/components/user_add.dart';
 import 'package:cas/data/urls.dart';
-import 'package:cas/data/users.dart';
 
 import '../components/user_file.dart';
 
@@ -19,9 +19,9 @@ class UsersList extends StatefulWidget {
 
 class _UsersListState extends State<UsersList> {
   List _users = [];
-  Timer? timer;
+  Future<String>? getUser;
 
-  Future<void> getUsers() async {
+  Future<String> _getUsers() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var url = Uri.parse(urls['users']!);
     var answer = await http.get(
@@ -34,24 +34,22 @@ class _UsersListState extends State<UsersList> {
       setState(() {
         _users = jsonDecode(answer.body)['data'];
       });
+      return "Sucesso";
     } else {
-      return;
+      return "Erro";
     }
   }
 
-  @override
   void initState() {
-    super.initState;
-    getUsers();
-    /*timer = Timer(
-      const Duration(seconds: 3),
-      () {
-        Center(
-            child: CircularProgressIndicator(
-          color: Theme.of(context).colorScheme.primary,
-        ));
-      },
-    );*/
+    getUser = _getUsers();
+  }
+
+  _userAdd() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return UserAdd();
+        });
   }
 
   @override
@@ -66,37 +64,63 @@ class _UsersListState extends State<UsersList> {
             color: Theme.of(context).colorScheme.secondary,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () => _userAdd(),
+          )
+        ],
       ),
-      body: _users.isEmpty
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: sizeScreen * 0.01),
-                    child: Container(
-                        height: sizeScreen * 0.2,
-                        child: Icon(
-                          Icons.group_off_rounded,
-                          size: sizeScreen * 0.2,
-                        )),
-                  ),
-                  Container(
-                    child: Text(
-                      'Sem usuários!',
-                      style: TextStyle(
-                        fontSize: sizeScreen * 0.055,
-                        color: Colors.black,
-                      ),
-                    ),
-                  )
-                ],
+      body: FutureBuilder<String>(
+        future: getUser,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(
+                  color: Theme.of(context).colorScheme.primary),
+            );
+          }
+          if (snapshot.hasError) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: Text('Erro: ${snapshot.error}'),
               ),
-            )
-          : ListView.builder(
-              itemCount: _users.length,
-              itemBuilder: (ctx, i) => UserFiles(_users.elementAt(i)),
-            ),
+            );
+          }
+          return _users.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: sizeScreen * 0.01),
+                        child: Container(
+                            height: sizeScreen * 0.2,
+                            child: Icon(
+                              Icons.group_off_rounded,
+                              size: sizeScreen * 0.2,
+                            )),
+                      ),
+                      Container(
+                        child: Text(
+                          'Sem usuários!',
+                          style: TextStyle(
+                            fontSize: sizeScreen * 0.055,
+                            color: Colors.black,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: _users.length,
+                  itemBuilder: (ctx, i) => UserFiles(_users.elementAt(i)),
+                );
+        },
+      ),
     );
   }
 }

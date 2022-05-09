@@ -156,29 +156,29 @@ class _TransactionFormState extends State<TransactionForm> {
 
   @override
   Widget build(BuildContext context) {
-    final sizeSreen = MediaQuery.of(context).size.width;
+    final sizeScreen = MediaQuery.of(context).size.width;
 
     _decoration(String label) {
       return InputDecoration(
         hintText: label,
         hintStyle: TextStyle(
-          fontSize: sizeSreen * 0.05,
+          fontSize: sizeScreen * 0.05,
           color: Colors.white54,
         ),
         contentPadding: EdgeInsets.only(
-            left: sizeSreen * 0.05,
-            top: sizeSreen * 0.041,
-            bottom: sizeSreen * 0.041,
-            right: sizeSreen * 0.05),
+            left: sizeScreen * 0.05,
+            top: sizeScreen * 0.041,
+            bottom: sizeScreen * 0.041,
+            right: sizeScreen * 0.05),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(sizeSreen * 0.04),
+          borderRadius: BorderRadius.circular(sizeScreen * 0.04),
           borderSide: BorderSide(
             color: Colors.white,
             width: 2.0,
           ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(sizeSreen * 0.04),
+          borderRadius: BorderRadius.circular(sizeScreen * 0.04),
           borderSide: BorderSide(
             color: Colors.white,
             width: 2.0,
@@ -202,9 +202,9 @@ class _TransactionFormState extends State<TransactionForm> {
       ),
       content: SingleChildScrollView(
         child: SizedBox(
-          height: sizeSreen * 1.2,
+          height: sizeScreen * 1.2,
           child: Padding(
-            padding: EdgeInsets.all(sizeSreen * 0.01),
+            padding: EdgeInsets.all(sizeScreen * 0.01),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -224,7 +224,7 @@ class _TransactionFormState extends State<TransactionForm> {
                       icon: Icon(
                         Icons.add_circle_outline_outlined,
                         color: Theme.of(context).colorScheme.secondary,
-                        size: sizeSreen * 0.075,
+                        size: sizeScreen * 0.075,
                       ),
                       onPressed: () => _openCategoryFormModal(context),
                     ),
@@ -240,12 +240,12 @@ class _TransactionFormState extends State<TransactionForm> {
                     Text(
                       "  R\$  ",
                       style: TextStyle(
-                          color: Colors.white, fontSize: sizeSreen * 0.06),
+                          color: Colors.white, fontSize: sizeScreen * 0.06),
                     ),
                     Flexible(
                       child: TextField(
                         style: TextStyle(
-                            fontSize: sizeSreen * 0.05,
+                            fontSize: sizeScreen * 0.05,
                             color: Theme.of(context).colorScheme.secondary),
                         keyboardType:
                             TextInputType.numberWithOptions(decimal: true),
@@ -260,7 +260,7 @@ class _TransactionFormState extends State<TransactionForm> {
                   ],
                 ),
                 SizedBox(
-                  height: sizeSreen * 0.28,
+                  height: sizeScreen * 0.28,
                   child: widget.isAdd
                       ? TypeFile(_addType, widget.isAdd)
                       : TypeFile(
@@ -273,12 +273,12 @@ class _TransactionFormState extends State<TransactionForm> {
                       icon: Icon(
                         Icons.date_range_outlined,
                         color: Theme.of(context).colorScheme.secondary,
-                        size: sizeSreen * 0.082,
+                        size: sizeScreen * 0.082,
                       ),
                       onPressed: _showDatePicker,
                     ),
                     Container(
-                      width: sizeSreen * 0.45,
+                      width: sizeScreen * 0.45,
                       child: Text(
                         'Data selecionada: ${DateFormat('dd/MM/y', "pt_BR").format(widget.isAdd ? _selectDate : DateTime.parse(widget.transaction['date']))}',
                         style: TextStyle(
@@ -291,8 +291,8 @@ class _TransactionFormState extends State<TransactionForm> {
                   ],
                 ),
                 Container(
-                  width: sizeSreen * 1,
-                  padding: EdgeInsets.all(sizeSreen * 0.005),
+                  width: sizeScreen * 1,
+                  padding: EdgeInsets.all(sizeScreen * 0.005),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -301,19 +301,19 @@ class _TransactionFormState extends State<TransactionForm> {
                             'Cancelar',
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.secondary,
-                                fontSize: sizeSreen * 0.047,
+                                fontSize: sizeScreen * 0.047,
                                 fontWeight: FontWeight.bold),
                           ),
                           onPressed: () {
                             Navigator.of(context).pop();
                           }),
-                      SizedBox(width: sizeSreen * 0.03),
+                      SizedBox(width: sizeScreen * 0.03),
                       TextButton(
                           child: Text(
                             widget.isAdd ? 'Adicionar' : 'Salvar',
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.primary,
-                                fontSize: sizeSreen * 0.047,
+                                fontSize: sizeScreen * 0.047,
                                 fontWeight: FontWeight.bold),
                           ),
                           style: TextButton.styleFrom(
