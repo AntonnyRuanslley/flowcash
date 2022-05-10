@@ -1,10 +1,11 @@
 import 'dart:convert';
+import 'package:cas/data/transactions.dart';
 
-import '../components/transaction_form.dart';
+import 'package:cas/components/transaction_widgets/transaction_add.dart';
 import '../components/status.dart';
 import '../components/table_values.dart';
 import '../components/day_flow.dart';
-import '../components/transactions_file.dart';
+import 'package:cas/components/transaction_widgets/transactions_file.dart';
 import '../components/settings.dart';
 import 'package:cas/data/urls.dart';
 
@@ -21,13 +22,13 @@ class TransactionsList extends StatefulWidget {
 }
 
 class _TransactionsListState extends State<TransactionsList> {
-  DateTime _selectDate = DateTime.now();
-  List _transactions = [];
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   Future<String>? getTransaction;
 
   Future<String> _getTransanctions() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse("${urls['transactions']!}?date=${_selectDate}");
+    var url = Uri.parse(
+        "${urls['transactions']!}?date=${DateFormat('yyy-MM-dd', 'pt-BR').format(selectDate)}");
     var answer = await http.get(
       url,
       headers: {
@@ -35,39 +36,13 @@ class _TransactionsListState extends State<TransactionsList> {
       },
     );
     if (answer.statusCode == 200) {
-      print(answer.statusCode);
       setState(() {
-        _transactions = jsonDecode(answer.body)['data'];
+        transactions = jsonDecode(answer.body)['data'];
       });
-      return "Sucesso";
+      return "Success";
     } else {
-      print(answer.statusCode);
-      return "Erro";
+      throw Exception(answer.statusCode);
     }
-  }
-
-  _refresh(String id) {
-    setState(() {});
-  }
-
-  initState() {
-    getTransaction = _getTransanctions();
-    super.initState();
-  }
-
-  _selectedDate(_newDate) {
-    setState(() {
-      _selectDate = _newDate;
-      getTransaction = _getTransanctions();
-    });
-  }
-
-  _openForm() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return TransactionForm(true);
-        });
   }
 
   @override
@@ -75,6 +50,7 @@ class _TransactionsListState extends State<TransactionsList> {
     final sizeScreen = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: SafeArea(
         child: Container(
@@ -85,11 +61,11 @@ class _TransactionsListState extends State<TransactionsList> {
             children: [
               Stack(
                 children: [
-                  DayFlow(_selectedDate, _selectDate),
-                  TableValues(_transactions),
+                  DayFlow(_selectedDate, selectDate, _onDrawer),
+                  TableValues(transactions),
                 ],
               ),
-              Status(_transactions),
+              Status(transactions),
               Expanded(
                 child: FutureBuilder<String>(
                   future: getTransaction,
@@ -108,7 +84,7 @@ class _TransactionsListState extends State<TransactionsList> {
                         ),
                       );
                     }
-                    return _transactions.isEmpty
+                    return transactions.isEmpty
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -137,10 +113,10 @@ class _TransactionsListState extends State<TransactionsList> {
                             ],
                           )
                         : ListView.builder(
-                            itemCount: _transactions.length,
+                            itemCount: transactions.length,
                             itemBuilder: (ctx, i) {
                               return TransactionsFile(
-                                  _transactions[i], _refresh);
+                                  transactions[i], _refresh);
                             },
                           );
                   },
@@ -162,5 +138,36 @@ class _TransactionsListState extends State<TransactionsList> {
           FloatingActionButtonLocation.miniCenterFloat,
       drawer: Settings(),
     );
+  }
+
+  @override
+  void initState() {
+    _refresh();
+    super.initState();
+  }
+
+  void _refresh() {
+    setState(() {
+      getTransaction = _getTransanctions();
+    });
+  }
+
+  _selectedDate(_newDate) {
+    setState(() {
+      selectDate = _newDate;
+    });
+    _refresh();
+  }
+
+  _onDrawer() {
+    _scaffoldKey.currentState!.openDrawer();
+  }
+
+  _openForm() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return TransactionAdd(_refresh);
+        });
   }
 }

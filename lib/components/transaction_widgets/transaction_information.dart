@@ -1,4 +1,4 @@
-import 'package:cas/components/transaction_form.dart';
+import 'package:cas/components/transaction_widgets/transaction_edit.dart';
 import 'package:cas/data/urls.dart';
 
 import 'package:flutter/material.dart';
@@ -67,27 +67,11 @@ class _TransactionInformationState extends State<TransactionInformation> {
     }
   }
 
-  /*_editTrasanction(String id, String editDescription, String editCategory,
-      double editValue, int editType, DateTime editDate) {
-    Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  InformationTransaction(widget.transaction, widget.onRemove)),
-        ).then((_) => setState(() {}));*/
-
-  //widget.onRefresh;
-  /*Navigator.of(context)
-            .push(new MaterialPageRoute(builder: (BuildContext context) {
-          return new Home();
-        }));
-  }*/
-
   _openForm(context) {
     showDialog(
         context: context,
         builder: (context) {
-          return TransactionForm(false, widget.transaction, widget.category);
+          return TransactionEdit(widget.transaction, widget.category);
         });
   }
 

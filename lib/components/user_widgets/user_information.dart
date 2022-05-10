@@ -1,4 +1,4 @@
-import 'package:cas/components/user_edit.dart';
+import 'package:cas/components/user_widgets/user_edit.dart';
 import 'package:cas/data/urls.dart';
 
 import 'package:flutter/material.dart';

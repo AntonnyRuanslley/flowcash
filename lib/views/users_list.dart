@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:async';
 
-import 'package:cas/components/user_add.dart';
+import 'package:cas/components/user_widgets/user_add.dart';
 import 'package:cas/data/urls.dart';
 
-import '../components/user_file.dart';
+import '../components/user_widgets/users_file.dart';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,37 +20,6 @@ class UsersList extends StatefulWidget {
 class _UsersListState extends State<UsersList> {
   List _users = [];
   Future<String>? getUser;
-
-  Future<String> _getUsers() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse(urls['users']!);
-    var answer = await http.get(
-      url,
-      headers: {
-        "Authorization": "Bearer ${sharedPreferences.getString('token')}",
-      },
-    );
-    if (answer.statusCode == 200) {
-      setState(() {
-        _users = jsonDecode(answer.body)['data'];
-      });
-      return "Sucesso";
-    } else {
-      return "Erro";
-    }
-  }
-
-  void initState() {
-    getUser = _getUsers();
-  }
-
-  _userAdd() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return UserAdd();
-        });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -117,10 +86,41 @@ class _UsersListState extends State<UsersList> {
                 )
               : ListView.builder(
                   itemCount: _users.length,
-                  itemBuilder: (ctx, i) => UserFiles(_users.elementAt(i)),
+                  itemBuilder: (ctx, i) => UsersFile(_users.elementAt(i)),
                 );
         },
       ),
     );
+  }
+
+  Future<String> _getUsers() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var url = Uri.parse(urls['users']!);
+    var answer = await http.get(
+      url,
+      headers: {
+        "Authorization": "Bearer ${sharedPreferences.getString('token')}",
+      },
+    );
+    if (answer.statusCode == 200) {
+      setState(() {
+        _users = jsonDecode(answer.body)['data'];
+      });
+      return "Sucesso";
+    } else {
+      return "Erro";
+    }
+  }
+
+  void initState() {
+    getUser = _getUsers();
+  }
+
+  _userAdd() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return UserAdd();
+        });
   }
 }

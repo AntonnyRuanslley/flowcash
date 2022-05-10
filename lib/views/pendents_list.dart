@@ -1,10 +1,11 @@
-import '../models/transaction.dart';
+import '../data/transactions.dart';
+import '../data/urls.dart';
 
-import '../data/dummy_transaction.dart';
-
-import '../components/transactions_file.dart';
+import '../components/transaction_widgets/transactions_file.dart';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class PendentsList extends StatefulWidget {
   const PendentsList({Key? key}) : super(key: key);
@@ -14,31 +15,50 @@ class PendentsList extends StatefulWidget {
 }
 
 class _PendentsListState extends State<PendentsList> {
+  List _pendents = transactions;
+
+  @override
+  void initState() {
+    super.initState();
+    _pendents.removeWhere((tr) => tr['status'] == 2);
+  }
+
+  Future<void> _putTransaction(transaction) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var url = Uri.parse("${urls['transactions']!}/${transaction['id']}");
+    var answer = await http.put(
+      url,
+      headers: {
+        "Authorization": "Bearer ${sharedPreferences.getString('token')}",
+      },
+      body: {
+        "description": transaction['description'],
+        "category_id": transaction['category_id'].toString(),
+        "value": transaction['value'].toString(),
+        "type": transaction['type'].toString(),
+        "status": 2.toString(),
+        "date": transaction['date'].toString(),
+        "user_id": transaction['user_id'].toString(),
+      },
+    );
+    if (answer.statusCode == 200) {
+      print(answer.statusCode);
+      print("Sucesso");
+    } else {
+      print(answer.statusCode);
+      print("Erro");
+    }
+  }
+
+  _toApprove() {
+    for (int i = 0; i < _pendents.length; i++) {
+      _putTransaction(_pendents[i]);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<Transaction> _transactions = [...DUMMY_TRANSACTION];
     var width = MediaQuery.of(context).size.height;
-
-    _removeTransaction(String id) {
-      setState(() {
-        DUMMY_TRANSACTION.removeWhere((tr) => tr.id == id);
-      });
-    }
-
-    _pendentsList() {
-      _transactions.removeWhere((tr) => tr.status == 2);
-      return _transactions;
-    }
-
-    final List<Transaction> _pendents = _pendentsList();
-
-    _toApprove() {
-      setState(() {
-        for (int i = 0; i < _transactions.length; i++) {
-          _transactions[i].status = 2;
-        }
-      });
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -80,8 +100,7 @@ class _PendentsListState extends State<PendentsList> {
             )
           : ListView.builder(
               itemCount: _pendents.length,
-              itemBuilder: (ctx, i) =>
-                  TransactionsFile(_pendents.elementAt(i), _removeTransaction),
+              itemBuilder: (ctx, i) => TransactionsFile(_pendents.elementAt(i)),
             ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).colorScheme.primary,

@@ -1,20 +1,17 @@
-import 'package:cas/components/user_information.dart';
-import 'package:cas/data/urls.dart';
+import 'package:cas/components/user_widgets/user_information.dart';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
-class UserFiles extends StatefulWidget {
+class UsersFile extends StatefulWidget {
   final user;
 
-  UserFiles(this.user);
+  UsersFile(this.user);
 
   @override
-  State<UserFiles> createState() => _UserFilesState();
+  State<UsersFile> createState() => _UsersFileState();
 }
 
-class _UserFilesState extends State<UserFiles> {
+class _UsersFileState extends State<UsersFile> {
   _openInformation() {
     setState(() {
       showDialog(

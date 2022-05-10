@@ -1,11 +1,12 @@
-import 'package:cas/components/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DayFlow extends StatefulWidget {
-  Function selectedDate;
-  DateTime oldDate;
-  DayFlow(this.selectedDate, this.oldDate);
+  final Function selectedDate;
+  final DateTime oldDate;
+  final Function _onDrawer;
+
+  DayFlow(this.selectedDate, this.oldDate, this._onDrawer);
 
   @override
   State<DayFlow> createState() => _DayFlowState();
@@ -47,28 +48,31 @@ class _DayFlowState extends State<DayFlow> {
       ),
       child: Padding(
         padding: EdgeInsetsDirectional.only(
-            start: sizeScreen * 0.018,
-            top: sizeScreen * 0.01,
-            end: sizeScreen * 0.035),
+            top: sizeScreen * 0.01, end: sizeScreen * 0.025),
         child: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.menu,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                  onPressed: () => Settings(),
-                ),
-                Text(
-                  'Fluxo do dia:',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
-                    fontSize: sizeScreen * 0.042,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                  children: [
+                    IconButton(
+                        icon: Icon(
+                          Icons.menu,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        onPressed: () {
+                          widget._onDrawer();
+                        }),
+                    Text(
+                      'Fluxo do dia:',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontSize: sizeScreen * 0.042,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
                 Row(
                   children: [

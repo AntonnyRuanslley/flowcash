@@ -1,54 +1,21 @@
-import 'package:cas/components/category_form.dart';
-import 'package:cas/components/categorys_list.dart';
+import 'package:cas/components/category_widgets/category_form.dart';
+import 'package:cas/components/category_widgets/categories_list.dart';
+import 'package:cas/data/users.dart';
 import 'package:cas/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Settings extends StatelessWidget {
+class Settings extends StatefulWidget {
+  @override
+  State<Settings> createState() => _SettingsState();
+}
+
+class _SettingsState extends State<Settings> {
   Future<bool> _logoff() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.clear();
     return true;
   }
-
-  Future<bool> _deleteCategory() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.clear();
-    return true;
-  }
-
-  /*_openAlert(context, id) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Deseja realmente excluir?'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: const [
-                Text('A transação será excluída permanentemente!'),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-                child: const Text('Cancelar'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                }),
-            TextButton(
-              child: const Text('Excluir'),
-              onPressed: () async {
-                _deleteCategory(id);
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }*/
 
   _openFormModal(context, widget) {
     showDialog(
@@ -89,10 +56,11 @@ class Settings extends StatelessWidget {
                 child: Column(
                   children: [
                     CircleAvatar(
+                      radius: sizeScreen * 0.045,
                       backgroundColor: Theme.of(context).colorScheme.secondary,
                       child: Icon(
                         Icons.person,
-                        size: sizeScreen * 0.05,
+                        size: sizeScreen * 0.058,
                         color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
@@ -100,7 +68,7 @@ class Settings extends StatelessWidget {
                       height: sizeScreen * 0.01,
                     ),
                     Text(
-                      'Usuário',
+                      user,
                       style: TextStyle(
                           color: Theme.of(context).colorScheme.secondary,
                           fontSize: sizeScreen * 0.026),
@@ -122,9 +90,9 @@ class Settings extends StatelessWidget {
               _itemsDrawer(Icons.add, 'Adicionar categoria',
                   () => _openFormModal(context, CategoryForm())),
               _itemsDrawer(Icons.edit, 'Editar categoria',
-                  () => _openFormModal(context, CategorysList())),
+                  () => _openFormModal(context, CategoriesList(0))),
               _itemsDrawer(Icons.delete, 'Excluir categoria',
-                  () => _openFormModal(context, CategorysList())),
+                  () => _openFormModal(context, CategoriesList(1))),
               Divider(
                 height: 1,
                 thickness: 1,

@@ -1,20 +1,23 @@
 import 'dart:convert';
 
-import '../components/transactions_file.dart';
+import 'package:cas/components/category_widgets/category_edit.dart';
+import 'package:cas/components/category_widgets/category_form.dart';
 import 'package:cas/data/urls.dart';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-class CategorysList extends StatefulWidget {
-  const CategorysList({Key? key}) : super(key: key);
+class CategoriesList extends StatefulWidget {
+  final int who;
+
+  CategoriesList(this.who);
 
   @override
-  State<CategorysList> createState() => _CategorysListState();
+  State<CategoriesList> createState() => _CategoriesListState();
 }
 
-class _CategorysListState extends State<CategorysList> {
+class _CategoriesListState extends State<CategoriesList> {
   List _categories = [];
   Future<String>? getCategories;
 
@@ -39,8 +42,64 @@ class _CategorysListState extends State<CategorysList> {
     }
   }
 
+  Future<void> _deleteCategory(id) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var url = Uri.parse("${urls['categories']!}/${id}");
+    var answer = await http.delete(
+      url,
+      headers: {
+        "Authorization": "Bearer ${sharedPreferences.getString('token')}",
+      },
+    );
+    if (answer.statusCode == 204) {
+      print("excluiu");
+      Navigator.of(context).pop();
+    } else {
+      print("deu merda");
+    }
+  }
+
+  _openAlert(context, id) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Deseja realmente excluir?'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const [
+                Text('A categoria será excluida permanentemente!'),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+                child: const Text('Cancelar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }),
+            TextButton(
+              child: const Text('Excluir'),
+              onPressed: () {
+                _deleteCategory(id);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   _refresh() {
     setState(() {});
+  }
+
+  _openForm(context, category) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return CategoryEdit(category);
+        });
   }
 
   initState() {
@@ -74,7 +133,7 @@ class _CategorysListState extends State<CategorysList> {
               if (!snapshot.hasData) {
                 return Center(
                   child: CircularProgressIndicator(
-                      color: Theme.of(context).colorScheme.primary),
+                      color: Theme.of(context).colorScheme.secondary),
                 );
               }
               if (snapshot.hasError) {
@@ -117,7 +176,11 @@ class _CategorysListState extends State<CategorysList> {
                       itemCount: _categories.length,
                       itemBuilder: (ctx, i) {
                         return TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            widget.who == 0
+                                ? _openForm(context, _categories[i])
+                                : _openAlert(context, _categories[i]['id']);
+                          },
                           child: Text(
                             _categories[i]['name'],
                             style: TextStyle(

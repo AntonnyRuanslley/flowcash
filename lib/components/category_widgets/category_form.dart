@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class CategoryForm extends StatefulWidget {
+
+
   @override
   State<CategoryForm> createState() => _CategoryFormState();
 }
@@ -38,6 +40,7 @@ class _CategoryFormState extends State<CategoryForm> {
         return;
       }
     }
+
 
     return AlertDialog(
       title: Text("Nova categoria"),

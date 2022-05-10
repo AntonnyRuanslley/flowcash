@@ -1,3 +1,5 @@
+import 'package:cas/data/categories.dart';
+
 import 'transaction_information.dart';
 
 //import '../models/transaction.dart';
@@ -13,17 +15,15 @@ import 'dart:convert';
 
 class TransactionsFile extends StatefulWidget {
   final transaction;
-  final Function onRemove;
+  final Function? onRemove;
 
-  TransactionsFile(this.transaction, this.onRemove);
+  TransactionsFile(this.transaction, [this.onRemove]);
 
   @override
   State<TransactionsFile> createState() => _TransactionsFileState();
 }
 
 class _TransactionsFileState extends State<TransactionsFile> {
-  List categories = [];
-
   Future<void> getCategory() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var url = Uri.parse(urls['categories']!);
@@ -68,7 +68,7 @@ class _TransactionsFileState extends State<TransactionsFile> {
     }
 
     _passMainRemove(String id) {
-      widget.onRemove(id);
+      widget.onRemove!(id);
     }
 
     _openInformation(category) {

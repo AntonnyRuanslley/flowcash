@@ -1,8 +1,15 @@
+import 'dart:convert';
+
+import 'package:cas/data/categories.dart';
+import 'package:cas/data/urls.dart';
+import 'package:cas/data/users.dart';
 import 'package:cas/views/transactions_list.dart';
 import 'package:cas/views/users_list.dart';
 import 'package:cas/views/pendents_list.dart';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -14,7 +21,46 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _actualView = 1;
 
-  void _onBottom(int index) {
+  Future<void> _getCategory() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var url = Uri.parse(urls['categories']!);
+    var answer = await http.get(
+      url,
+      headers: {
+        "Authorization": "Bearer ${sharedPreferences.getString('token')}",
+      },
+    );
+    if (answer.statusCode == 200) {
+      setState(() {
+        categories = jsonDecode(answer.body)['data'];
+      });
+    } else {
+      return;
+    }
+  }
+
+  Future<void> _getUser() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var url = Uri.parse(urls['user_logged']!);
+    var answer = await http.get(url, headers: {
+      "Authorization": "Bearer ${sharedPreferences.getString('token')}",
+    });
+    if (answer.statusCode == 200) {
+      setState(() {
+        user = jsonDecode(answer.body)['name'].toString();
+      });
+    } else {
+      return;
+    }
+  }
+
+  void initState() {
+    _getCategory();
+    _getUser();
+    super.initState();
+  }
+
+  _onBottom(int index) {
     setState(() {
       _actualView = index;
     });

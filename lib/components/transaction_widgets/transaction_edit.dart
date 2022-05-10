@@ -1,86 +1,47 @@
 import 'dart:convert';
 
-import 'package:cas/components/categorys_file.dart';
+import 'package:cas/components/category_widgets/categorys_file.dart';
 import 'package:cas/components/type_file.dart';
 import 'package:cas/data/urls.dart';
 
-import '../components/category_form.dart';
+import 'package:cas/components/category_widgets/category_form.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class TransactionForm extends StatefulWidget {
-  final bool isAdd;
-
+class TransactionEdit extends StatefulWidget {
   final transaction;
   final category;
 
-  TransactionForm(this.isAdd, [this.transaction, this.category]);
+  TransactionEdit(this.transaction, this.category);
   @override
-  State<TransactionForm> createState() => _TransactionFormState();
+  State<TransactionEdit> createState() => _TransactionEditState();
 }
 
-class _TransactionFormState extends State<TransactionForm> {
-  final _inputDescription = TextEditingController();
-  final _inputValeu = TextEditingController();
+class _TransactionEditState extends State<TransactionEdit> {
+  TextEditingController? _inputDescription = TextEditingController();
+  TextEditingController? _inputValeu = TextEditingController();
   int? _inputCategory;
   int? _inputType;
   DateTime _selectDate = DateTime.now();
 
-  Future<void> postTransaction() async {
-    var description = _inputDescription.text;
-    var category = _inputCategory!;
-    var value = double.tryParse(_inputValeu.text) ?? 0.0;
-    var type = _inputType ?? 1;
-    if (description.isEmpty || category == null || value <= 0) {
-      return;
-    }
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse(urls['user_logged']!);
-    var answer = await http.get(url, headers: {
-      "Authorization": "Bearer ${sharedPreferences.getString('token')}",
-    });
-    if (answer.statusCode == 200) {
-      String user_id = jsonDecode(answer.body)['id'].toString();
-      url = Uri.parse(urls['transactions']!);
-      answer = await http.post(
-        url,
-        body: {
-          "description": description,
-          "category_id": category.toString(),
-          "value": value.toString(),
-          "type": type.toString(),
-          "status": 1.toString(),
-          "date": _selectDate.toString(),
-          "user_id": user_id,
-        },
-        headers: {
-          "Authorization": "Bearer ${sharedPreferences.getString('token')}",
-        },
-      );
-      if (answer.statusCode == 201) {
-        print("blz1");
-        Navigator.of(context).pop();
-      } else {
-        return;
-      }
-    } else {
-      print(answer.statusCode);
-      return;
-    }
+  void initState() {
+    _inputDescription!.text = widget.transaction['description'];
+    _inputCategory = widget.transaction['category_id'];
+    _inputValeu!.text =
+        NumberFormat('#.00').format(widget.transaction['value']!);
+    _inputType = widget.transaction['type'];
+    _selectDate = DateTime.parse(widget.transaction['date']);
   }
 
   Future<void> putTransaction() async {
-    var description = _inputDescription.text.isEmpty
-        ? widget.transaction['description']
-        : _inputDescription.text;
-    var category = _inputCategory ?? widget.transaction['category_id'];
-    var value = _inputValeu.text.isEmpty
-        ? widget.transaction['value']
-        : double.tryParse(_inputValeu.text) ?? 0.0;
-    var type = _inputType ?? widget.transaction['type'];
+    var description = _inputDescription!.text;
+    var category = _inputCategory!;
+    var value = double.tryParse(_inputValeu!.text) ?? 0.0;
+    var type = _inputType ?? 1;
+    print(_inputValeu);
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var url = Uri.parse(urls['user_logged']!);
     var answer = await http.get(url, headers: {
@@ -89,7 +50,7 @@ class _TransactionFormState extends State<TransactionForm> {
     if (answer.statusCode == 200) {
       String user_id = jsonDecode(answer.body)['id'].toString();
       url = Uri.parse("${urls['transactions']!}/${widget.transaction['id']}");
-      answer = await http.patch(
+      answer = await http.put(
         url,
         body: {
           "description": description,
@@ -118,9 +79,7 @@ class _TransactionFormState extends State<TransactionForm> {
   _showDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: widget.isAdd
-          ? _selectDate
-          : DateTime.parse(widget.transaction['date']!),
+      initialDate: DateTime.parse(widget.transaction['date']!),
       firstDate: DateTime(2019),
       lastDate: DateTime.now(),
       locale: const Locale('pt', 'BR'),
@@ -158,9 +117,8 @@ class _TransactionFormState extends State<TransactionForm> {
   Widget build(BuildContext context) {
     final sizeScreen = MediaQuery.of(context).size.width;
 
-    _decoration(String label) {
+    _decoration() {
       return InputDecoration(
-        hintText: label,
         hintStyle: TextStyle(
           fontSize: sizeScreen * 0.05,
           color: Colors.white54,
@@ -193,7 +151,7 @@ class _TransactionFormState extends State<TransactionForm> {
         borderRadius: BorderRadius.circular(20),
       ),
       title: Text(
-        widget.isAdd ? "Nova transação" : "Edição de transação",
+        "Edição de transação",
         textAlign: TextAlign.center,
         style: TextStyle(
           fontWeight: FontWeight.bold,
@@ -213,9 +171,7 @@ class _TransactionFormState extends State<TransactionForm> {
                   cursorColor: Theme.of(context).colorScheme.secondary,
                   style:
                       TextStyle(color: Theme.of(context).colorScheme.secondary),
-                  decoration: widget.isAdd
-                      ? _decoration("Descrição")
-                      : _decoration(widget.transaction['description']!),
+                  decoration: _decoration(),
                   controller: _inputDescription,
                 ),
                 Row(
@@ -229,9 +185,8 @@ class _TransactionFormState extends State<TransactionForm> {
                       onPressed: () => _openCategoryFormModal(context),
                     ),
                     Flexible(
-                      child: widget.isAdd
-                          ? CategorysFile(_addCategory, false)
-                          : CategorysFile(_addCategory, true, widget.category!),
+                      child:
+                          CategorysFile(_addCategory, true, widget.category!),
                     )
                   ],
                 ),
@@ -249,11 +204,8 @@ class _TransactionFormState extends State<TransactionForm> {
                             color: Theme.of(context).colorScheme.secondary),
                         keyboardType:
                             TextInputType.numberWithOptions(decimal: true),
+                        decoration: _decoration(),
                         maxLines: 1,
-                        decoration: _decoration(widget.isAdd
-                            ? "0,00"
-                            : NumberFormat('#.00', 'pt-BR')
-                                .format(widget.transaction['value']!)),
                         controller: _inputValeu,
                       ),
                     )
@@ -261,10 +213,7 @@ class _TransactionFormState extends State<TransactionForm> {
                 ),
                 SizedBox(
                   height: sizeScreen * 0.28,
-                  child: widget.isAdd
-                      ? TypeFile(_addType, widget.isAdd)
-                      : TypeFile(
-                          _addType, widget.isAdd, widget.transaction['type']!),
+                  child: TypeFile(_addType, false, widget.transaction['type']!),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -280,7 +229,7 @@ class _TransactionFormState extends State<TransactionForm> {
                     Container(
                       width: sizeScreen * 0.45,
                       child: Text(
-                        'Data selecionada: ${DateFormat('dd/MM/y', "pt_BR").format(widget.isAdd ? _selectDate : DateTime.parse(widget.transaction['date']))}',
+                        'Data selecionada: ${DateFormat('dd/MM/y', "pt_BR").format(_selectDate)}',
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
@@ -309,20 +258,19 @@ class _TransactionFormState extends State<TransactionForm> {
                           }),
                       SizedBox(width: sizeScreen * 0.03),
                       TextButton(
-                          child: Text(
-                            widget.isAdd ? 'Adicionar' : 'Salvar',
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary,
-                                fontSize: sizeScreen * 0.047,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          style: TextButton.styleFrom(
-                            backgroundColor:
-                                Theme.of(context).colorScheme.secondary,
-                          ),
-                          onPressed: () {
-                            widget.isAdd ? postTransaction() : putTransaction();
-                          }),
+                        child: Text(
+                          'Salvar',
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: sizeScreen * 0.047,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        style: TextButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.secondary,
+                        ),
+                        onPressed: () => putTransaction(),
+                      ),
                     ],
                   ),
                 ),
