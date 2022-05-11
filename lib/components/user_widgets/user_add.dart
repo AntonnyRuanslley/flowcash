@@ -54,29 +54,29 @@ class _UserAddState extends State<UserAdd> {
 
   @override
   Widget build(BuildContext context) {
-    final sizeSreen = MediaQuery.of(context).size.width;
+    final sizeScreen = MediaQuery.of(context).size.width;
 
     _decoration(String label) {
       return InputDecoration(
         hintText: label,
         hintStyle: TextStyle(
-          fontSize: sizeSreen * 0.05,
+          fontSize: sizeScreen * 0.05,
           color: Colors.white54,
         ),
         contentPadding: EdgeInsets.only(
-            left: sizeSreen * 0.05,
-            top: sizeSreen * 0.041,
-            bottom: sizeSreen * 0.041,
-            right: sizeSreen * 0.05),
+            left: sizeScreen * 0.05,
+            top: sizeScreen * 0.041,
+            bottom: sizeScreen * 0.041,
+            right: sizeScreen * 0.05),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(sizeSreen * 0.04),
+          borderRadius: BorderRadius.circular(sizeScreen * 0.04),
           borderSide: BorderSide(
             color: Colors.white,
             width: 2.0,
           ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(sizeSreen * 0.04),
+          borderRadius: BorderRadius.circular(sizeScreen * 0.04),
           borderSide: BorderSide(
             color: Colors.white,
             width: 2.0,
@@ -100,9 +100,9 @@ class _UserAddState extends State<UserAdd> {
       ),
       content: SingleChildScrollView(
         child: SizedBox(
-          height: sizeSreen * 0.7,
+          height: sizeScreen * 0.7,
           child: Padding(
-            padding: EdgeInsets.all(sizeSreen * 0.01),
+            padding: EdgeInsets.all(sizeScreen * 0.01),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -133,8 +133,8 @@ class _UserAddState extends State<UserAdd> {
                   obscureText: true,
                 ),
                 Container(
-                  width: sizeSreen * 1,
-                  padding: EdgeInsets.all(sizeSreen * 0.005),
+                  width: sizeScreen * 1,
+                  padding: EdgeInsets.all(sizeScreen * 0.005),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -143,19 +143,19 @@ class _UserAddState extends State<UserAdd> {
                             'Cancelar',
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.secondary,
-                                fontSize: sizeSreen * 0.047,
+                                fontSize: sizeScreen * 0.047,
                                 fontWeight: FontWeight.bold),
                           ),
                           onPressed: () {
                             Navigator.of(context).pop();
                           }),
-                      SizedBox(width: sizeSreen * 0.03),
+                      SizedBox(width: sizeScreen * 0.03),
                       TextButton(
                         child: Text(
                           'Salvar',
                           style: TextStyle(
                               color: Theme.of(context).colorScheme.primary,
-                              fontSize: sizeSreen * 0.047,
+                              fontSize: sizeScreen * 0.047,
                               fontWeight: FontWeight.bold),
                         ),
                         style: TextButton.styleFrom(

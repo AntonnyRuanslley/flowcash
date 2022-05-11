@@ -46,19 +46,19 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.height;
+    final sizeScreen = MediaQuery.of(context).size.height;
 
     _aligment() {
       return EdgeInsets.only(
-          left: (width * _heightTextFild0) * 0.55,
-          top: (width * _heightTextFild0) * 0.5,
-          bottom: (width * _heightTextFild0) * 0.27,
-          right: (width * _heightTextFild0) * 0.55);
+          left: (sizeScreen * _heightTextFild0) * 0.55,
+          top: (sizeScreen * _heightTextFild0) * 0.5,
+          bottom: (sizeScreen * _heightTextFild0) * 0.27,
+          right: (sizeScreen * _heightTextFild0) * 0.55);
     }
 
     _border() {
       return UnderlineInputBorder(
-          borderRadius: BorderRadius.circular(width * 0.7));
+          borderRadius: BorderRadius.circular(sizeScreen * 0.7));
     }
 
     _changeSize(int who, double size) {
@@ -90,13 +90,13 @@ class _LoginState extends State<Login> {
         key: _formkey,
         child: Center(
           child: SingleChildScrollView(
-            padding: EdgeInsets.all(width * 0.02),
+            padding: EdgeInsets.all(sizeScreen * 0.02),
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: width * 0.07),
+                  padding: EdgeInsets.symmetric(vertical: sizeScreen * 0.07),
                   child: SizedBox(
-                    height: width * 0.35,
+                    height: sizeScreen * 0.35,
                     child: Image(
                       image: AssetImage(
                         'assets/images/lucros.png',
@@ -106,12 +106,12 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 SizedBox(
-                  height: width * _heightContainer,
+                  height: sizeScreen * _heightContainer,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        height: width * _heightTextFild0,
+                        height: sizeScreen * _heightTextFild0,
                         child: TextFormField(
                           maxLines: 1,
                           controller: _inputEmail,
@@ -132,7 +132,7 @@ class _LoginState extends State<Login> {
                           decoration: InputDecoration(
                             hintText: 'Insira seu email',
                             hintStyle: TextStyle(
-                              fontSize: width * 0.03,
+                              fontSize: sizeScreen * 0.03,
                             ),
                             contentPadding: _aligment(),
                             enabledBorder: _border(),
@@ -145,7 +145,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       SizedBox(
-                        height: width * _heightTextFild1,
+                        height: sizeScreen * _heightTextFild1,
                         child: TextFormField(
                           maxLines: 1,
                           controller: _inputPassword,
@@ -161,7 +161,7 @@ class _LoginState extends State<Login> {
                           decoration: InputDecoration(
                             hintText: 'Insira sua senha',
                             hintStyle: TextStyle(
-                              fontSize: width * 0.03,
+                              fontSize: sizeScreen * 0.03,
                             ),
                             contentPadding: _aligment(),
                             enabledBorder: _border(),
@@ -171,7 +171,8 @@ class _LoginState extends State<Login> {
                             filled: true,
                             fillColor: Theme.of(context).colorScheme.secondary,
                             suffixIcon: Padding(
-                              padding: EdgeInsets.only(right: width * 0.015),
+                              padding:
+                                  EdgeInsets.only(right: sizeScreen * 0.015),
                               child: InkWell(
                                 onTap: () => setState(
                                   () =>
@@ -182,7 +183,7 @@ class _LoginState extends State<Login> {
                                       ? Icons.visibility_outlined
                                       : Icons.visibility_off_outlined,
                                   color: Theme.of(context).colorScheme.primary,
-                                  size: width * 0.036,
+                                  size: sizeScreen * 0.036,
                                 ),
                               ),
                             ),
@@ -196,7 +197,7 @@ class _LoginState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Transform.scale(
-                      scale: width * 0.0016,
+                      scale: sizeScreen * 0.0016,
                       child: Checkbox(
                         value: isChecked,
                         onChanged: (value) {
@@ -210,14 +211,14 @@ class _LoginState extends State<Login> {
                       'Salvar login?',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: width * 0.026,
+                        fontSize: sizeScreen * 0.026,
                       ),
                     ),
                   ],
                 ),
                 Container(
-                  height: width * 0.06,
-                  width: width * 1,
+                  height: sizeScreen * 0.06,
+                  width: sizeScreen * 1,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100),
                     color: Colors.green,
@@ -228,7 +229,7 @@ class _LoginState extends State<Login> {
                         child: TextButton(
                           child: Text('ENTRAR',
                               style: TextStyle(
-                                fontSize: width * 0.027,
+                                fontSize: sizeScreen * 0.027,
                                 color: Colors.white,
                               )),
                           onPressed: () async {

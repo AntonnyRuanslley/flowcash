@@ -58,7 +58,7 @@ class _PendentsListState extends State<PendentsList> {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.height;
+    var sizeScreen = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
@@ -75,9 +75,9 @@ class _PendentsListState extends State<PendentsList> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: width * 0.01),
+                    padding: EdgeInsets.symmetric(vertical: sizeScreen * 0.01),
                     child: Container(
-                      height: width * 0.28,
+                      height: sizeScreen * 0.28,
                       child: const Image(
                         image: AssetImage(
                           'assets/images/vazio.png',
@@ -90,7 +90,7 @@ class _PendentsListState extends State<PendentsList> {
                     child: Text(
                       'Sem pendencias!',
                       style: TextStyle(
-                        fontSize: width * 0.055,
+                        fontSize: sizeScreen * 0.055,
                         color: Colors.black,
                       ),
                     ),

@@ -90,10 +90,6 @@ class _CategoriesListState extends State<CategoriesList> {
     );
   }
 
-  _refresh() {
-    setState(() {});
-  }
-
   _openForm(context, category) {
     showDialog(
         context: context,
@@ -102,6 +98,7 @@ class _CategoriesListState extends State<CategoriesList> {
         });
   }
 
+  @override
   initState() {
     getCategories = _getCategories();
     super.initState();

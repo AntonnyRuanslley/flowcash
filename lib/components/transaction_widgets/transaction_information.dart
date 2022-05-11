@@ -77,18 +77,18 @@ class _TransactionInformationState extends State<TransactionInformation> {
 
   @override
   Widget build(BuildContext context) {
-    final sizeSreen = MediaQuery.of(context).size.width;
+    final sizeScreen = MediaQuery.of(context).size.width;
 
     _information(String title, content) {
       return Container(
-        height: sizeSreen * 0.15,
+        height: sizeScreen * 0.15,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               title,
               style: TextStyle(
-                fontSize: sizeSreen * 0.051,
+                fontSize: sizeScreen * 0.051,
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).colorScheme.secondary,
               ),
@@ -96,7 +96,7 @@ class _TransactionInformationState extends State<TransactionInformation> {
             Text(
               content,
               style: TextStyle(
-                fontSize: sizeSreen * 0.051,
+                fontSize: sizeScreen * 0.051,
                 color: Theme.of(context).colorScheme.secondary,
               ),
             ),
@@ -119,8 +119,8 @@ class _TransactionInformationState extends State<TransactionInformation> {
         ),
       ),
       content: SizedBox(
-        height: sizeSreen * 0.9,
-        width: sizeSreen * 1,
+        height: sizeScreen * 0.9,
+        width: sizeScreen * 1,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -144,11 +144,11 @@ class _TransactionInformationState extends State<TransactionInformation> {
       actions: [
         Padding(
           padding: EdgeInsets.only(
-              left: sizeSreen * 0.03,
-              right: sizeSreen * 0.03,
-              bottom: sizeSreen * 0.03),
+              left: sizeScreen * 0.03,
+              right: sizeScreen * 0.03,
+              bottom: sizeScreen * 0.03),
           child: SizedBox(
-            width: sizeSreen * 1,
+            width: sizeScreen * 1,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -157,19 +157,19 @@ class _TransactionInformationState extends State<TransactionInformation> {
                     'Excluir',
                     style: TextStyle(
                         color: Theme.of(context).colorScheme.secondary,
-                        fontSize: sizeSreen * 0.051,
+                        fontSize: sizeScreen * 0.051,
                         fontWeight: FontWeight.bold),
                   ),
                   onPressed: () =>
                       _openAlert(context, widget.transaction['id']),
                 ),
-                SizedBox(width: sizeSreen * 0.03),
+                SizedBox(width: sizeScreen * 0.03),
                 TextButton(
                   child: Text(
                     'Editar',
                     style: TextStyle(
                         color: Theme.of(context).colorScheme.secondary,
-                        fontSize: sizeSreen * 0.051,
+                        fontSize: sizeScreen * 0.051,
                         fontWeight: FontWeight.bold),
                   ),
                   onPressed: () => _openForm(context),
