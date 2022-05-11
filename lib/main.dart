@@ -1,8 +1,21 @@
 import 'package:cas/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() => runApp(const MyApp());
+void main() async {
+  /*SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  var choice = sharedPreferences.getBool('choice');
+  if (choice!) {*/
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await Hive.openBox('transactions');
+  await Hive.openBox('categories');
+  //}
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

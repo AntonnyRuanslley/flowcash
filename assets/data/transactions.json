@@ -1,0 +1,14 @@
+{
+    "items":[
+        {
+            "id": 7,
+            "category_id": 6,
+            "user_id": 1,
+            "description": "hbj",
+            "date": "2022-05-10T00:00:00.000000Z",
+            "status": 1,
+            "type": 2,
+            "value": 1500
+        }
+    ]
+}

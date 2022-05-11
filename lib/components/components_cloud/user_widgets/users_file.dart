@@ -1,11 +1,12 @@
-import 'package:cas/components/user_widgets/user_information.dart';
+import 'package:cas/components/components_cloud/user_widgets/user_information.dart';
 
 import 'package:flutter/material.dart';
 
 class UsersFile extends StatefulWidget {
   final user;
+  final Function onRefresh;
 
-  UsersFile(this.user);
+  UsersFile(this.user, this.onRefresh);
 
   @override
   State<UsersFile> createState() => _UsersFileState();
@@ -17,7 +18,7 @@ class _UsersFileState extends State<UsersFile> {
       showDialog(
           context: context,
           builder: (context) {
-            return UserInformation(widget.user);
+            return UserInformation(widget.user, widget.onRefresh);
           });
     });
   }

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-import 'package:cas/components/category_widgets/category_edit.dart';
-import 'package:cas/components/category_widgets/category_form.dart';
+import 'package:cas/components/components_cloud/category_widgets/category_edit.dart';
 import 'package:cas/data/urls.dart';
 
 import 'package:flutter/material.dart';
@@ -52,56 +51,10 @@ class _CategoriesListState extends State<CategoriesList> {
       },
     );
     if (answer.statusCode == 204) {
-      print("excluiu");
       Navigator.of(context).pop();
     } else {
-      print("deu merda");
+      return;
     }
-  }
-
-  _openAlert(context, id) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Deseja realmente excluir?'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: const [
-                Text('A categoria será excluida permanentemente!'),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-                child: const Text('Cancelar'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                }),
-            TextButton(
-              child: const Text('Excluir'),
-              onPressed: () {
-                _deleteCategory(id);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  _openForm(context, category) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return CategoryEdit(category);
-        });
-  }
-
-  @override
-  initState() {
-    getCategories = _getCategories();
-    super.initState();
   }
 
   @override
@@ -154,16 +107,17 @@ class _CategoriesListState extends State<CategoriesList> {
                               image: AssetImage(
                                 'assets/images/vazio.png',
                               ),
+                              color: Colors.white,
                               fit: BoxFit.cover,
                             ),
                           ),
                         ),
                         Container(
                           child: Text(
-                            'Sem transações!',
+                            'Sem categorias!',
                             style: TextStyle(
-                              fontSize: sizeScreen * 0.05,
-                              color: Colors.black,
+                              fontSize: sizeScreen * 0.045,
+                              color: Colors.white,
                             ),
                           ),
                         )
@@ -192,5 +146,55 @@ class _CategoriesListState extends State<CategoriesList> {
         ),
       ),
     );
+  }
+
+  _openAlert(context, id) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Deseja realmente excluir?'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const [
+                Text('A categoria será excluida permanentemente!'),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+                child: const Text('Cancelar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }),
+            TextButton(
+              child: const Text('Excluir'),
+              onPressed: () {
+                _refresh();
+                _deleteCategory(id);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  _openForm(context, category) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return CategoryEdit(category, _refresh);
+        });
+  }
+
+  @override
+  initState() {
+    _refresh();
+    super.initState();
+  }
+
+  _refresh() {
+    getCategories = _getCategories();
   }
 }

@@ -1,5 +1,3 @@
-import '../models/transaction.dart';
-
 import 'package:flutter/material.dart';
 
 class Status extends StatelessWidget {

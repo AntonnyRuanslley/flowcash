@@ -1,7 +1,7 @@
 import '../data/transactions.dart';
 import '../data/urls.dart';
 
-import '../components/transaction_widgets/transactions_file.dart';
+import '../components/components_cloud/transaction_widgets/transactions_file.dart';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

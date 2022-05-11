@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:async';
 
-import 'package:cas/components/user_widgets/user_add.dart';
+import 'package:cas/components/components_cloud/user_widgets/user_add.dart';
 import 'package:cas/data/urls.dart';
 
-import '../components/user_widgets/users_file.dart';
+import '../components/components_cloud/user_widgets/users_file.dart';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -86,7 +86,8 @@ class _UsersListState extends State<UsersList> {
                 )
               : ListView.builder(
                   itemCount: _users.length,
-                  itemBuilder: (ctx, i) => UsersFile(_users.elementAt(i)),
+                  itemBuilder: (ctx, i) =>
+                      UsersFile(_users.elementAt(i), _refresh),
                 );
         },
       ),
@@ -113,6 +114,11 @@ class _UsersListState extends State<UsersList> {
   }
 
   void initState() {
+    _refresh();
+    super.initState();
+  }
+
+  _refresh() {
     getUser = _getUsers();
   }
 
@@ -120,7 +126,7 @@ class _UsersListState extends State<UsersList> {
     showDialog(
         context: context,
         builder: (context) {
-          return UserAdd();
+          return UserAdd(_refresh);
         });
   }
 }

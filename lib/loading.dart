@@ -1,3 +1,6 @@
+import 'package:cas/views/select.dart';
+import 'package:cas/views/transactions_list_local.dart';
+
 import 'views/no_connection.dart';
 import 'views/home.dart';
 import 'views/login.dart';
@@ -16,11 +19,23 @@ class Loading extends StatefulWidget {
 }
 
 class _LoadingState extends State<Loading> {
-  Future<bool> _loginOn() async {
+  bool? choice;
+
+  Future<bool> _onLogin() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     if (sharedPreferences.getString('token') == null) {
       return true;
     } else {
+      return false;
+    }
+  }
+
+  Future<bool> _onChoice() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    if (sharedPreferences.getBool('choice') == null) {
+      return true;
+    } else {
+      choice = sharedPreferences.getBool('choice');
       return false;
     }
   }
@@ -37,20 +52,32 @@ class _LoadingState extends State<Loading> {
   @override
   void initState() {
     super.initState();
-    _tryConnection().then((value) {
+    _onChoice().then((value) {
       if (value) {
-        _loginOn().then((value) {
-          if (value) {
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => Login()));
-          } else {
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => Home()));
-          }
-        });
-      } else {
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => NoConnection()));
+            context, MaterialPageRoute(builder: (context) => Select()));
+      } else {
+        if (choice!) {
+          _tryConnection().then((value) {
+            if (value) {
+              _onLogin().then((value) {
+                if (value) {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => Login()));
+                } else {
+                  Navigator.pushReplacement(
+                      context, MaterialPageRoute(builder: (context) => Home()));
+                }
+              });
+            } else {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => NoConnection()));
+            }
+          });
+        } else {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => TransactionsListLocal()));
+        }
       }
     });
   }

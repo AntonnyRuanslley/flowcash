@@ -1,23 +1,69 @@
-import 'package:cas/components/user_widgets/user_edit.dart';
+import 'package:cas/components/components_cloud/transaction_widgets/transaction_edit.dart';
 import 'package:cas/data/urls.dart';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-class UserInformation extends StatefulWidget {
-  final user;
+class TransactionInformation extends StatefulWidget {
+  final transaction;
+  final category;
+  final Function onRefresh;
 
-  UserInformation(this.user);
+  TransactionInformation(this.transaction, this.category, this.onRefresh);
 
   @override
-  State<UserInformation> createState() => _UserInformationState();
+  State<TransactionInformation> createState() => _TransactionInformationState();
 }
 
-class _UserInformationState extends State<UserInformation> {
-  Future<void> _deleteUser() async {
+class _TransactionInformationState extends State<TransactionInformation> {
+  final message = SnackBar(
+    content: Text(
+      "Transação excluida com sucesso",
+      textAlign: TextAlign.center,
+    ),
+    backgroundColor: Colors.redAccent,
+  );
+
+  _openAlert(context, id) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Deseja realmente excluir?'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const [
+                Text('A transação será excluída permanentemente!'),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+                child: const Text('Cancelar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }),
+            TextButton(
+              child: const Text('Excluir'),
+              onPressed: () async {
+                _deleteTransanction(id);
+                widget.onRefresh();
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(message);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _deleteTransanction(id) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse("${urls['users']!}/${widget.user['id']}");
+    var url = Uri.parse("${urls['transactions']!}/$id");
     var answer = await http.delete(
       url,
       headers: {
@@ -31,43 +77,12 @@ class _UserInformationState extends State<UserInformation> {
     }
   }
 
-  _openAlert(context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Deseja realmente excluir?'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: const [
-                Text('O usuário será excluido permanentemente!'),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-                child: const Text('Cancelar'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                }),
-            TextButton(
-              child: const Text('Excluir'),
-              onPressed: () {
-                _deleteUser();
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   _openForm(context) {
     showDialog(
         context: context,
         builder: (context) {
-          return UserEdit(widget.user);
+          return TransactionEdit(
+              widget.transaction, widget.category, widget.onRefresh);
         });
   }
 
@@ -115,12 +130,25 @@ class _UserInformationState extends State<UserInformation> {
         ),
       ),
       content: SizedBox(
-        height: sizeScreen * 0.3,
+        height: sizeScreen * 0.9,
+        width: sizeScreen * 1,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _information("Nome", widget.user['name']),
-            _information("E-mail", widget.user['email'].toString()),
+            _information("Descrição", widget.transaction['description']),
+            _information("Categoria", widget.category.toString()),
+            _information("Tipo",
+                widget.transaction['type'] == 1 ? "Receita" : "Despesa"),
+            _information(
+                "Valor",
+                NumberFormat('R\$ #.00', 'pt-BR')
+                    .format(widget.transaction['value'])),
+            _information(
+                "Data da transação",
+                DateFormat('dd/MM/yy', 'pt-BR')
+                    .format(DateTime.parse(widget.transaction['date']))),
+            _information("Status",
+                widget.transaction['status'] == 1 ? "Pendente" : "Aprovado"),
           ],
         ),
       ),
@@ -143,7 +171,8 @@ class _UserInformationState extends State<UserInformation> {
                         fontSize: sizeScreen * 0.051,
                         fontWeight: FontWeight.bold),
                   ),
-                  onPressed: () => _openAlert(context),
+                  onPressed: () =>
+                      _openAlert(context, widget.transaction['id']),
                 ),
                 SizedBox(width: sizeScreen * 0.03),
                 TextButton(

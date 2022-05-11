@@ -1,46 +1,30 @@
-import 'package:cas/data/urls.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive/hive.dart';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class CategoryForm extends StatefulWidget {
-
-
   @override
   State<CategoryForm> createState() => _CategoryFormState();
 }
 
 class _CategoryFormState extends State<CategoryForm> {
-  final _nameController = TextEditingController();
+  final _inputName = TextEditingController();
+  final _categoriesBox = Hive.box('categories');
 
   @override
   Widget build(BuildContext context) {
     final sizeScreen = MediaQuery.of(context).size.width;
 
-    Future<void> _postCategory(String name) async {
-      if (name.isEmpty) {
+    Future<void> _postCategory() async {
+      if (_inputName.text.isEmpty) {
         return;
       }
-      SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
-      var url = Uri.parse(urls['categories']!);
-      var answer = await http.post(
-        url,
-        body: {
-          "name": name,
-        },
-        headers: {
-          "Authorization": "Bearer ${sharedPreferences.getString('token')}",
-        },
-      );
-      if (answer.statusCode == 201) {
-        Navigator.of(context).pop();
-      } else {
-        return;
-      }
+      var newCategory = ({
+        "name": _inputName.text,
+      });
+      await _categoriesBox.add(newCategory);
+      Navigator.of(context).pop();
     }
-
 
     return AlertDialog(
       title: Text("Nova categoria"),
@@ -48,8 +32,8 @@ class _CategoryFormState extends State<CategoryForm> {
         child: Column(
           children: [
             TextField(
-              controller: _nameController,
-              onSubmitted: (_) => _postCategory(_nameController.text),
+              controller: _inputName,
+              onSubmitted: (_) => _postCategory(),
               decoration: InputDecoration(
                 labelText: 'Nome',
               ),
@@ -82,7 +66,7 @@ class _CategoryFormState extends State<CategoryForm> {
                       backgroundColor: Theme.of(context).colorScheme.primary,
                     ),
                     onPressed: () {
-                      _postCategory(_nameController.text);
+                      _postCategory();
                     },
                   ),
                 ],

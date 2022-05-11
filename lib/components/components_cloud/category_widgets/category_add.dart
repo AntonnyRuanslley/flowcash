@@ -4,56 +4,52 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class CategoryEdit extends StatefulWidget {
-  final category;
+class CategoryAdd extends StatefulWidget {
 
-  CategoryEdit(this.category);
 
   @override
-  State<CategoryEdit> createState() => _CategoryEditState();
+  State<CategoryAdd> createState() => _CategoryAddState();
 }
 
-class _CategoryEditState extends State<CategoryEdit> {
-  TextEditingController? _inputName = TextEditingController();
-
-  @override
-  void initState() {
-    _inputName!.text = widget.category['name'];
-  }
+class _CategoryAddState extends State<CategoryAdd> {
+  final _nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final sizeScreen = MediaQuery.of(context).size.width;
 
-    Future<void> _putCategory() async {
+    Future<void> _postCategory(String name) async {
+      if (name.isEmpty) {
+        return;
+      }
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
-      var url = Uri.parse("${urls['categories']!}/${widget.category['id']}");
-      var answer = await http.put(
+      var url = Uri.parse(urls['categories']!);
+      var answer = await http.post(
         url,
         body: {
-          "name": _inputName!.text,
+          "name": name,
         },
         headers: {
           "Authorization": "Bearer ${sharedPreferences.getString('token')}",
         },
       );
-      if (answer.statusCode == 200) {
+      if (answer.statusCode == 201) {
         Navigator.of(context).pop();
-        print(answer.statusCode);
       } else {
-        print(answer.statusCode);
+        return;
       }
     }
 
+
     return AlertDialog(
-      title: Text("Edição de categoria"),
+      title: Text("Nova categoria"),
       content: SingleChildScrollView(
         child: Column(
           children: [
             TextField(
-              controller: _inputName!,
-              onSubmitted: (_) => _putCategory(),
+              controller: _nameController,
+              onSubmitted: (_) => _postCategory(_nameController.text),
               decoration: InputDecoration(
                 labelText: 'Nome',
               ),
@@ -86,7 +82,7 @@ class _CategoryEditState extends State<CategoryEdit> {
                       backgroundColor: Theme.of(context).colorScheme.primary,
                     ),
                     onPressed: () {
-                      _putCategory();
+                      _postCategory(_nameController.text);
                     },
                   ),
                 ],

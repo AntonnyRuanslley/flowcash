@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:cas/components/category_widgets/categorys_file.dart';
-import 'package:cas/components/type_file.dart';
-import 'package:cas/data/urls.dart';
+import 'package:cas/components/components_cloud/category_widgets/categorys_file.dart';
+import 'package:cas/components/components_cloud/type_file.dart';
+import 'package:cas/components/components_cloud/category_widgets/category_add.dart';
 
-import 'package:cas/components/category_widgets/category_form.dart';
+import 'package:cas/data/urls.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -14,13 +14,22 @@ import 'package:intl/intl.dart';
 class TransactionEdit extends StatefulWidget {
   final transaction;
   final category;
+  final Function onRefresh;
 
-  TransactionEdit(this.transaction, this.category);
+  TransactionEdit(this.transaction, this.category, this.onRefresh);
   @override
   State<TransactionEdit> createState() => _TransactionEditState();
 }
 
 class _TransactionEditState extends State<TransactionEdit> {
+  final message = SnackBar(
+    content: Text(
+      "Transanção editada com sucesso",
+      textAlign: TextAlign.center,
+    ),
+    backgroundColor: Colors.blueAccent,
+  );
+
   TextEditingController? _inputDescription = TextEditingController();
   TextEditingController? _inputValeu = TextEditingController();
   int? _inputCategory;
@@ -41,7 +50,6 @@ class _TransactionEditState extends State<TransactionEdit> {
     var category = _inputCategory!;
     var value = double.tryParse(_inputValeu!.text) ?? 0.0;
     var type = _inputType ?? 1;
-    print(_inputValeu);
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var url = Uri.parse(urls['user_logged']!);
     var answer = await http.get(url, headers: {
@@ -66,51 +74,16 @@ class _TransactionEditState extends State<TransactionEdit> {
         },
       );
       if (answer.statusCode == 200) {
+        widget.onRefresh();
         Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(message);
       } else {
         return;
       }
     } else {
-      print(answer.statusCode);
       return;
     }
-  }
-
-  _showDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.parse(widget.transaction['date']!),
-      firstDate: DateTime(2019),
-      lastDate: DateTime.now(),
-      locale: const Locale('pt', 'BR'),
-    ).then((pickedDate) {
-      if (pickedDate == null) {
-        return;
-      }
-      setState(() {
-        _selectDate = pickedDate;
-      });
-    });
-  }
-
-  _openCategoryFormModal(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return CategoryForm();
-        });
-  }
-
-  _addCategory(int category) {
-    setState(() {
-      _inputCategory = category;
-    });
-  }
-
-  _addType(int type) {
-    setState(() {
-      _inputType = type;
-    });
   }
 
   @override
@@ -280,5 +253,42 @@ class _TransactionEditState extends State<TransactionEdit> {
         ),
       ),
     );
+  }
+
+  _showDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.parse(widget.transaction['date']!),
+      firstDate: DateTime(2019),
+      lastDate: DateTime.now(),
+      locale: const Locale('pt', 'BR'),
+    ).then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+      setState(() {
+        _selectDate = pickedDate;
+      });
+    });
+  }
+
+  _openCategoryFormModal(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return CategoryAdd();
+        });
+  }
+
+  _addCategory(int category) {
+    setState(() {
+      _inputCategory = category;
+    });
+  }
+
+  _addType(int type) {
+    setState(() {
+      _inputType = type;
+    });
   }
 }

@@ -1,5 +1,5 @@
-import 'package:cas/components/category_widgets/category_form.dart';
-import 'package:cas/components/category_widgets/categories_list.dart';
+import 'package:cas/components/components_cloud/category_widgets/category_add.dart';
+import 'package:cas/components/components_cloud/category_widgets/categories_list.dart';
 import 'package:cas/data/users.dart';
 import 'package:cas/loading.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +14,7 @@ class _SettingsState extends State<Settings> {
   Future<bool> _logoff() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.clear();
+    //await sharedPreferences.remove('token');
     return true;
   }
 
@@ -88,7 +89,7 @@ class _SettingsState extends State<Settings> {
                 ),
               ),
               _itemsDrawer(Icons.add, 'Adicionar categoria',
-                  () => _openFormModal(context, CategoryForm())),
+                  () => _openFormModal(context, CategoryAdd())),
               _itemsDrawer(Icons.edit, 'Editar categoria',
                   () => _openFormModal(context, CategoriesList(0))),
               _itemsDrawer(Icons.delete, 'Excluir categoria',

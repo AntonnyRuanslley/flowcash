@@ -1,23 +1,41 @@
-import 'package:cas/components/transaction_widgets/transaction_edit.dart';
-import 'package:cas/data/urls.dart';
+import 'package:cas/components/components_local/transaction_widgets/transaction_edit.dart';
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
 class TransactionInformation extends StatefulWidget {
   final transaction;
   final category;
-  final Function(String) onRemove;
+  final Function onRefresh;
 
-  TransactionInformation(this.transaction, this.category, this.onRemove);
+  TransactionInformation(this.transaction, this.category, this.onRefresh);
 
   @override
   State<TransactionInformation> createState() => _TransactionInformationState();
 }
 
 class _TransactionInformationState extends State<TransactionInformation> {
+  final _transactionsBox = Hive.box('transactions');
+
+  final message = SnackBar(
+    content: Text(
+      "Transação excluida com sucesso",
+      textAlign: TextAlign.center,
+    ),
+    backgroundColor: Colors.redAccent,
+  );
+
+  Future<void> _deleteTransanction(id) async {
+    await _transactionsBox.delete(id);
+  }
+
+  _onRefresh() {
+    setState(() {
+      widget.onRefresh();
+    });
+  }
+
   _openAlert(context, id) {
     showDialog(
       context: context,
@@ -41,8 +59,10 @@ class _TransactionInformationState extends State<TransactionInformation> {
               child: const Text('Excluir'),
               onPressed: () async {
                 _deleteTransanction(id);
+                widget.onRefresh();
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(message);
               },
             ),
           ],
@@ -51,27 +71,12 @@ class _TransactionInformationState extends State<TransactionInformation> {
     );
   }
 
-  Future<void> _deleteTransanction(id) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse("${urls['transactions']!}/$id");
-    var answer = await http.delete(
-      url,
-      headers: {
-        "Authorization": "Bearer ${sharedPreferences.getString('token')}"
-      },
-    );
-    if (answer.statusCode == 204) {
-      print('excluiu');
-    } else {
-      print('deu merda');
-    }
-  }
-
   _openForm(context) {
     showDialog(
         context: context,
         builder: (context) {
-          return TransactionEdit(widget.transaction, widget.category);
+          return TransactionEdit(
+              widget.transaction, widget.category, _onRefresh);
         });
   }
 
@@ -119,7 +124,7 @@ class _TransactionInformationState extends State<TransactionInformation> {
         ),
       ),
       content: SizedBox(
-        height: sizeScreen * 0.9,
+        height: sizeScreen * 0.75,
         width: sizeScreen * 1,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,9 +140,7 @@ class _TransactionInformationState extends State<TransactionInformation> {
             _information(
                 "Data da transação",
                 DateFormat('dd/MM/yy', 'pt-BR')
-                    .format(DateTime.parse(widget.transaction['date']))),
-            _information("Status",
-                widget.transaction['status'] == 1 ? "Pendente" : "Aprovado"),
+                    .format(widget.transaction['date']))
           ],
         ),
       ),

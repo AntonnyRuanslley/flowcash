@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:cas/components/category_widgets/categorys_file.dart';
-import 'package:cas/components/type_file.dart';
+import 'package:cas/components/components_cloud/category_widgets/categorys_file.dart';
+import 'package:cas/components/components_cloud/type_file.dart';
 import 'package:cas/data/urls.dart';
 
-import 'package:cas/components/category_widgets/category_form.dart';
+import 'package:cas/components/components_cloud/category_widgets/category_add.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -21,6 +21,14 @@ class TransactionAdd extends StatefulWidget {
 }
 
 class _TransactionAddState extends State<TransactionAdd> {
+  final message = SnackBar(
+    content: Text(
+      "Nova transação adicionada com sucesso",
+      textAlign: TextAlign.center,
+    ),
+    backgroundColor: Colors.blueAccent,
+  );
+
   final _inputDescription = TextEditingController();
   final _inputValeu = TextEditingController();
   int? _inputCategory;
@@ -59,8 +67,9 @@ class _TransactionAddState extends State<TransactionAdd> {
         },
       );
       if (answer.statusCode == 201) {
-        widget.onRefresh;
+        widget.onRefresh();
         Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(message);
       } else {
         return;
       }
@@ -260,7 +269,7 @@ class _TransactionAddState extends State<TransactionAdd> {
     showDialog(
         context: context,
         builder: (context) {
-          return CategoryForm();
+          return CategoryAdd();
         });
   }
 

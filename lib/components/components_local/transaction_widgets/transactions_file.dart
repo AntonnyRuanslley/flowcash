@@ -1,53 +1,20 @@
 import 'package:cas/data/categories.dart';
-
 import 'transaction_information.dart';
-
-//import '../models/transaction.dart';
-
-import 'package:cas/data/urls.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
-
-import 'dart:convert';
 
 class TransactionsFile extends StatefulWidget {
   final transaction;
-  final Function? onRemove;
+  final Function onRefresh;
 
-  TransactionsFile(this.transaction, [this.onRemove]);
+  TransactionsFile(this.transaction, this.onRefresh);
 
   @override
   State<TransactionsFile> createState() => _TransactionsFileState();
 }
 
 class _TransactionsFileState extends State<TransactionsFile> {
-  Future<void> getCategory() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse(urls['categories']!);
-    var answer = await http.get(
-      url,
-      headers: {
-        "Authorization": "Bearer ${sharedPreferences.getString('token')}",
-      },
-    );
-    if (answer.statusCode == 200) {
-      setState(() {
-        categories = jsonDecode(answer.body)['data'];
-      });
-    } else {
-      return;
-    }
-  }
-
-  @override
-  void initState() {
-    getCategory();
-    super.initState();
-  }
-
   bool? _banlacePos(type) {
     if (type == 1) {
       return true;
@@ -67,17 +34,13 @@ class _TransactionsFileState extends State<TransactionsFile> {
       }
     }
 
-    _passMainRemove(String id) {
-      widget.onRemove!(id);
-    }
-
     _openInformation(category) {
       setState(() {
         showDialog(
             context: context,
             builder: (context) {
               return TransactionInformation(
-                  widget.transaction, category, _passMainRemove);
+                  widget.transaction, category, widget.onRefresh);
             });
       });
     }

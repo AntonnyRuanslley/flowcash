@@ -4,47 +4,58 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
-class UserEdit extends StatefulWidget {
-  final user;
+class UserAdd extends StatefulWidget {
+  final Function onRefresh;
 
-  UserEdit(this.user);
+  UserAdd(this.onRefresh);
+
   @override
-  State<UserEdit> createState() => _UserEditState();
+  State<UserAdd> createState() => _UserAddState();
 }
 
-class _UserEditState extends State<UserEdit> {
-  TextEditingController? _inputName = TextEditingController();
-  TextEditingController? _inputEmail = TextEditingController();
+class _UserAddState extends State<UserAdd> {
+  final message = SnackBar(
+    content: Text(
+      "Novo usuário cadastrado com sucesso",
+      textAlign: TextAlign.center,
+    ),
+    backgroundColor: Colors.blueAccent,
+  );
 
-  void initState() {
-    _inputName!.text = widget.user['name'];
-    _inputEmail!.text = widget.user['email'];
-  }
+  final _inputName = TextEditingController();
+  final _inputEmail = TextEditingController();
+  final _inputPassword = TextEditingController();
 
-  Future<void> _putUser() async {
-    var name = _inputName!.text;
-    var email = _inputEmail!.text;
+  Future<void> _postUser() async {
+    var name = _inputName.text;
+    var email = _inputEmail.text;
+    var password = _inputPassword.text;
+    if (name.isEmpty || email.isEmpty || password.isEmpty) {
+      return;
+    }
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var url = Uri.parse(urls['user_logged']!);
     var answer = await http.get(url, headers: {
       "Authorization": "Bearer ${sharedPreferences.getString('token')}",
     });
     if (answer.statusCode == 200) {
-      url = Uri.parse("${urls['users']!}/${widget.user['id']}");
-      answer = await http.put(
+      url = Uri.parse(urls['users']!);
+      answer = await http.post(
         url,
         body: {
           "name": name,
           "email": email,
+          "password": password,
         },
         headers: {
           "Authorization": "Bearer ${sharedPreferences.getString('token')}",
         },
       );
-      if (answer.statusCode == 200) {
+      if (answer.statusCode == 201) {
+        widget.onRefresh();
         Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(message);
       } else {
-        print(answer.statusCode);
         return;
       }
     } else {
@@ -91,7 +102,7 @@ class _UserEditState extends State<UserEdit> {
         borderRadius: BorderRadius.circular(20),
       ),
       title: Text(
-        "Edição de usuário",
+        "Novo usuário",
         textAlign: TextAlign.center,
         style: TextStyle(
           fontWeight: FontWeight.bold,
@@ -100,7 +111,7 @@ class _UserEditState extends State<UserEdit> {
       ),
       content: SingleChildScrollView(
         child: SizedBox(
-          height: sizeScreen * 0.6,
+          height: sizeScreen * 0.7,
           child: Padding(
             padding: EdgeInsets.all(sizeScreen * 0.01),
             child: Column(
@@ -111,7 +122,7 @@ class _UserEditState extends State<UserEdit> {
                   cursorColor: Theme.of(context).colorScheme.secondary,
                   style:
                       TextStyle(color: Theme.of(context).colorScheme.secondary),
-                  decoration: _decoration(widget.user['name']!),
+                  decoration: _decoration('Nome'),
                   controller: _inputName,
                 ),
                 TextField(
@@ -120,8 +131,17 @@ class _UserEditState extends State<UserEdit> {
                   cursorColor: Theme.of(context).colorScheme.secondary,
                   style:
                       TextStyle(color: Theme.of(context).colorScheme.secondary),
-                  decoration: _decoration(widget.user['email']!),
+                  decoration: _decoration('Email'),
                   controller: _inputEmail,
+                ),
+                TextField(
+                  maxLines: 1,
+                  cursorColor: Theme.of(context).colorScheme.secondary,
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.secondary),
+                  decoration: _decoration('Senha'),
+                  controller: _inputPassword,
+                  obscureText: true,
                 ),
                 Container(
                   width: sizeScreen * 1,
@@ -153,7 +173,7 @@ class _UserEditState extends State<UserEdit> {
                           backgroundColor:
                               Theme.of(context).colorScheme.secondary,
                         ),
-                        onPressed: () => _putUser(),
+                        onPressed: () => _postUser(),
                       ),
                     ],
                   ),
