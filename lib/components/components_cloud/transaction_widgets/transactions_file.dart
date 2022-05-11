@@ -16,8 +16,9 @@ import 'dart:convert';
 class TransactionsFile extends StatefulWidget {
   final transaction;
   final Function? onRefresh;
+  final bool? off;
 
-  TransactionsFile(this.transaction, [this.onRefresh]);
+  TransactionsFile(this.transaction, [this.onRefresh, this.off]);
 
   @override
   State<TransactionsFile> createState() => _TransactionsFileState();
@@ -79,8 +80,10 @@ class _TransactionsFileState extends State<TransactionsFile> {
     }
 
     return TextButton(
-      onPressed: () => _openInformation(
-          _searchCategory(widget.transaction['category_id']).toString()),
+      onPressed: () => widget.off == null
+          ? _openInformation(
+              _searchCategory(widget.transaction['category_id']).toString())
+          : {},
       child: ListTile(
         leading: Container(
           decoration: BoxDecoration(

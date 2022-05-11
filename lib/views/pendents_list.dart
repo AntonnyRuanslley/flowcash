@@ -17,6 +17,14 @@ class PendentsList extends StatefulWidget {
 class _PendentsListState extends State<PendentsList> {
   List _pendents = transactions;
 
+  final message = SnackBar(
+    content: Text(
+      "Transações aprovadas",
+      textAlign: TextAlign.center,
+    ),
+    backgroundColor: Colors.blueAccent,
+  );
+
   @override
   void initState() {
     super.initState();
@@ -42,11 +50,9 @@ class _PendentsListState extends State<PendentsList> {
       },
     );
     if (answer.statusCode == 200) {
-      print(answer.statusCode);
-      print("Sucesso");
+      ScaffoldMessenger.of(context).showSnackBar(message);
     } else {
-      print(answer.statusCode);
-      print("Erro");
+      return;
     }
   }
 
@@ -100,7 +106,8 @@ class _PendentsListState extends State<PendentsList> {
             )
           : ListView.builder(
               itemCount: _pendents.length,
-              itemBuilder: (ctx, i) => TransactionsFile(_pendents.elementAt(i)),
+              itemBuilder: (ctx, i) =>
+                  TransactionsFile(_pendents.elementAt(i), () {}, false),
             ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).colorScheme.primary,
