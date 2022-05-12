@@ -1,15 +1,19 @@
+import 'package:cas/data/users.dart';
 import 'package:cas/views/select.dart';
+import 'package:cas/views/transactions_list.dart';
 import 'package:cas/views/transactions_list_local.dart';
 
 import 'views/no_connection.dart';
 import 'views/home.dart';
 import 'views/login.dart';
+
 import 'data/urls.dart';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:http/http.dart' as http;
 
+import 'dart:convert';
 import 'dart:io';
 
 class Loading extends StatefulWidget {
@@ -29,6 +33,21 @@ class _LoadingState extends State<Loading> {
     } else {
       return false;
     }
+  }
+
+  Future<bool> _getUser() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var url = Uri.parse(urls['user_logged']!);
+    var answer = await http.get(url, headers: {
+      "Authorization": "Bearer ${sharedPreferences.getString('token')}",
+    });
+    if (answer.statusCode == 200) {
+      setState(() {
+        user = jsonDecode(answer.body)['name'].toString();
+      });
+    }
+    var isAdmin = jsonDecode(answer.body)['administrator'] as bool;
+    return isAdmin;
   }
 
   Future<bool> _onChoice() async {
@@ -66,8 +85,17 @@ class _LoadingState extends State<Loading> {
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => Login()));
                 } else {
-                  Navigator.pushReplacement(
-                      context, MaterialPageRoute(builder: (context) => Home()));
+                  _getUser().then((value) {
+                    if (value) {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => Home()));
+                    } else {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TransactionsList()));
+                    }
+                  });
                 }
               });
             } else {

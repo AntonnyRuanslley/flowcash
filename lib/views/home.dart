@@ -39,24 +39,8 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Future<void> _getUser() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse(urls['user_logged']!);
-    var answer = await http.get(url, headers: {
-      "Authorization": "Bearer ${sharedPreferences.getString('token')}",
-    });
-    if (answer.statusCode == 200) {
-      setState(() {
-        user = jsonDecode(answer.body)['name'].toString();
-      });
-    } else {
-      return;
-    }
-  }
-
   void initState() {
     _getCategory();
-    _getUser();
     super.initState();
   }
 

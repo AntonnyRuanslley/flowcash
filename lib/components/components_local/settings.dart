@@ -14,8 +14,7 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   Future<bool> _logoff() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.clear();
-    //await sharedPreferences.remove('token');
+    await sharedPreferences.remove('token');
     return true;
   }
 
