@@ -38,12 +38,14 @@ class Select extends StatelessWidget {
                 ),
               ),
             ),
-            Text(
-              'Deseja qual tipo de armazenamento?',
-              style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                  fontSize: sizeScreen * 0.033,
-                  fontWeight: FontWeight.bold),
+            Center(
+              child: Text(
+                'Deseja qual tipo de armazenamento?',
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: sizeScreen * 0.033,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
             SizedBox(
               height: sizeScreen * 0.04,
