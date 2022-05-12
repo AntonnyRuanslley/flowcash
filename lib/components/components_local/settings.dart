@@ -103,7 +103,7 @@ class _SettingsState extends State<Settings> {
                       () async {
                         bool logoffed = await _logoff();
                         if (logoffed) {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (contex) => Loading(),
