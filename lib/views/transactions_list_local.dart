@@ -1,15 +1,14 @@
-import 'dart:convert';
 import 'package:cas/data/categories.dart';
 import 'package:cas/data/transactions.dart';
 
 import 'package:cas/components/components_local/transaction_widgets/transaction_add.dart';
+import 'package:cas/components/components_local/transaction_widgets/transactions_file.dart';
+import 'package:cas/components/components_local/table_values.dart';
+import 'package:cas/components/components_local/day_flow.dart';
+import 'package:cas/components/components_local/settings.dart';
+
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import '../components/components_local/table_values.dart';
-import '../components/components_local/day_flow.dart';
-import 'package:cas/components/components_local/transaction_widgets/transactions_file.dart';
-import '../components/components_local/settings.dart';
-
 import 'package:flutter/material.dart';
 
 class TransactionsListLocal extends StatefulWidget {
@@ -65,6 +64,7 @@ class _TransactionsListLocalState extends State<TransactionsListLocal> {
     final sizeScreen = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: SafeArea(

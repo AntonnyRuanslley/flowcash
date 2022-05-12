@@ -111,21 +111,21 @@ class _TransactionAddState extends State<TransactionAdd> {
       );
     }
 
-    return AlertDialog(
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      title: Text(
-        "Nova transação",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Theme.of(context).colorScheme.secondary,
+    return SingleChildScrollView(
+      child: AlertDialog(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
         ),
-      ),
-      content: SingleChildScrollView(
-        child: SizedBox(
+        title: Text(
+          "Nova transação",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+        ),
+        content: SizedBox(
           height: sizeScreen * 1.2,
           child: Padding(
             padding: EdgeInsets.all(sizeScreen * 0.01),

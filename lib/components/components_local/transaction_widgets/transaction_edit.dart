@@ -21,7 +21,7 @@ class _TransactionEditState extends State<TransactionEdit> {
 
   final message = SnackBar(
     content: Text(
-      "Edição feita com sucesso",
+      "Transação editada feita com sucesso",
       textAlign: TextAlign.center,
     ),
     backgroundColor: Colors.blueAccent,
@@ -93,21 +93,21 @@ class _TransactionEditState extends State<TransactionEdit> {
       );
     }
 
-    return AlertDialog(
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      title: Text(
-        "Edição de transação",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Theme.of(context).colorScheme.secondary,
+    return SingleChildScrollView(
+      child: AlertDialog(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
         ),
-      ),
-      content: SingleChildScrollView(
-        child: SizedBox(
+        title: Text(
+          "Edição de transação",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+        ),
+        content: SizedBox(
           height: sizeScreen * 1.2,
           child: Padding(
             padding: EdgeInsets.all(sizeScreen * 0.01),

@@ -60,6 +60,9 @@ class _PendentsListState extends State<PendentsList> {
     for (int i = 0; i < _pendents.length; i++) {
       _putTransaction(_pendents[i]);
     }
+    setState(() {
+      _pendents.clear();
+    });
   }
 
   @override

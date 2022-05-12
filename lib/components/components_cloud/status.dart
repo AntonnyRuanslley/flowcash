@@ -6,6 +6,8 @@ class Status extends StatelessWidget {
   Status(this.transaction);
   @override
   Widget build(BuildContext context) {
+    var sizeScreen = MediaQuery.of(context).size.height;
+
     _pendentOrOk(int status) {
       if (transaction.isEmpty) {
         return 0;
@@ -39,14 +41,14 @@ class Status extends StatelessWidget {
           Text(
             'Status',
             style: TextStyle(
-              fontSize: 15,
+              fontSize: sizeScreen * 0.027,
               fontWeight: FontWeight.bold,
             ),
           ),
           Text(
             '${_pendentOrOk(1)} ${_pendent()} ${_pendentOrOk(2)} ${_ok()}',
             style: TextStyle(
-              fontSize: 15,
+              fontSize: sizeScreen * 0.027,
               fontWeight: FontWeight.bold,
             ),
           ),

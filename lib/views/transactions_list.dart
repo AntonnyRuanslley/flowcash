@@ -61,6 +61,7 @@ class _TransactionsListState extends State<TransactionsList> {
     final sizeScreen = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: SafeArea(
