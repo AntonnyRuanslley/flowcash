@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class CategoryAdd extends StatefulWidget {
-
-
   @override
   State<CategoryAdd> createState() => _CategoryAddState();
 }
@@ -41,9 +39,8 @@ class _CategoryAddState extends State<CategoryAdd> {
       }
     }
 
-
     return AlertDialog(
-      title: Text("Nova categoria"),
+      title: const Text("Nova categoria"),
       content: SingleChildScrollView(
         child: Column(
           children: [

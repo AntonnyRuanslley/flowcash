@@ -36,7 +36,6 @@ class _CategoriesListState extends State<CategoriesList> {
       });
       return "Sucesso";
     } else {
-      print(answer.statusCode);
       return "Erro";
     }
   }
@@ -52,6 +51,7 @@ class _CategoriesListState extends State<CategoriesList> {
     );
     if (answer.statusCode == 204) {
       Navigator.of(context).pop();
+      _refresh();
     } else {
       return;
     }
@@ -170,7 +170,6 @@ class _CategoriesListState extends State<CategoriesList> {
             TextButton(
               child: const Text('Excluir'),
               onPressed: () {
-                _refresh();
                 _deleteCategory(id);
               },
             ),

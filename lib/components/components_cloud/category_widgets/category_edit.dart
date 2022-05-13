@@ -42,14 +42,13 @@ class _CategoryEditState extends State<CategoryEdit> {
       if (answer.statusCode == 200) {
         Navigator.of(context).pop();
         widget.onRefresh();
-        print(answer.statusCode);
       } else {
-        print(answer.statusCode);
+        return;
       }
     }
 
     return AlertDialog(
-      title: Text("Edição de categoria"),
+      title: const Text("Edição de categoria"),
       content: SingleChildScrollView(
         child: Column(
           children: [

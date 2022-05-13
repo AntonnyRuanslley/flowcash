@@ -10,14 +10,6 @@ class TableValues extends StatelessWidget {
   Widget build(BuildContext context) {
     final sizeScreen = MediaQuery.of(context).size.height;
 
-    double fontSize() {
-      return sizeScreen * 0.029;
-    }
-
-    double fontIcon() {
-      return sizeScreen * 0.04;
-    }
-
     _recipeOrExpense(int type) {
       if (transaction.isEmpty) {
         return 0;
@@ -43,6 +35,34 @@ class TableValues extends StatelessWidget {
       } else {
         return false;
       }
+    }
+
+    _title(icon, color, label) {
+      return Row(
+        children: [
+          Icon(
+            icon,
+            color: color,
+            size: sizeScreen * 0.04,
+          ),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: sizeScreen * 0.029,
+            ),
+          ),
+        ],
+      );
+    }
+
+    _value(label, color) {
+      return Text(
+        label,
+        style: TextStyle(
+          color: color,
+          fontSize: sizeScreen * 0.029,
+        ),
+      );
     }
 
     return Padding(
@@ -71,94 +91,44 @@ class TableValues extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.arrow_downward_rounded,
-                        color: Colors.green,
-                        size: fontIcon(),
-                      ),
-                      Text(
-                        'Receita',
-                        style: TextStyle(
-                          fontSize: fontSize(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.arrow_upward_rounded,
-                        color: Colors.red,
-                        size: fontIcon(),
-                      ),
-                      Text(
-                        'Despesa',
-                        style: TextStyle(
-                          fontSize: fontSize(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.attach_money_rounded,
-                        color: _balance() == 0
-                            ? Colors.yellow[800]
-                            : _balancePos()
-                                ? Colors.green
-                                : Colors.red,
-                        size: fontIcon(),
-                      ),
-                      Text(
-                        'Saldo',
-                        style: TextStyle(
-                          fontSize: fontSize(),
-                        ),
-                      ),
-                    ],
-                  ),
+                  _title(Icons.arrow_downward_rounded, Colors.green, 'Receita'),
+                  _title(Icons.arrow_upward_rounded, Colors.red, 'Despesa'),
+                  _title(
+                      Icons.attach_money_rounded,
+                      _balance() == 0
+                          ? Colors.yellow[800]
+                          : _balancePos()
+                              ? Colors.green
+                              : Colors.red,
+                      'Saldo'),
                 ],
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text(
-                    _recipeOrExpense(1) == 0
-                        ? 'R\$ 0,00'
-                        : NumberFormat('R\$ #.00', 'pt-BR')
-                            .format(_recipeOrExpense(1)),
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontSize: fontSize(),
-                    ),
-                  ),
-                  Text(
-                    _recipeOrExpense(2) == 0
-                        ? 'R\$ 0,00'
-                        : NumberFormat(' R\$ #.00', 'pt-BR')
-                            .format(_recipeOrExpense(2) * -1),
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontSize: fontSize(),
-                    ),
-                  ),
-                  Text(
-                    _balance() == 0
-                        ? 'R\$ 0,00'
-                        : NumberFormat(' R\$ #.00', 'pt-BR').format(_balance()),
-                    style: TextStyle(
-                      color: _balance() == 0
+                  _value(
+                      _recipeOrExpense(1) == 0
+                          ? 'R\$ 0,00'
+                          : NumberFormat('R\$ #.00', 'pt-BR')
+                              .format(_recipeOrExpense(1)),
+                      Colors.green),
+                  _value(
+                      _recipeOrExpense(2) == 0
+                          ? 'R\$ 0,00'
+                          : NumberFormat(' R\$ #.00', 'pt-BR')
+                              .format(_recipeOrExpense(2) * -1),
+                      Colors.red),
+                  _value(
+                      _balance() == 0
+                          ? 'R\$ 0,00'
+                          : NumberFormat(' R\$ #.00', 'pt-BR')
+                              .format(_balance()),
+                      _balance() == 0
                           ? Colors.yellow[800]
                           : _balancePos()
                               ? Colors.green
-                              : Colors.red,
-                      fontSize: fontSize(),
-                    ),
-                  ),
+                              : Colors.red),
                 ],
               ),
             ],

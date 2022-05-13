@@ -2,8 +2,6 @@ import 'package:cas/data/categories.dart';
 
 import 'transaction_information.dart';
 
-//import '../models/transaction.dart';
-
 import 'package:cas/data/urls.dart';
 
 import 'package:flutter/material.dart';
@@ -111,6 +109,13 @@ class _TransactionsFileState extends State<TransactionsFile> {
           ),
         ),
         title: Text(
+          widget.transaction['description'],
+          style: TextStyle(
+            fontSize: sizeScreen * 0.027,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        subtitle: Text(
           _searchCategory(widget.transaction['category_id']).toString(),
           style: TextStyle(
             fontSize: sizeScreen * 0.027,

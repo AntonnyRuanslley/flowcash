@@ -20,7 +20,7 @@ class TransactionInformation extends StatefulWidget {
 class _TransactionInformationState extends State<TransactionInformation> {
   final message = SnackBar(
     content: Text(
-      "Transação excluida com sucesso",
+      "Transação excluída com sucesso",
       textAlign: TextAlign.center,
     ),
     backgroundColor: Colors.redAccent,
@@ -49,10 +49,6 @@ class _TransactionInformationState extends State<TransactionInformation> {
               child: const Text('Excluir'),
               onPressed: () async {
                 _deleteTransanction(id);
-                widget.onRefresh();
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(message);
               },
             ),
           ],
@@ -71,9 +67,12 @@ class _TransactionInformationState extends State<TransactionInformation> {
       },
     );
     if (answer.statusCode == 204) {
-      print('excluiu');
+      widget.onRefresh();
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(message);
     } else {
-      print('deu merda');
+      return;
     }
   }
 

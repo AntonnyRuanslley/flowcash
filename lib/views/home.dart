@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:cas/data/categories.dart';
 import 'package:cas/data/urls.dart';
-import 'package:cas/data/users.dart';
 import 'package:cas/views/transactions_list.dart';
 import 'package:cas/views/users_list.dart';
 import 'package:cas/views/pendents_list.dart';
@@ -39,9 +38,10 @@ class _HomeState extends State<Home> {
     }
   }
 
+  @override
   void initState() {
-    _getCategory();
     super.initState();
+    _getCategory();
   }
 
   _onBottom(int index) {
