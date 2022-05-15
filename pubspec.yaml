@@ -52,11 +52,12 @@ dev_dependencies:
     sdk: flutter
   flutter_launcher_icons: ^0.9.2
 
-# flutter_icons: 
-#   android: true
-#   image_path: "dev_assests/calc.png"
-#   adaptive_icon_background: "#191919"
-
+flutter_icons: 
+  image_path: "dev_assets/icons/calc.png"
+  android: true
+  ios: true
+  adaptive_icon_background: "#191919"
+  adaptive_icon_foreground: "dev_assets/icons/calc-adaptive.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
