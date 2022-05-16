@@ -94,7 +94,7 @@ class TableValues extends StatelessWidget {
     return Padding(
       padding: EdgeInsetsDirectional.only(
         start: sizeScreen * 0.018,
-        top: sizeScreen * 0.14,
+        top: sizeScreen * 0.11,
         end: sizeScreen * 0.018,
         bottom: sizeScreen * 0.01,
       ),

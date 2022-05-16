@@ -147,22 +147,7 @@ class _TransactionEditState extends State<TransactionEdit> {
                   decoration: _decoration(),
                   controller: _inputDescription,
                 ),
-                Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.add_circle_outline_outlined,
-                        color: Theme.of(context).colorScheme.secondary,
-                        size: sizeScreen * 0.075,
-                      ),
-                      onPressed: () => _openCategoryFormModal(context),
-                    ),
-                    Flexible(
-                      child:
-                          CategorysFile(_addCategory, true, widget.category!),
-                    )
-                  ],
-                ),
+                CategorysFile(_addCategory, true, widget.category!),
                 Row(
                   children: [
                     Text(
@@ -270,14 +255,6 @@ class _TransactionEditState extends State<TransactionEdit> {
         _selectDate = pickedDate;
       });
     });
-  }
-
-  _openCategoryFormModal(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return CategoryAdd();
-        });
   }
 
   _addCategory(int category) {

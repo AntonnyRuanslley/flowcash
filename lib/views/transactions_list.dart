@@ -1,17 +1,18 @@
 import 'dart:convert';
 
+import 'package:cas/components/components_cloud/day_flow.dart';
+import 'package:cas/data/categories.dart';
 import 'package:cas/data/transactions.dart';
+import 'package:cas/data/urls.dart';
 
 import 'package:cas/components/components_cloud/transaction_widgets/transaction_add.dart';
 import 'package:cas/components/components_cloud/status.dart';
 import 'package:cas/components/components_cloud/table_values.dart';
-import 'package:cas/components/components_cloud/day_flow.dart';
+import 'package:cas/components/components_cloud/title_top.dart';
 import 'package:cas/components/components_cloud/transaction_widgets/transactions_file.dart';
 import 'package:cas/components/components_cloud/settings.dart';
-import 'package:cas/data/urls.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -27,7 +28,7 @@ class _TransactionsListState extends State<TransactionsList> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   Future<String>? getTransaction;
 
-  List allTransactions = [];
+  List _allTransactions = [];
 
   Future<String> _getTransanctions() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -52,8 +53,20 @@ class _TransactionsListState extends State<TransactionsList> {
         },
       );
       setState(() {
-        allTransactions = jsonDecode(answer.body)['data'];
+        _allTransactions = jsonDecode(answer.body)['data'];
       });
+      url = Uri.parse(urls['categories']!);
+      answer = await http.get(
+        url,
+        headers: {
+          "Authorization": "Bearer ${sharedPreferences.getString('token')}",
+        },
+      );
+      if (answer.statusCode == 200) {
+        setState(() {
+          categories = jsonDecode(answer.body)['data'];
+        });
+      }
       return "Success";
     } else {
       throw Exception(answer.statusCode);
@@ -77,10 +90,11 @@ class _TransactionsListState extends State<TransactionsList> {
             children: [
               Stack(
                 children: [
-                  DayFlow(_selectedDate, selectDate, _onDrawer),
-                  TableValues(transactions, allTransactions),
+                  TitleTop(_onDrawer),
+                  TableValues(transactions, _allTransactions),
                 ],
               ),
+              DayFlow(_selectedDate, selectDate),
               Status(transactions),
               Expanded(
                 child: FutureBuilder<String>(

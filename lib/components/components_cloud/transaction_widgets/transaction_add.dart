@@ -38,7 +38,7 @@ class _TransactionAddState extends State<TransactionAdd> {
 
   Future<void> postTransaction() async {
     var description = _inputDescription.text;
-    var category = _inputCategory!;
+    var category = _inputCategory;
     var value = double.tryParse(_inputValeu.text) ?? 0.0;
     var type = _inputType ?? 1;
     if (description.isEmpty || category == null || value <= 0) {
@@ -141,21 +141,7 @@ class _TransactionAddState extends State<TransactionAdd> {
                   decoration: _decoration("Descrição"),
                   controller: _inputDescription,
                 ),
-                Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.add_circle_outline_outlined,
-                        color: Theme.of(context).colorScheme.secondary,
-                        size: sizeScreen * 0.075,
-                      ),
-                      onPressed: () => _openCategoryFormModal(context),
-                    ),
-                    Flexible(
-                      child: CategorysFile(_addCategory, false),
-                    )
-                  ],
-                ),
+                CategorysFile(_addCategory, false),
                 Row(
                   children: [
                     Text(
@@ -264,14 +250,6 @@ class _TransactionAddState extends State<TransactionAdd> {
         _selectDate = pickedDate;
       });
     });
-  }
-
-  _openCategoryFormModal(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return CategoryAdd();
-        });
   }
 
   _addCategory(int category) {

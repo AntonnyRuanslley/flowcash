@@ -41,6 +41,10 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    _refresh();
+  }
+
+  _refresh() {
     _getCategory();
   }
 

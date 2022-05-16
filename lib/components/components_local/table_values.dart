@@ -1,22 +1,24 @@
+import 'package:cas/data/transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TableValues extends StatelessWidget {
-  final List transaction;
+  final List actualTransaction;
+  final List allTransaction;
 
-  TableValues(this.transaction);
+  TableValues(this.actualTransaction, this.allTransaction);
 
   @override
   Widget build(BuildContext context) {
     final sizeScreen = MediaQuery.of(context).size.height;
 
-    _recipeOrExpense(int type) {
-      if (transaction.isEmpty) {
+    double _recipeOrExpense(type) {
+      if (actualTransaction.isEmpty) {
         return 0;
       } else {
-        var listValues = transaction.map((listValues) {
+        var listValues = actualTransaction.map((listValues) {
           if (listValues['type'] == type) {
-            return listValues['value'];
+            return double.parse(listValues['value'].toString());
           }
         });
         return listValues
@@ -25,8 +27,8 @@ class TableValues extends StatelessWidget {
       }
     }
 
-    _balance() {
-      return _recipeOrExpense(1) - _recipeOrExpense(2);
+    double _balance() {
+      return _recipeOrExpense(1) + (_recipeOrExpense(2) * -1);
     }
 
     _balancePos() {
@@ -35,6 +37,30 @@ class TableValues extends StatelessWidget {
       } else {
         return false;
       }
+    }
+
+    double _initialBalance() {
+      if (allTransaction.isEmpty) {
+        return 0;
+      } else {
+        var listValues = allTransaction.map((listValues) {
+          if (DateTime.parse(listValues['date'])
+              .isBefore(selectDate.subtract(const Duration(days: 1)))) {
+            if (listValues['type'] == 2) {
+              return (double.parse(listValues['value'].toString()) * -1);
+            } else {
+              return double.parse(listValues['value'].toString());
+            }
+          }
+        });
+        return listValues
+            .map((values) => (values ?? 0.0))
+            .reduce((total, prox) => total + prox);
+      }
+    }
+
+    _finalBalance() {
+      return _initialBalance() + _balance();
     }
 
     _title(icon, color, label) {
@@ -66,10 +92,14 @@ class TableValues extends StatelessWidget {
     }
 
     return Padding(
-      padding:
-          EdgeInsetsDirectional.only(start: 10, top: 60, end: 10, bottom: 5),
+      padding: EdgeInsetsDirectional.only(
+        start: sizeScreen * 0.018,
+        top: sizeScreen * 0.11,
+        end: sizeScreen * 0.018,
+        bottom: sizeScreen * 0.01,
+      ),
       child: Container(
-        height: sizeScreen * 0.19,
+        height: sizeScreen * 0.28,
         width: MediaQuery.of(context).size.width * 1,
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.secondary,
@@ -83,7 +113,7 @@ class TableValues extends StatelessWidget {
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(18),
+          padding: EdgeInsets.all(18),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -101,6 +131,22 @@ class TableValues extends StatelessWidget {
                               ? Colors.green
                               : Colors.red,
                       'Saldo'),
+                  _title(
+                      Icons.monetization_on_sharp,
+                      _initialBalance() == 0
+                          ? Colors.yellow[800]
+                          : _initialBalance() > 0
+                              ? Colors.green
+                              : Colors.red,
+                      'Saldo inicial'),
+                  _title(
+                      Icons.monetization_on_sharp,
+                      _finalBalance() == 0
+                          ? Colors.yellow[800]
+                          : _finalBalance() > 0
+                              ? Colors.green
+                              : Colors.red,
+                      'Saldo final'),
                 ],
               ),
               Column(
@@ -127,6 +173,26 @@ class TableValues extends StatelessWidget {
                       _balance() == 0
                           ? Colors.yellow[800]
                           : _balancePos()
+                              ? Colors.green
+                              : Colors.red),
+                  _value(
+                      _initialBalance() == 0
+                          ? 'R\$ 0,00'
+                          : NumberFormat(' R\$ #.00', 'pt-BR')
+                              .format(_initialBalance()),
+                      _initialBalance() == 0
+                          ? Colors.yellow[800]
+                          : _initialBalance() > 0
+                              ? Colors.green
+                              : Colors.red),
+                  _value(
+                      _finalBalance() == 0
+                          ? 'R\$ 0,00'
+                          : NumberFormat(' R\$ #.00', 'pt-BR')
+                              .format(_finalBalance()),
+                      _finalBalance() == 0
+                          ? Colors.yellow[800]
+                          : _finalBalance() > 0
                               ? Colors.green
                               : Colors.red),
                 ],

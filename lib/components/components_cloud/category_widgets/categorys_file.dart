@@ -1,9 +1,5 @@
-import 'dart:convert';
-
-import 'package:cas/data/urls.dart';
+import 'package:cas/data/categories.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CategorysFile extends StatefulWidget {
   final Function(int) onSubmit;
@@ -18,28 +14,6 @@ class CategorysFile extends StatefulWidget {
 
 class _CategorysFileState extends State<CategorysFile> {
   int? _category;
-  List _categories = [];
-
-  Future<void> getCategories() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse(urls['categories']!);
-    var answer = await http.get(
-      url,
-      headers: {
-        "Authorization": "Bearer ${sharedPreferences.getString('token')}",
-      },
-    );
-    if (answer.statusCode == 200) {
-      setState(() {
-        _categories = jsonDecode(answer.body)['data'];
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    getCategories();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +44,7 @@ class _CategorysFileState extends State<CategorysFile> {
         borderRadius: BorderRadius.circular(sizeScreen * 0.04),
         isExpanded: true,
         value: _category,
-        items: _categories.map((categorySelected) {
+        items: categories.map((categorySelected) {
           return DropdownMenuItem(
             value: int.parse(categorySelected['id'].toString()),
             child: Text(categorySelected['name']),

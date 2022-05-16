@@ -4,9 +4,8 @@ import 'package:intl/intl.dart';
 class DayFlow extends StatefulWidget {
   final Function selectedDate;
   final DateTime oldDate;
-  final Function _onDrawer;
 
-  DayFlow(this.selectedDate, this.oldDate, this._onDrawer);
+  DayFlow(this.selectedDate, this.oldDate);
 
   @override
   State<DayFlow> createState() => _DayFlowState();
@@ -15,6 +14,7 @@ class DayFlow extends StatefulWidget {
 class _DayFlowState extends State<DayFlow> {
   DateTime? _inputDate;
 
+  @override
   initState() {
     _inputDate = widget.oldDate;
   }
@@ -23,7 +23,7 @@ class _DayFlowState extends State<DayFlow> {
     showDatePicker(
       context: context,
       initialDate: widget.oldDate,
-      firstDate: DateTime(2021),
+      firstDate: DateTime(2000),
       lastDate: DateTime.now(),
       locale: const Locale('pt', 'BR'),
     ).then((pickedDate) {
@@ -42,61 +42,61 @@ class _DayFlowState extends State<DayFlow> {
     final sizeScreen = MediaQuery.of(context).size.height;
 
     return Container(
-      height: sizeScreen * 0.22,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary,
-      ),
-      child: Padding(
-        padding: EdgeInsetsDirectional.only(
-            top: sizeScreen * 0.01, end: sizeScreen * 0.025),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    IconButton(
-                        icon: Icon(
-                          Icons.menu,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                        onPressed: () {
-                          widget._onDrawer();
-                        }),
-                    Text(
-                      'Fluxo do dia:',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontSize: sizeScreen * 0.042,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.date_range_outlined,
-                        color: Colors.white,
-                        size: sizeScreen * 0.04,
-                      ),
-                      onPressed: _showDatePicker,
-                    ),
-                    Text(
-                      DateFormat("dd/MM/yy", "pt_BR").format(_inputDate!),
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontSize: sizeScreen * 0.035,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+      height: sizeScreen * 0.055,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios_new_rounded,
+              size: sizeScreen * 0.033,
             ),
-          ],
-        ),
+            onPressed: DateFormat("dd 'de' MMMM 'de' yyy", "pt_BR")
+                        .format(_inputDate!) ==
+                    DateFormat("dd 'de' MMMM 'de' yyy", "pt_BR")
+                        .format(DateTime(2000))
+                ? null
+                : () {
+                    setState(() {
+                      _inputDate =
+                          _inputDate!.subtract(const Duration(days: 1));
+                    });
+                    widget.selectedDate(_inputDate);
+                  },
+          ),
+          Expanded(
+            child: Container(
+              child: TextButton(
+                child: Text(
+                  DateFormat("dd 'de' MMMM 'de' yyy", "pt_BR")
+                      .format(_inputDate!),
+                  style: TextStyle(
+                    fontSize: sizeScreen * 0.028,
+                    color: Colors.black,
+                  ),
+                ),
+                onPressed: _showDatePicker,
+              ),
+            ),
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.arrow_forward_ios_rounded,
+              size: sizeScreen * 0.033,
+            ),
+            onPressed: DateFormat("dd 'de' MMMM 'de' yyy", "pt_BR")
+                        .format(_inputDate!) ==
+                    DateFormat("dd 'de' MMMM 'de' yyy", "pt_BR")
+                        .format(DateTime.now())
+                ? null
+                : () {
+                    setState(() {
+                      _inputDate = _inputDate!.add(const Duration(days: 1));
+                    });
+                    widget.selectedDate(_inputDate);
+                  },
+          ),
+        ],
       ),
     );
   }

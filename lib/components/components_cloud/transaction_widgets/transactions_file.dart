@@ -64,6 +64,7 @@ class _TransactionsFileState extends State<TransactionsFile> {
           return category['name'];
         }
       }
+      return "Sem categoria";
     }
 
     _openInformation(category) {

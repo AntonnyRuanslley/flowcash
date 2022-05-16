@@ -34,7 +34,7 @@ class _TransactionAddState extends State<TransactionAdd> {
 
   Future<void> postTransaction() async {
     var description = _inputDescription.text;
-    var category = _inputCategory!;
+    var category = _inputCategory;
     var value = double.tryParse(_inputValeu.text) ?? 0.0;
     var type = _inputType ?? 1;
     if (description.isEmpty || category == null || value <= 0) {

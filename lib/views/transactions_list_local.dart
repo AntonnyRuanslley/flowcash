@@ -4,6 +4,7 @@ import 'package:cas/data/transactions.dart';
 import 'package:cas/components/components_local/transaction_widgets/transaction_add.dart';
 import 'package:cas/components/components_local/transaction_widgets/transactions_file.dart';
 import 'package:cas/components/components_local/table_values.dart';
+import 'package:cas/components/components_cloud/title_top.dart';
 import 'package:cas/components/components_local/day_flow.dart';
 import 'package:cas/components/components_local/settings.dart';
 
@@ -20,9 +21,11 @@ class TransactionsListLocal extends StatefulWidget {
 
 class _TransactionsListLocalState extends State<TransactionsListLocal> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  Future<String>? getTransaction;
   final _transactionsBox = Hive.box('transactions');
   final _categoriesBox = Hive.box('categories');
+
+  Future<String>? getTransaction;
+  List _allTransactions = [];
 
   void _getTransanctions() {
     final data = _transactionsBox.keys.map((key) {
@@ -76,26 +79,23 @@ class _TransactionsListLocalState extends State<TransactionsListLocal> {
             children: [
               Stack(
                 children: [
-                  DayFlow(_selectedDate, selectDate, _onDrawer),
-                  TableValues(transactions),
+                  TitleTop(_onDrawer),
+                  TableValues(transactions, _allTransactions),
                 ],
               ),
+              DayFlow(_selectedDate, selectDate),
               Expanded(
                 child: transactions.isEmpty
                     ? Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: sizeScreen * 0.01),
-                            child: Container(
-                              height: sizeScreen * 0.25,
-                              child: const Image(
-                                image: AssetImage(
-                                  'assets/images/vazio.png',
-                                ),
-                                fit: BoxFit.cover,
+                          Container(
+                            height: sizeScreen * 0.25,
+                            child: const Image(
+                              image: AssetImage(
+                                'assets/images/vazio.png',
                               ),
+                              fit: BoxFit.cover,
                             ),
                           ),
                           Container(

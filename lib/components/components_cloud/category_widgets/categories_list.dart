@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cas/components/components_cloud/category_widgets/category_edit.dart';
+import 'package:cas/data/categories.dart';
 import 'package:cas/data/urls.dart';
 
 import 'package:flutter/material.dart';
@@ -17,7 +18,6 @@ class CategoriesList extends StatefulWidget {
 }
 
 class _CategoriesListState extends State<CategoriesList> {
-  List _categories = [];
   Future<String>? getCategories;
 
   Future<String> _getCategories() async {
@@ -32,7 +32,7 @@ class _CategoriesListState extends State<CategoriesList> {
     if (answer.statusCode == 200) {
       print(answer.statusCode);
       setState(() {
-        _categories = jsonDecode(answer.body)['data'];
+        categories = jsonDecode(answer.body)['data'];
       });
       return "Sucesso";
     } else {
@@ -94,7 +94,7 @@ class _CategoriesListState extends State<CategoriesList> {
                   ),
                 );
               }
-              return _categories.isEmpty
+              return categories.isEmpty
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -124,16 +124,16 @@ class _CategoriesListState extends State<CategoriesList> {
                       ],
                     )
                   : ListView.builder(
-                      itemCount: _categories.length,
+                      itemCount: categories.length,
                       itemBuilder: (ctx, i) {
                         return TextButton(
                           onPressed: () {
                             widget.who == 0
-                                ? _openForm(context, _categories[i])
-                                : _openAlert(context, _categories[i]['id']);
+                                ? _openForm(context, categories[i])
+                                : _openAlert(context, categories[i]['id']);
                           },
                           child: Text(
-                            _categories[i]['name'],
+                            categories[i]['name'],
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.secondary,
                                 fontSize: sizeScreen * 0.03),
