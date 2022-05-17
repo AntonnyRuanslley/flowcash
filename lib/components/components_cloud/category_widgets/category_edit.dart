@@ -40,8 +40,8 @@ class _CategoryEditState extends State<CategoryEdit> {
         },
       );
       if (answer.statusCode == 200) {
-        Navigator.of(context).pop();
         widget.onRefresh();
+        Navigator.of(context).pop();
       } else {
         return;
       }

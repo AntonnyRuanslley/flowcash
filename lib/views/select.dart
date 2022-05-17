@@ -28,14 +28,28 @@ class Select extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(vertical: sizeScreen * 0.06),
-              child: SizedBox(
-                height: sizeScreen * 0.35,
-                child: Image(
-                  image: AssetImage(
-                    'assets/images/lucros.png',
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: sizeScreen * 0.26,
+                    child: Image(
+                      image: AssetImage(
+                        'assets/images/flowcash-icone-branco.png',
+                      ),
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                  fit: BoxFit.cover,
-                ),
+                  SizedBox(height: sizeScreen * 0.025),
+                  SizedBox(
+                    height: sizeScreen * 0.07,
+                    child: Image(
+                      image: AssetImage(
+                        'assets/images/flowcash-nome-branco.png',
+                      ),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ],
               ),
             ),
             Center(

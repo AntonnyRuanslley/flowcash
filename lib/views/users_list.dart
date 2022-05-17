@@ -21,6 +21,25 @@ class _UsersListState extends State<UsersList> {
   List _users = [];
   Future<String>? getUser;
 
+  Future<String> _getUsers() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var url = Uri.parse(urls['users']!);
+    var answer = await http.get(
+      url,
+      headers: {
+        "Authorization": "Bearer ${sharedPreferences.getString('token')}",
+      },
+    );
+    if (answer.statusCode == 200) {
+      setState(() {
+        _users = jsonDecode(answer.body)['data'];
+      });
+      return "Sucesso";
+    } else {
+      return "Erro";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final sizeScreen = MediaQuery.of(context).size.height;
@@ -92,25 +111,6 @@ class _UsersListState extends State<UsersList> {
         },
       ),
     );
-  }
-
-  Future<String> _getUsers() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse(urls['users']!);
-    var answer = await http.get(
-      url,
-      headers: {
-        "Authorization": "Bearer ${sharedPreferences.getString('token')}",
-      },
-    );
-    if (answer.statusCode == 200) {
-      setState(() {
-        _users = jsonDecode(answer.body)['data'];
-      });
-      return "Sucesso";
-    } else {
-      return "Erro";
-    }
   }
 
   void initState() {

@@ -2,10 +2,7 @@ import 'dart:convert';
 
 import 'package:cas/components/components_cloud/category_widgets/categorys_file.dart';
 import 'package:cas/components/components_cloud/type_file.dart';
-import 'package:cas/data/categories.dart';
 import 'package:cas/data/urls.dart';
-
-import 'package:cas/components/components_cloud/category_widgets/category_add.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -85,6 +82,7 @@ class _TransactionAddState extends State<TransactionAdd> {
 
     _decoration(String label) {
       return InputDecoration(
+        counterStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
         hintText: label,
         hintStyle: TextStyle(
           fontSize: sizeScreen * 0.05,
@@ -135,6 +133,7 @@ class _TransactionAddState extends State<TransactionAdd> {
               children: [
                 TextField(
                   maxLines: 1,
+                  maxLength: 25,
                   cursorColor: Theme.of(context).colorScheme.secondary,
                   style:
                       TextStyle(color: Theme.of(context).colorScheme.secondary),

@@ -1,4 +1,5 @@
 import 'package:cas/views/select.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -23,9 +24,16 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
 
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Color(0XFFB80099),
+      ),
+    );
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Cast',
+      title: 'FlowCash',
+      color: Color(0XFFB80099),
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate

@@ -15,6 +15,7 @@ class _SettingsState extends State<Settings> {
   Future<bool> _logoff() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.remove('choice');
+    await sharedPreferences.remove('token');
     return true;
   }
 

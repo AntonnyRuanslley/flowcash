@@ -37,7 +37,7 @@ class _TitleTopState extends State<TitleTop> {
                 ),
                 Container(
                   height: sizeScreen * 0.11,
-                  width: MediaQuery.of(context).size.width * 0.6,
+                  width: MediaQuery.of(context).size.width * 0.55,
                   child: const Image(
                     image: AssetImage(
                       'assets/images/flowcash-nome-branco.png',

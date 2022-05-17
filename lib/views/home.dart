@@ -20,34 +20,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _actualView = 1;
 
-  Future<void> _getCategory() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse(urls['categories']!);
-    var answer = await http.get(
-      url,
-      headers: {
-        "Authorization": "Bearer ${sharedPreferences.getString('token')}",
-      },
-    );
-    if (answer.statusCode == 200) {
-      setState(() {
-        categories = jsonDecode(answer.body)['data'];
-      });
-    } else {
-      return;
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _refresh();
-  }
-
-  _refresh() {
-    _getCategory();
-  }
-
   _onBottom(int index) {
     setState(() {
       _actualView = index;

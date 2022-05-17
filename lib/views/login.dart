@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cas/data/urls.dart';
 import 'package:cas/views/home.dart';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -96,7 +97,7 @@ class _LoginState extends State<Login> {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: sizeScreen * 0.07),
                   child: SizedBox(
-                    height: sizeScreen * 0.35,
+                    height: sizeScreen * 0.32,
                     child: Image(
                       image: AssetImage(
                         'assets/images/flowcash-icone.png',

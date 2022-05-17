@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:cas/components/components_cloud/category_widgets/categorys_file.dart';
 import 'package:cas/components/components_cloud/type_file.dart';
-import 'package:cas/components/components_cloud/category_widgets/category_add.dart';
 
 import 'package:cas/data/urls.dart';
 
@@ -96,6 +95,7 @@ class _TransactionEditState extends State<TransactionEdit> {
           fontSize: sizeScreen * 0.05,
           color: Colors.white54,
         ),
+        counterStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
         contentPadding: EdgeInsets.only(
             left: sizeScreen * 0.05,
             top: sizeScreen * 0.041,
@@ -141,6 +141,7 @@ class _TransactionEditState extends State<TransactionEdit> {
               children: [
                 TextField(
                   maxLines: 1,
+                  maxLength: 25,
                   cursorColor: Theme.of(context).colorScheme.secondary,
                   style:
                       TextStyle(color: Theme.of(context).colorScheme.secondary),

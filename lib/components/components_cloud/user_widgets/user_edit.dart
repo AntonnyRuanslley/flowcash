@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 class UserEdit extends StatefulWidget {
   final user;
   final Function onRefresh;
+  final bool isPerfil;
 
-  UserEdit(this.user, this.onRefresh);
+  UserEdit(this.user, this.onRefresh, this.isPerfil);
   @override
   State<UserEdit> createState() => _UserEditState();
 }
@@ -24,6 +25,7 @@ class _UserEditState extends State<UserEdit> {
 
   TextEditingController? _inputName = TextEditingController();
   TextEditingController? _inputEmail = TextEditingController();
+  TextEditingController? _inputPassword = TextEditingController();
 
   void initState() {
     _inputName!.text = widget.user['name'];
@@ -33,32 +35,26 @@ class _UserEditState extends State<UserEdit> {
   Future<void> _putUser() async {
     var name = _inputName!.text;
     var email = _inputEmail!.text;
+    var password = _inputPassword!.text;
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse(urls['user_logged']!);
-    var answer = await http.get(url, headers: {
-      "Authorization": "Bearer ${sharedPreferences.getString('token')}",
-    });
+    var url = Uri.parse("${urls['users']!}/${widget.user['id']}");
+    var answer = await http.put(
+      url,
+      body: {
+        "name": name,
+        "email": email,
+        "password": "123456789",
+      },
+      headers: {
+        "Authorization": "Bearer ${sharedPreferences.getString('token')}",
+      },
+    );
+    print(answer.statusCode);
     if (answer.statusCode == 200) {
-      url = Uri.parse("${urls['users']!}/${widget.user['id']}");
-      answer = await http.put(
-        url,
-        body: {
-          "name": name,
-          "email": email,
-        },
-        headers: {
-          "Authorization": "Bearer ${sharedPreferences.getString('token')}",
-        },
-      );
-      if (answer.statusCode == 200) {
-        widget.onRefresh();
-        Navigator.of(context).pop();
-        Navigator.of(context).pop();
-        ScaffoldMessenger.of(context).showSnackBar(message);
-      } else {
-        print(answer.statusCode);
-        return;
-      }
+      widget.onRefresh();
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(message);
     } else {
       return;
     }
@@ -112,7 +108,7 @@ class _UserEditState extends State<UserEdit> {
       ),
       content: SingleChildScrollView(
         child: SizedBox(
-          height: sizeScreen * 0.6,
+          height: sizeScreen * 0.7,
           child: Padding(
             padding: EdgeInsets.all(sizeScreen * 0.01),
             child: Column(
@@ -134,6 +130,16 @@ class _UserEditState extends State<UserEdit> {
                       TextStyle(color: Theme.of(context).colorScheme.secondary),
                   decoration: _decoration(widget.user['email']!),
                   controller: _inputEmail,
+                ),
+                TextField(
+                  maxLines: 1,
+                  keyboardType: TextInputType.emailAddress,
+                  cursorColor: Theme.of(context).colorScheme.secondary,
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.secondary),
+                  decoration: _decoration("Inserir nova senha"),
+                  controller: _inputPassword,
+                  obscureText: true,
                 ),
                 Container(
                   width: sizeScreen * 1,

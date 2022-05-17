@@ -32,6 +32,7 @@ class _TransactionsFileState extends State<TransactionsFile> {
           return category['name'];
         }
       }
+      return "Sem categoria";
     }
 
     _openInformation(category) {
@@ -75,6 +76,13 @@ class _TransactionsFileState extends State<TransactionsFile> {
           ),
         ),
         title: Text(
+          widget.transaction['description'],
+          style: TextStyle(
+            fontSize: sizeScreen * 0.027,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        subtitle: Text(
           _searchCategory(widget.transaction['category_id']).toString(),
           style: TextStyle(
             fontSize: sizeScreen * 0.027,

@@ -1,9 +1,16 @@
+import 'dart:convert';
+
 import 'package:cas/components/components_cloud/category_widgets/category_add.dart';
 import 'package:cas/components/components_cloud/category_widgets/categories_list.dart';
+import 'package:cas/components/components_cloud/user_widgets/user_edit.dart';
+
+import 'package:cas/data/urls.dart';
 import 'package:cas/data/users.dart';
+
 import 'package:cas/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class Settings extends StatefulWidget {
   @override
@@ -14,8 +21,29 @@ class _SettingsState extends State<Settings> {
   Future<bool> _logoff() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.remove('token');
-    await sharedPreferences.remove('choice');
+    //await sharedPreferences.remove('choice');
     return true;
+  }
+
+  Map user = {};
+
+  Future<void> _getUser() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var url = Uri.parse(urls['user_logged']!);
+    var answer = await http.get(url, headers: {
+      "Authorization": "Bearer ${sharedPreferences.getString('token')}",
+    });
+    setState(() {
+      user = jsonDecode(answer.body);
+    });
+  }
+
+  initState() {
+    _refresh();
+  }
+
+  _refresh() {
+    _getUser();
   }
 
   _openFormModal(context, widget) {
@@ -69,7 +97,7 @@ class _SettingsState extends State<Settings> {
                       height: sizeScreen * 0.01,
                     ),
                     Text(
-                      user,
+                      nameUser,
                       style: TextStyle(
                           color: Theme.of(context).colorScheme.secondary,
                           fontSize: sizeScreen * 0.026),
@@ -94,6 +122,15 @@ class _SettingsState extends State<Settings> {
                   () => _openFormModal(context, CategoriesList(0))),
               _itemsDrawer(Icons.delete, 'Excluir categoria',
                   () => _openFormModal(context, CategoriesList(1))),
+              Divider(
+                height: 1,
+                thickness: 1,
+              ),
+              _itemsDrawer(
+                  Icons.person,
+                  'Editar perfil',
+                  () =>
+                      _openFormModal(context, UserEdit(user, _refresh, true))),
               Divider(
                 height: 1,
                 thickness: 1,

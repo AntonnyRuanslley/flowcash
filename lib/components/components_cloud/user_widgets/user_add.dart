@@ -34,30 +34,23 @@ class _UserAddState extends State<UserAdd> {
       return;
     }
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse(urls['user_logged']!);
-    var answer = await http.get(url, headers: {
-      "Authorization": "Bearer ${sharedPreferences.getString('token')}",
-    });
-    if (answer.statusCode == 200) {
-      url = Uri.parse(urls['users']!);
-      answer = await http.post(
-        url,
-        body: {
-          "name": name,
-          "email": email,
-          "password": password,
-        },
-        headers: {
-          "Authorization": "Bearer ${sharedPreferences.getString('token')}",
-        },
-      );
-      if (answer.statusCode == 201) {
-        widget.onRefresh();
-        Navigator.of(context).pop();
-        ScaffoldMessenger.of(context).showSnackBar(message);
-      } else {
-        return;
-      }
+    var url = Uri.parse(urls['users']!);
+    var answer = await http.post(
+      url,
+      body: {
+        "name": name,
+        "email": email,
+        "password": password,
+      },
+      headers: {
+        "Authorization": "Bearer ${sharedPreferences.getString('token')}",
+      },
+    );
+    print(answer.statusCode);
+    if (answer.statusCode == 201) {
+      widget.onRefresh();
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(message);
     } else {
       return;
     }

@@ -41,11 +41,9 @@ class _LoadingState extends State<Loading> {
     var answer = await http.get(url, headers: {
       "Authorization": "Bearer ${sharedPreferences.getString('token')}",
     });
-    if (answer.statusCode == 200) {
-      setState(() {
-        user = jsonDecode(answer.body)['name'].toString();
-      });
-    }
+    setState(() {
+      nameUser = jsonDecode(answer.body)['name'].toString();
+    });
     var isAdmin = jsonDecode(answer.body)['administrator'] as bool;
     return isAdmin;
   }

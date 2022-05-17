@@ -71,6 +71,7 @@ class _TransactionEditState extends State<TransactionEdit> {
           fontSize: sizeScreen * 0.05,
           color: Colors.white54,
         ),
+        counterStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
         contentPadding: EdgeInsets.only(
             left: sizeScreen * 0.05,
             top: sizeScreen * 0.041,
@@ -116,28 +117,14 @@ class _TransactionEditState extends State<TransactionEdit> {
               children: [
                 TextField(
                   maxLines: 1,
+                  maxLength: 25,
                   cursorColor: Theme.of(context).colorScheme.secondary,
                   style:
                       TextStyle(color: Theme.of(context).colorScheme.secondary),
                   decoration: _decoration(),
                   controller: _inputDescription,
                 ),
-                Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.add_circle_outline_outlined,
-                        color: Theme.of(context).colorScheme.secondary,
-                        size: sizeScreen * 0.075,
-                      ),
-                      onPressed: () => _openCategoryFormModal(context),
-                    ),
-                    Flexible(
-                      child:
-                          CategorysFile(_addCategory, true, widget.category!),
-                    )
-                  ],
-                ),
+                CategorysFile(_addCategory, true, widget.category!),
                 Row(
                   children: [
                     Text(

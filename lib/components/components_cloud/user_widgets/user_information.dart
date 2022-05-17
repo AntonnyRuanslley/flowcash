@@ -78,7 +78,7 @@ class _UserInformationState extends State<UserInformation> {
     showDialog(
         context: context,
         builder: (context) {
-          return UserEdit(widget.user, widget.onRefresh);
+          return UserEdit(widget.user, widget.onRefresh, false);
         });
   }
 
