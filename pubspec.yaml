@@ -51,6 +51,11 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.9.2
+  flutter_native_splash: ^2.0.1+1
+
+flutter_native_splash:
+  color: "#b80099"
+  image: "assets/icons/flowcash-branco.png"
 
 flutter_icons: 
   android: true
