@@ -1,27 +1,16 @@
-import 'package:cas/components/components_local/table_values_extensive.dart';
 import 'package:cas/data/transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class TableValues extends StatelessWidget {
+class TableValuesExtensive extends StatelessWidget {
   final List actualTransaction;
   final List allTransaction;
 
-  TableValues(this.actualTransaction, this.allTransaction);
-
-  _openForm(context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return Center(
-              child: TableValuesExtensive(actualTransaction, allTransaction));
-        });
-  }
+  TableValuesExtensive(this.actualTransaction, this.allTransaction);
 
   @override
   Widget build(BuildContext context) {
-     final sizeScreen =
-        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
+    final sizeScreen = MediaQuery.of(context).size.height;
 
     double _recipeOrExpense(type) {
       if (actualTransaction.isEmpty) {
@@ -107,14 +96,14 @@ class TableValues extends StatelessWidget {
     return Padding(
       padding: EdgeInsetsDirectional.only(
         start: sizeScreen * 0.01,
-        top: sizeScreen * 0.082,
+        top: sizeScreen * 0.08,
         end: sizeScreen * 0.01,
         bottom: sizeScreen * 0.01,
       ),
       child: TextButton(
-        onPressed: () => _openForm(context),
+        onPressed: () {},
         child: Container(
-          height: sizeScreen * 0.19,
+          height: sizeScreen * 0.28,
           width: MediaQuery.of(context).size.width * 1,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.secondary,
@@ -146,7 +135,23 @@ class TableValues extends StatelessWidget {
                             : _balancePos()
                                 ? Colors.green
                                 : Colors.red,
-                        'Saldo')
+                        'Saldo'),
+                    _title(
+                        Icons.monetization_on_sharp,
+                        _initialBalance() == 0
+                            ? Colors.yellow[800]
+                            : _initialBalance() > 0
+                                ? Colors.green
+                                : Colors.red,
+                        'Saldo inicial'),
+                    _title(
+                        Icons.monetization_on_sharp,
+                        _finalBalance() == 0
+                            ? Colors.yellow[800]
+                            : _finalBalance() > 0
+                                ? Colors.green
+                                : Colors.red,
+                        'Saldo final'),
                   ],
                 ),
                 Column(
@@ -173,6 +178,26 @@ class TableValues extends StatelessWidget {
                         _balance() == 0
                             ? Colors.yellow[800]
                             : _balancePos()
+                                ? Colors.green
+                                : Colors.red),
+                    _value(
+                        _initialBalance() == 0
+                            ? 'R\$ 0,00'
+                            : NumberFormat(' R\$ #.00', 'pt-BR')
+                                .format(_initialBalance()),
+                        _initialBalance() == 0
+                            ? Colors.yellow[800]
+                            : _initialBalance() > 0
+                                ? Colors.green
+                                : Colors.red),
+                    _value(
+                        _finalBalance() == 0
+                            ? 'R\$ 0,00'
+                            : NumberFormat(' R\$ #.00', 'pt-BR')
+                                .format(_finalBalance()),
+                        _finalBalance() == 0
+                            ? Colors.yellow[800]
+                            : _finalBalance() > 0
                                 ? Colors.green
                                 : Colors.red),
                   ],

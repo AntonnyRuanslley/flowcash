@@ -39,7 +39,8 @@ class _DayFlowState extends State<DayFlow> {
 
   @override
   Widget build(BuildContext context) {
-    final sizeScreen = MediaQuery.of(context).size.height;
+    final sizeScreen =
+        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
 
     return Container(
       height: sizeScreen * 0.055,

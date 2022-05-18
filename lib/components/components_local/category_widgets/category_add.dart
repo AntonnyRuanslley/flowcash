@@ -1,3 +1,4 @@
+import 'package:cas/data/categories.dart';
 import 'package:hive/hive.dart';
 
 import 'package:flutter/material.dart';
@@ -14,6 +15,19 @@ class _CategoryFormState extends State<CategoryForm> {
   @override
   Widget build(BuildContext context) {
     final sizeScreen = MediaQuery.of(context).size.width;
+    void _getCategories() {
+      final data = _categoriesBox.keys.map((key) {
+        final value = _categoriesBox.get(key);
+        return {
+          "id": key,
+          "name": value["name"],
+        };
+      }).toList();
+
+      setState(() {
+        categories = data.reversed.toList();
+      });
+    }
 
     Future<void> _postCategory() async {
       if (_inputName.text.isEmpty) {
@@ -23,6 +37,7 @@ class _CategoryFormState extends State<CategoryForm> {
         "name": _inputName.text,
       });
       await _categoriesBox.add(newCategory);
+      _getCategories();
       Navigator.of(context).pop();
     }
 

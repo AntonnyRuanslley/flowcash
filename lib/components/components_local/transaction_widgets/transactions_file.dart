@@ -24,7 +24,8 @@ class _TransactionsFileState extends State<TransactionsFile> {
 
   @override
   Widget build(BuildContext context) {
-    final sizeScreen = MediaQuery.of(context).size.height;
+    final sizeScreen =
+        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
 
     _searchCategory(id) {
       for (var category in categories) {

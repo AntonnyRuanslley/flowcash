@@ -32,7 +32,7 @@ class _TypeFileState extends State<TypeFile> {
 
   @override
   Widget build(BuildContext context) {
-    final sizeScreen = MediaQuery.of(context).size.width;
+    final sizeScreen = MediaQuery.of(context).size.width - MediaQuery.of(context).padding.top;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

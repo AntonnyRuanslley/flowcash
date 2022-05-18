@@ -4,7 +4,7 @@ import 'package:cas/data/transactions.dart';
 import 'package:cas/components/components_local/transaction_widgets/transaction_add.dart';
 import 'package:cas/components/components_local/transaction_widgets/transactions_file.dart';
 import 'package:cas/components/components_local/table_values.dart';
-import 'package:cas/components/components_cloud/title_top.dart';
+import 'package:cas/components/components_local/title_top.dart';
 import 'package:cas/components/components_local/day_flow.dart';
 import 'package:cas/components/components_local/settings.dart';
 
@@ -64,7 +64,8 @@ class _TransactionsListLocalState extends State<TransactionsListLocal> {
 
   @override
   Widget build(BuildContext context) {
-    final sizeScreen = MediaQuery.of(context).size.height;
+    final sizeScreen =
+        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -72,9 +73,7 @@ class _TransactionsListLocalState extends State<TransactionsListLocal> {
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: SafeArea(
         child: Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[50],
-          ),
+          color: Colors.grey[50],
           child: Column(
             children: [
               Stack(
@@ -162,7 +161,7 @@ class _TransactionsListLocalState extends State<TransactionsListLocal> {
     showDialog(
         context: context,
         builder: (context) {
-          return TransactionAdd(_refresh);
+          return Center(child: TransactionAdd(_refresh));
         });
   }
 }

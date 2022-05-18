@@ -100,7 +100,7 @@ class _LoginState extends State<Login> {
                     height: sizeScreen * 0.32,
                     child: Image(
                       image: AssetImage(
-                        'assets/images/flowcash-icone.png',
+                        'assets/icons/flowcash.png',
                       ),
                       fit: BoxFit.cover,
                     ),

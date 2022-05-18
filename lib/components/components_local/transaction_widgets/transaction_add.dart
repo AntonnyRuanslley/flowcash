@@ -1,5 +1,5 @@
 import 'package:cas/components/components_local/category_widgets/categorys_file.dart';
-import 'package:cas/components/components_local/type_file.dart';
+import 'package:cas/components/components_local/transaction_widgets/type_file.dart';
 import 'package:cas/components/components_local/category_widgets/category_add.dart';
 
 import 'package:hive/hive.dart';

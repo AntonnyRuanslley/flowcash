@@ -75,7 +75,8 @@ class _TransactionsListState extends State<TransactionsList> {
 
   @override
   Widget build(BuildContext context) {
-    final sizeScreen = MediaQuery.of(context).size.height;
+    final sizeScreen =
+        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -83,9 +84,7 @@ class _TransactionsListState extends State<TransactionsList> {
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: SafeArea(
         child: Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[50],
-          ),
+          color: Colors.grey[50],
           child: Column(
             children: [
               Stack(
@@ -197,7 +196,7 @@ class _TransactionsListState extends State<TransactionsList> {
     showDialog(
         context: context,
         builder: (context) {
-          return TransactionAdd(_refresh);
+          return Center(child: TransactionAdd(_refresh));
         });
   }
 }

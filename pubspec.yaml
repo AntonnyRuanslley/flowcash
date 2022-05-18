@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.0.2+3
 
 environment:
   sdk: ">=2.16.2 <3.0.0"
@@ -47,13 +47,15 @@ dependencies:
   hive_flutter: ^1.1.0
   path_provider: ^2.0.2
   flutter_native_splash: ^2.0.1+1
+  flutter_launcher_icons: ^0.9.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.9.2
 
 flutter_native_splash:
+  android: true
+  ios: true
   color: "#b80099"
   image: "assets/icons/flowcash-branco.png"
 
@@ -65,6 +67,11 @@ flutter_icons:
   android: true
   ios: true
   image_path: "assets/icons/flowcash.png"
+  remove_alpha_ios: true
+
+  android_12:
+    color: "#b80099"
+    image: "assets/icons/flowcash.png" 
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -87,6 +94,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/icons/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

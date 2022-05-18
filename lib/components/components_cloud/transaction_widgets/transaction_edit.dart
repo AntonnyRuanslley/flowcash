@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:cas/components/components_cloud/category_widgets/categorys_file.dart';
-import 'package:cas/components/components_cloud/type_file.dart';
+import 'package:cas/components/components_cloud/transaction_widgets/type_file.dart';
 
 import 'package:cas/data/urls.dart';
 
@@ -245,7 +245,7 @@ class _TransactionEditState extends State<TransactionEdit> {
     showDatePicker(
       context: context,
       initialDate: DateTime.parse(widget.transaction['date']!),
-      firstDate: DateTime(2019),
+      firstDate: DateTime.now(),
       lastDate: DateTime.now(),
       locale: const Locale('pt', 'BR'),
     ).then((pickedDate) {

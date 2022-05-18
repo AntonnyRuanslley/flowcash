@@ -32,8 +32,11 @@ class Status extends StatelessWidget {
     }
 
     return Padding(
-      padding:
-          EdgeInsetsDirectional.only(start: 17, top: 4, end: 17, bottom: 3),
+      padding: EdgeInsetsDirectional.only(
+          start: sizeScreen * 0.03,
+          top: sizeScreen * 0.01,
+          end: sizeScreen * 0.03,
+          bottom: sizeScreen * 0.01),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

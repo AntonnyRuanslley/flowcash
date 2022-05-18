@@ -12,15 +12,17 @@ class TitleTop extends StatefulWidget {
 class _TitleTopState extends State<TitleTop> {
   @override
   Widget build(BuildContext context) {
-    final sizeScreen = MediaQuery.of(context).size.height;
+    final sizeScreen =
+        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
     return Container(
-      height: sizeScreen * 0.25,
+      height: sizeScreen * 0.19,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primary,
       ),
       child: Padding(
-        padding: EdgeInsetsDirectional.only(
-            end: MediaQuery.of(context).size.width * 0.04),
+        padding: EdgeInsets.only(
+          top: sizeScreen * 0.01,
+        ),
         child: Column(
           children: [
             Row(
@@ -35,9 +37,9 @@ class _TitleTopState extends State<TitleTop> {
                     widget.onDrawer();
                   },
                 ),
+                SizedBox(width: sizeScreen * 0.02),
                 Container(
-                  height: sizeScreen * 0.11,
-                  width: MediaQuery.of(context).size.width * 0.55,
+                  width: sizeScreen * 0.35,
                   child: const Image(
                     image: AssetImage(
                       'assets/images/flowcash-nome-branco.png',

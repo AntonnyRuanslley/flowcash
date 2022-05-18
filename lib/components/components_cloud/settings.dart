@@ -25,6 +25,12 @@ class _SettingsState extends State<Settings> {
     return true;
   }
 
+  Future<bool> _changeChoice() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.remove('choice');
+    return true;
+  }
+
   Map user = {};
 
   Future<void> _getUser() async {
@@ -139,6 +145,21 @@ class _SettingsState extends State<Settings> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    _itemsDrawer(
+                      Icons.low_priority_sharp,
+                      'Escolher modo',
+                      () async {
+                        bool logoffed = await _changeChoice();
+                        if (logoffed) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (contex) => Loading(),
+                            ),
+                          );
+                        }
+                      },
+                    ),
                     _itemsDrawer(
                       Icons.person_off,
                       'Sair',

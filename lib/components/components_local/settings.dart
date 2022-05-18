@@ -12,10 +12,9 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  Future<bool> _logoff() async {
+  Future<bool> _changeChoice() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.remove('choice');
-    await sharedPreferences.remove('token');
     return true;
   }
 
@@ -29,7 +28,8 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    var sizeScreen = MediaQuery.of(context).size.height;
+    final sizeScreen =
+        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
 
     _itemsDrawer(icon, text, onTap) {
       return ListTile(
@@ -98,10 +98,10 @@ class _SettingsState extends State<Settings> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     _itemsDrawer(
-                      Icons.person_off,
-                      'Sair',
+                      Icons.low_priority_sharp,
+                      'Escolher modo',
                       () async {
-                        bool logoffed = await _logoff();
+                        bool logoffed = await _changeChoice();
                         if (logoffed) {
                           Navigator.pushReplacement(
                             context,
