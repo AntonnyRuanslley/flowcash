@@ -124,8 +124,7 @@ class TableValues extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _title(
-                      Icons.arrow_downward_rounded, Colors.green, 'Receita'),
+                  _title(Icons.arrow_downward_rounded, Colors.green, 'Receita'),
                   _title(Icons.arrow_upward_rounded, Colors.red, 'Despesa'),
                   _title(
                       Icons.attach_money_rounded,
@@ -135,6 +134,9 @@ class TableValues extends StatelessWidget {
                               ? Colors.green
                               : Colors.red,
                       'Saldo'),
+                  Divider(
+                    height: sizeScreen * 0.01,
+                  ),
                   _title(
                       Icons.monetization_on_sharp,
                       _initialBalance() == 0

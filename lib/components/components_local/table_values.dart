@@ -77,7 +77,6 @@ class TableValues extends StatelessWidget {
             style: TextStyle(
               color: Colors.black,
               fontSize: sizeScreen * 0.029,
-              fontWeight: FontWeight.bold,
             ),
           ),
         ],
@@ -90,6 +89,7 @@ class TableValues extends StatelessWidget {
         style: TextStyle(
           color: color,
           fontSize: sizeScreen * 0.029,
+          fontWeight: FontWeight.bold,
         ),
       );
     }
@@ -134,6 +134,9 @@ class TableValues extends StatelessWidget {
                               ? Colors.green
                               : Colors.red,
                       'Saldo'),
+                  Divider(
+                    height: sizeScreen * 0.01,
+                  ),
                   _title(
                       Icons.monetization_on_sharp,
                       _initialBalance() == 0
