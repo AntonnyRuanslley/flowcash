@@ -77,7 +77,7 @@ class TableValues extends StatelessWidget {
             style: TextStyle(
               color: Colors.black,
               fontSize: sizeScreen * 0.029,
-              fontWeight: FontWeight.normal,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ],
