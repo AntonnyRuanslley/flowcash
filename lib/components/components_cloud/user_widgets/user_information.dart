@@ -18,7 +18,7 @@ class UserInformation extends StatefulWidget {
 class _UserInformationState extends State<UserInformation> {
   final message = SnackBar(
     content: Text(
-      "Usuário excluido com sucesso",
+      "Usuário excluido com sucesso!",
       textAlign: TextAlign.center,
     ),
     backgroundColor: Colors.redAccent,
@@ -26,8 +26,8 @@ class _UserInformationState extends State<UserInformation> {
 
   Future<void> _deleteUser() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse("${urls['users']!}/${widget.user['id']}");
-    var answer = await http.delete(
+    var url = Uri.parse("${urls['users']!}/${widget.user['id']}/destroy");
+    var answer = await http.post(
       url,
       headers: {
         "Authorization": "Bearer ${sharedPreferences.getString('token')}"
@@ -78,7 +78,7 @@ class _UserInformationState extends State<UserInformation> {
     showDialog(
         context: context,
         builder: (context) {
-          return UserEdit(widget.user, widget.onRefresh, false);
+          return Center(child: UserEdit(widget.user, widget.onRefresh, false));
         });
   }
 
@@ -95,7 +95,7 @@ class _UserInformationState extends State<UserInformation> {
             Text(
               title,
               style: TextStyle(
-                fontSize: sizeScreen * 0.051,
+                fontSize: sizeScreen * 0.05,
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).colorScheme.secondary,
               ),
@@ -103,7 +103,7 @@ class _UserInformationState extends State<UserInformation> {
             Text(
               content,
               style: TextStyle(
-                fontSize: sizeScreen * 0.051,
+                fontSize: sizeScreen * 0.05,
                 color: Theme.of(context).colorScheme.secondary,
               ),
             ),

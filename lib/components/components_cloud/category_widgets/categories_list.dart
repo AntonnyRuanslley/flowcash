@@ -42,8 +42,8 @@ class _CategoriesListState extends State<CategoriesList> {
 
   Future<void> _deleteCategory(id) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse("${urls['categories']!}/${id}");
-    var answer = await http.delete(
+    var url = Uri.parse("${urls['categories']!}/${id}/destroy");
+    var answer = await http.post(
       url,
       headers: {
         "Authorization": "Bearer ${sharedPreferences.getString('token')}",

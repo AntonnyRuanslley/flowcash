@@ -17,12 +17,19 @@ class PendentsList extends StatefulWidget {
 class _PendentsListState extends State<PendentsList> {
   List _pendents = transactions;
 
-  final message = SnackBar(
+  final message1 = SnackBar(
     content: Text(
-      "Transações aprovadas",
+      "Transações aprovadas!",
       textAlign: TextAlign.center,
     ),
     backgroundColor: Colors.blueAccent,
+  );
+  final message2 = SnackBar(
+    content: Text(
+      "Algo deu errado, tente novamente!",
+      textAlign: TextAlign.center,
+    ),
+    backgroundColor: Colors.redAccent,
   );
 
   @override
@@ -33,8 +40,8 @@ class _PendentsListState extends State<PendentsList> {
 
   Future<void> _putTransaction(transaction) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse("${urls['transactions']!}/${transaction['id']}");
-    var answer = await http.put(
+    var url = Uri.parse("${urls['transactions']!}/${transaction['id']}/update");
+    var answer = await http.post(
       url,
       headers: {
         "Authorization": "Bearer ${sharedPreferences.getString('token')}",
@@ -45,12 +52,12 @@ class _PendentsListState extends State<PendentsList> {
         "value": transaction['value'].toString(),
         "type": transaction['type'].toString(),
         "status": 2.toString(),
-        "date": transaction['date'].toString(),
+        "date": transaction['date'].toString().split('T')[0],
         "user_id": transaction['user_id'].toString(),
       },
     );
     if (answer.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(message);
+      return;
     } else {
       return;
     }
@@ -63,6 +70,11 @@ class _PendentsListState extends State<PendentsList> {
     setState(() {
       _pendents.clear();
     });
+    if (_pendents.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(message1);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(message2);
+    }
   }
 
   @override

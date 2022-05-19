@@ -29,8 +29,8 @@ class _CategoryEditState extends State<CategoryEdit> {
     Future<void> _putCategory() async {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
-      var url = Uri.parse("${urls['categories']!}/${widget.category['id']}");
-      var answer = await http.put(
+      var url = Uri.parse("${urls['categories']!}/${widget.category['id']}/update");
+      var answer = await http.post(
         url,
         body: {
           "name": _inputName!.text,

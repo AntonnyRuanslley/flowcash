@@ -79,8 +79,9 @@ class _TransactionsFileState extends State<TransactionsFile> {
         title: Text(
           widget.transaction['description'],
           style: TextStyle(
-            fontSize: sizeScreen * 0.027,
+            fontSize: sizeScreen * 0.025,
             fontWeight: FontWeight.bold,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
         subtitle: Text(
@@ -88,6 +89,7 @@ class _TransactionsFileState extends State<TransactionsFile> {
           style: TextStyle(
             fontSize: sizeScreen * 0.027,
             fontWeight: FontWeight.bold,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
         trailing: SizedBox(

@@ -23,7 +23,7 @@ class TransactionEdit extends StatefulWidget {
 class _TransactionEditState extends State<TransactionEdit> {
   final message = SnackBar(
     content: Text(
-      "Transação editada com sucesso",
+      "Transação editada com sucesso!",
       textAlign: TextAlign.center,
     ),
     backgroundColor: Colors.blueAccent,
@@ -46,9 +46,12 @@ class _TransactionEditState extends State<TransactionEdit> {
 
   Future<void> putTransaction() async {
     var description = _inputDescription!.text;
-    var category = _inputCategory!;
+    var category = _inputCategory;
     var value = double.tryParse(_inputValeu!.text) ?? 0.0;
     var type = _inputType ?? 1;
+    if (description.isEmpty || category == null || value <= 0) {
+      return;
+    }
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var url = Uri.parse(urls['user_logged']!);
     var answer = await http.get(url, headers: {
@@ -56,8 +59,9 @@ class _TransactionEditState extends State<TransactionEdit> {
     });
     if (answer.statusCode == 200) {
       String user_id = jsonDecode(answer.body)['id'].toString();
-      url = Uri.parse("${urls['transactions']!}/${widget.transaction['id']}");
-      answer = await http.put(
+      url = Uri.parse(
+          "${urls['transactions']!}/${widget.transaction['id']}/update");
+      answer = await http.post(
         url,
         body: {
           "description": description,
@@ -65,7 +69,7 @@ class _TransactionEditState extends State<TransactionEdit> {
           "value": value.toString(),
           "type": type.toString(),
           "status": 1.toString(),
-          "date": _selectDate.toString(),
+          "date": _selectDate.toString().split(' ')[0],
           "user_id": user_id,
         },
         headers: {

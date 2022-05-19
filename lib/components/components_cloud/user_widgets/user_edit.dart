@@ -1,3 +1,4 @@
+import 'package:cas/components/components_cloud/user_widgets/type_user.dart';
 import 'package:cas/data/urls.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,38 +18,61 @@ class UserEdit extends StatefulWidget {
 class _UserEditState extends State<UserEdit> {
   final message = SnackBar(
     content: Text(
-      "Usuário editado com sucesso",
+      "Usuário editado com sucesso!",
       textAlign: TextAlign.center,
     ),
     backgroundColor: Colors.blueAccent,
   );
 
   TextEditingController? _inputName = TextEditingController();
-  TextEditingController? _inputEmail = TextEditingController();
   TextEditingController? _inputPassword = TextEditingController();
+  int? _inputType;
 
   void initState() {
     _inputName!.text = widget.user['name'];
-    _inputEmail!.text = widget.user['email'];
+    _inputType = widget.user['administrator'] == true ? 0 : 1;
   }
 
-  Future<void> _putUser() async {
+  _addType(int type) {
+    setState(() {
+      _inputType = type;
+    });
+  }
+
+  Future<void> _putUser(isReset) async {
     var name = _inputName!.text;
-    var email = _inputEmail!.text;
     var password = _inputPassword!.text;
+    if (isReset) {
+      name = widget.user['name'];
+      password = '123456789';
+    }
+    if (name.isEmpty) {
+      return;
+    }
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse("${urls['users']!}/${widget.user['id']}");
-    var answer = await http.put(
-      url,
-      body: {
-        "name": name,
-        "email": email,
-        "password": "123456789",
-      },
-      headers: {
-        "Authorization": "Bearer ${sharedPreferences.getString('token')}",
-      },
-    );
+    var url = Uri.parse("${urls['users']!}/${widget.user['id']}/update");
+    var answer = widget.isPerfil || password.isEmpty
+        ? await http.post(
+            url,
+            body: {
+              "name": name,
+              "password": password,
+              "administrator": _inputType.toString(),
+            },
+            headers: {
+              "Authorization": "Bearer ${sharedPreferences.getString('token')}",
+            },
+          )
+        : await http.post(
+            url,
+            body: {
+              "name": name,
+              "administrator": _inputType.toString(),
+            },
+            headers: {
+              "Authorization": "Bearer ${sharedPreferences.getString('token')}",
+            },
+          );
     print(answer.statusCode);
     if (answer.statusCode == 200) {
       widget.onRefresh();
@@ -93,94 +117,134 @@ class _UserEditState extends State<UserEdit> {
       );
     }
 
-    return AlertDialog(
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      title: Text(
-        "Edição de usuário",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-      ),
-      content: SingleChildScrollView(
-        child: SizedBox(
-          height: sizeScreen * 0.7,
-          child: Padding(
-            padding: EdgeInsets.all(sizeScreen * 0.01),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextField(
-                  maxLines: 1,
-                  cursorColor: Theme.of(context).colorScheme.secondary,
-                  style:
-                      TextStyle(color: Theme.of(context).colorScheme.secondary),
-                  decoration: _decoration(widget.user['name']!),
-                  controller: _inputName,
-                ),
-                TextField(
-                  maxLines: 1,
-                  keyboardType: TextInputType.emailAddress,
-                  cursorColor: Theme.of(context).colorScheme.secondary,
-                  style:
-                      TextStyle(color: Theme.of(context).colorScheme.secondary),
-                  decoration: _decoration(widget.user['email']!),
-                  controller: _inputEmail,
-                ),
-                TextField(
-                  maxLines: 1,
-                  keyboardType: TextInputType.emailAddress,
-                  cursorColor: Theme.of(context).colorScheme.secondary,
-                  style:
-                      TextStyle(color: Theme.of(context).colorScheme.secondary),
-                  decoration: _decoration("Inserir nova senha"),
-                  controller: _inputPassword,
-                  obscureText: true,
-                ),
-                Container(
-                  width: sizeScreen * 1,
-                  padding: EdgeInsets.all(sizeScreen * 0.005),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
+    return Center(
+      child: SingleChildScrollView(
+        child: AlertDialog(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: Text(
+            "Edição de usuário",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+          ),
+          content: SizedBox(
+            height: sizeScreen * (widget.isPerfil ? 0.55 : 0.8),
+            child: Padding(
+              padding: EdgeInsets.all(sizeScreen * 0.01),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextField(
+                    maxLines: 1,
+                    cursorColor: Theme.of(context).colorScheme.secondary,
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary),
+                    decoration: _decoration(widget.user['name']!),
+                    controller: _inputName,
+                  ),
+                  widget.isPerfil
+                      ? TextField(
+                          maxLines: 1,
+                          keyboardType: TextInputType.emailAddress,
+                          cursorColor: Theme.of(context).colorScheme.secondary,
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary),
+                          decoration: _decoration("Inserir nova senha"),
+                          controller: _inputPassword,
+                          obscureText: true,
+                        )
+                      : Container(
+                          width: sizeScreen * 1,
+                          child: ElevatedButton(
+                            onPressed: () => _openAlert(),
+                            child: Text("Redefinir senha"),
+                          ),
+                        ),
+                  !widget.isPerfil
+                      ? SizedBox(
+                          height: sizeScreen * 0.28,
+                          child: TypeUser(_addType, true),
+                        )
+                      : Container(),
+                  Container(
+                    width: sizeScreen * 1,
+                    padding: EdgeInsets.all(sizeScreen * 0.005),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                            child: Text(
+                              'Cancelar',
+                              style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  fontSize: sizeScreen * 0.047,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            }),
+                        SizedBox(width: sizeScreen * 0.03),
+                        TextButton(
                           child: Text(
-                            'Cancelar',
+                            'Salvar',
                             style: TextStyle(
-                                color: Theme.of(context).colorScheme.secondary,
+                                color: Theme.of(context).colorScheme.primary,
                                 fontSize: sizeScreen * 0.047,
                                 fontWeight: FontWeight.bold),
                           ),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          }),
-                      SizedBox(width: sizeScreen * 0.03),
-                      TextButton(
-                        child: Text(
-                          'Salvar',
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontSize: sizeScreen * 0.047,
-                              fontWeight: FontWeight.bold),
+                          style: TextButton.styleFrom(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.secondary,
+                          ),
+                          onPressed: () => _putUser(false),
                         ),
-                        style: TextButton.styleFrom(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.secondary,
-                        ),
-                        onPressed: () => _putUser(),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  _openAlert() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Deseja realmente resetar a senha?'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const [
+                Text('O usuário pode não saber como logar novamente.'),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+                child: const Text('Cancelar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }),
+            TextButton(
+              child: const Text('Resetar'),
+              onPressed: () {
+                _putUser(true);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

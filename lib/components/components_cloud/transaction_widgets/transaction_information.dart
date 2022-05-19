@@ -59,13 +59,15 @@ class _TransactionInformationState extends State<TransactionInformation> {
 
   Future<void> _deleteTransanction(id) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse("${urls['transactions']!}/$id");
-    var answer = await http.delete(
+    var url = Uri.parse("${urls['transactions']!}/$id/destroy");
+    print(url);
+    var answer = await http.post(
       url,
       headers: {
         "Authorization": "Bearer ${sharedPreferences.getString('token')}"
       },
     );
+    print(answer.statusCode);
     if (answer.statusCode == 204) {
       widget.onRefresh();
       Navigator.of(context).pop();
@@ -131,24 +133,26 @@ class _TransactionInformationState extends State<TransactionInformation> {
       content: SizedBox(
         height: sizeScreen * 0.9,
         width: sizeScreen * 1,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _information("Descrição", widget.transaction['description']),
-            _information("Categoria", widget.category.toString()),
-            _information("Tipo",
-                widget.transaction['type'] == 1 ? "Receita" : "Despesa"),
-            _information(
-                "Valor",
-                NumberFormat('R\$ #.00', 'pt-BR')
-                    .format(widget.transaction['value'])),
-            _information(
-                "Data da transação",
-                DateFormat('dd/MM/yy', 'pt-BR')
-                    .format(DateTime.parse(widget.transaction['date']))),
-            _information("Status",
-                widget.transaction['status'] == 1 ? "Pendente" : "Aprovado"),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _information("Descrição", widget.transaction['description']),
+              _information("Categoria", widget.category.toString()),
+              _information("Tipo",
+                  widget.transaction['type'] == 1 ? "Receita" : "Despesa"),
+              _information(
+                  "Valor",
+                  NumberFormat('R\$ #.00', 'pt-BR')
+                      .format(widget.transaction['value'])),
+              _information(
+                  "Data da transação",
+                  DateFormat('dd/MM/yy', 'pt-BR')
+                      .format(DateTime.parse(widget.transaction['date']))),
+              _information("Status",
+                  widget.transaction['status'] == 1 ? "Pendente" : "Aprovado"),
+            ],
+          ),
         ),
       ),
       actions: [

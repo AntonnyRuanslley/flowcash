@@ -21,7 +21,7 @@ class TransactionAdd extends StatefulWidget {
 class _TransactionAddState extends State<TransactionAdd> {
   final message = SnackBar(
     content: Text(
-      "Nova transação adicionada com sucesso",
+      "Nova transação adicionada com sucesso!",
       textAlign: TextAlign.center,
     ),
     backgroundColor: Colors.blueAccent,
@@ -64,6 +64,7 @@ class _TransactionAddState extends State<TransactionAdd> {
           "Authorization": "Bearer ${sharedPreferences.getString('token')}",
         },
       );
+      print(_selectDate);
       if (answer.statusCode == 201) {
         widget.onRefresh();
         Navigator.of(context).pop();

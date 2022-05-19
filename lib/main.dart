@@ -1,5 +1,4 @@
 import 'package:cas/loading.dart';
-import 'package:cas/views/select.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,27 +31,27 @@ class MyApp extends StatelessWidget {
     );
 
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'FlowCash',
-        color: Color(0XFFB80099),
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate
-        ],
-        theme: tema.copyWith(
-          colorScheme: tema.colorScheme.copyWith(
-            primary: Color(0XFFB80099),
-            secondary: Colors.white,
-          ),
-          appBarTheme: AppBarTheme(
-            titleTextStyle: TextStyle(
-              fontFamily: "OpenSans",
-              fontSize: 19,
-              fontWeight: FontWeight.bold,
-            ),
+      debugShowCheckedModeBanner: false,
+      title: 'FlowCash',
+      color: Color(0XFFB80099),
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
+      theme: tema.copyWith(
+        colorScheme: tema.colorScheme.copyWith(
+          primary: Color(0XFFB80099),
+          secondary: Colors.white,
+        ),
+        appBarTheme: AppBarTheme(
+          titleTextStyle: TextStyle(
+            fontFamily: "OpenSans",
+            fontSize: 19,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        home: Select() //Loading(),
-        );
+      ),
+      home: Loading(),
+    );
   }
 }

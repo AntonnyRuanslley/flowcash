@@ -15,7 +15,7 @@ class _TitleTopState extends State<TitleTop> {
     final sizeScreen =
         MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
     return Container(
-      height: sizeScreen * 0.19,
+      height: sizeScreen * 0.22,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primary,
       ),
