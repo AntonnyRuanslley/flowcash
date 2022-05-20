@@ -14,8 +14,8 @@ class TypeUser extends StatefulWidget {
 }
 
 class _TypeUUserState extends State<TypeUser> {
-  Type? _choice;
-  int? inputType = 1;
+  Type _choice = Type.normal;
+  int? inputType = 0;
 
   @override
   void initState() {
@@ -54,7 +54,7 @@ class _TypeUUserState extends State<TypeUser> {
               onChanged: (Type? value) {
                 setState(() {
                   _choice = value!;
-                  inputType = 1;
+                  inputType = 0;
                 });
                 widget.onSubmit(inputType);
               },
@@ -76,7 +76,7 @@ class _TypeUUserState extends State<TypeUser> {
               onChanged: (Type? value) {
                 setState(() {
                   _choice = value!;
-                  inputType = 0;
+                  inputType = 1;
                 });
                 widget.onSubmit(inputType);
               },

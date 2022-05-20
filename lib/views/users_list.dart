@@ -31,10 +31,23 @@ class _UsersListState extends State<UsersList> {
       },
     );
     if (answer.statusCode == 200) {
-      setState(() {
-        _users = jsonDecode(answer.body)['data'];
-      });
-      return "Sucesso";
+      _users = jsonDecode(answer.body)['data'];
+      url = Uri.parse(urls['user_logged']!);
+      answer = await http.get(
+        url,
+        headers: {
+          "Authorization": "Bearer ${sharedPreferences.getString('token')}",
+        },
+      );
+      if (answer.statusCode == 200) {
+        var userEmail = jsonDecode(answer.body)['email'];
+        setState(() {
+          _users.removeWhere((user) => user['email'] == userEmail);
+        });
+        return "Sucesso";
+      } else {
+        return "Erro";
+      }
     } else {
       return "Erro";
     }

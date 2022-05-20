@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cas/data/urls.dart';
+import 'package:cas/loading.dart';
 import 'package:cas/views/home.dart';
 
 import 'package:flutter/material.dart';
@@ -245,7 +246,7 @@ class _LoginState extends State<Login> {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => Home(),
+                                    builder: (context) => Loading(),
                                   ),
                                 );
                               } else {

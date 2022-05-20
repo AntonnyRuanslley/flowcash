@@ -151,42 +151,46 @@ class _TransactionInformationState extends State<TransactionInformation> {
         ),
       ),
       actions: [
-        Padding(
-          padding: EdgeInsets.only(
-              left: sizeScreen * 0.03,
-              right: sizeScreen * 0.03,
-              bottom: sizeScreen * 0.03),
-          child: SizedBox(
-            width: sizeScreen * 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                  child: Text(
-                    'Excluir',
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontSize: sizeScreen * 0.051,
-                        fontWeight: FontWeight.bold),
+        DateFormat('dd/MM/yy', 'pt-BR')
+                    .format(DateTime.parse(widget.transaction['date'])) ==
+                DateFormat('dd/MM/yy', 'pt-BR').format(DateTime.now())
+            ? Padding(
+                padding: EdgeInsets.only(
+                    left: sizeScreen * 0.03,
+                    right: sizeScreen * 0.03,
+                    bottom: sizeScreen * 0.03),
+                child: SizedBox(
+                  width: sizeScreen * 1,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        child: Text(
+                          'Excluir',
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary,
+                              fontSize: sizeScreen * 0.051,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        onPressed: () =>
+                            _openAlert(context, widget.transaction['id']),
+                      ),
+                      SizedBox(width: sizeScreen * 0.03),
+                      TextButton(
+                        child: Text(
+                          'Editar',
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary,
+                              fontSize: sizeScreen * 0.051,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        onPressed: () => _openForm(context),
+                      ),
+                    ],
                   ),
-                  onPressed: () =>
-                      _openAlert(context, widget.transaction['id']),
                 ),
-                SizedBox(width: sizeScreen * 0.03),
-                TextButton(
-                  child: Text(
-                    'Editar',
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontSize: sizeScreen * 0.051,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  onPressed: () => _openForm(context),
-                ),
-              ],
-            ),
-          ),
-        ),
+              )
+            : Container(),
       ],
     );
   }

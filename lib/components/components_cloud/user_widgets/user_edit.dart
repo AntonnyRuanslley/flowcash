@@ -163,7 +163,7 @@ class _UserEditState extends State<UserEdit> {
                   !widget.isPerfil
                       ? SizedBox(
                           height: sizeScreen * 0.28,
-                          child: TypeUser(_addType, true),
+                          child: TypeUser(_addType, false, _inputType),
                         )
                       : Container(),
                   Container(

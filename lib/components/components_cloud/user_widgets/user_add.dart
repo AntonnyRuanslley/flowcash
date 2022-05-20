@@ -21,7 +21,7 @@ class _UserAddState extends State<UserAdd> {
   final _inputName = TextEditingController();
   final _inputEmail = TextEditingController();
   final _inputPassword = TextEditingController();
-  int _inputType = 1;
+  int _inputType = 0;
 
   _addType(int type) {
     setState(() {

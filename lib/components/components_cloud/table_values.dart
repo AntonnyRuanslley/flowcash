@@ -97,7 +97,7 @@ class TableValues extends StatelessWidget {
     return Padding(
       padding: EdgeInsetsDirectional.only(
         start: sizeScreen * 0.015,
-        top: sizeScreen * 0.085,
+        top: sizeScreen * 0.1,
         end: sizeScreen * 0.015,
         bottom: sizeScreen * 0.01,
       ),
@@ -115,96 +115,122 @@ class TableValues extends StatelessWidget {
             ),
           ],
         ),
-        child: Padding(
-          padding: EdgeInsets.all(18),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 18, top: 18, right: 18, bottom: 5),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _title(Icons.arrow_downward_rounded, Colors.green, 'Receita'),
-                  _title(Icons.arrow_upward_rounded, Colors.red, 'Despesa'),
-                  _title(
-                      Icons.attach_money_rounded,
-                      _balance() == 0
-                          ? Colors.yellow[800]
-                          : _balancePos()
-                              ? Colors.green
-                              : Colors.red,
-                      'Saldo'),
-                  Divider(
-                    height: sizeScreen * 0.01,
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _title(Icons.arrow_downward_rounded, Colors.green,
+                          'Receita'),
+                      _title(Icons.arrow_upward_rounded, Colors.red, 'Despesa'),
+                      _title(
+                          Icons.attach_money_rounded,
+                          _balance() == 0
+                              ? Colors.yellow[800]
+                              : _balancePos()
+                                  ? Colors.green
+                                  : Colors.red,
+                          'Saldo'),
+                    ],
                   ),
-                  _title(
-                      Icons.monetization_on_sharp,
-                      _initialBalance() == 0
-                          ? Colors.yellow[800]
-                          : _initialBalance() > 0
-                              ? Colors.green
-                              : Colors.red,
-                      'Saldo inicial'),
-                  _title(
-                      Icons.monetization_on_sharp,
-                      _finalBalance() == 0
-                          ? Colors.yellow[800]
-                          : _finalBalance() > 0
-                              ? Colors.green
-                              : Colors.red,
-                      'Saldo final'),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      _value(
+                          _recipeOrExpense(1) == 0
+                              ? 'R\$ 0,00'
+                              : NumberFormat('R\$ #.00', 'pt-BR')
+                                  .format(_recipeOrExpense(1)),
+                          Colors.green),
+                      _value(
+                          _recipeOrExpense(2) == 0
+                              ? 'R\$ 0,00'
+                              : NumberFormat(' R\$ #.00', 'pt-BR')
+                                  .format(_recipeOrExpense(2) * -1),
+                          Colors.red),
+                      _value(
+                          _balance() == 0
+                              ? 'R\$ 0,00'
+                              : NumberFormat(' R\$ #.00', 'pt-BR')
+                                  .format(_balance()),
+                          _balance() == 0
+                              ? Colors.yellow[800]
+                              : _balancePos()
+                                  ? Colors.green
+                                  : Colors.red),
+                    ],
+                  ),
                 ],
               ),
-              Column(
+            ),
+            Divider(
+              height: 1,
+              thickness: 2,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 18, top: 5, right: 18, bottom: 18),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  _value(
-                      _recipeOrExpense(1) == 0
-                          ? 'R\$ 0,00'
-                          : NumberFormat('R\$ #.00', 'pt-BR')
-                              .format(_recipeOrExpense(1)),
-                      Colors.green),
-                  _value(
-                      _recipeOrExpense(2) == 0
-                          ? 'R\$ 0,00'
-                          : NumberFormat(' R\$ #.00', 'pt-BR')
-                              .format(_recipeOrExpense(2) * -1),
-                      Colors.red),
-                  _value(
-                      _balance() == 0
-                          ? 'R\$ 0,00'
-                          : NumberFormat(' R\$ #.00', 'pt-BR')
-                              .format(_balance()),
-                      _balance() == 0
-                          ? Colors.yellow[800]
-                          : _balancePos()
-                              ? Colors.green
-                              : Colors.red),
-                  _value(
-                      _initialBalance() == 0
-                          ? 'R\$ 0,00'
-                          : NumberFormat(' R\$ #.00', 'pt-BR')
-                              .format(_initialBalance()),
-                      _initialBalance() == 0
-                          ? Colors.yellow[800]
-                          : _initialBalance() > 0
-                              ? Colors.green
-                              : Colors.red),
-                  _value(
-                      _finalBalance() == 0
-                          ? 'R\$ 0,00'
-                          : NumberFormat(' R\$ #.00', 'pt-BR')
-                              .format(_finalBalance()),
-                      _finalBalance() == 0
-                          ? Colors.yellow[800]
-                          : _finalBalance() > 0
-                              ? Colors.green
-                              : Colors.red),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _title(
+                          Icons.monetization_on_sharp,
+                          _initialBalance() == 0
+                              ? Colors.yellow[800]
+                              : _initialBalance() > 0
+                                  ? Colors.green
+                                  : Colors.red,
+                          'Saldo inicial'),
+                      _title(
+                          Icons.monetization_on_sharp,
+                          _finalBalance() == 0
+                              ? Colors.yellow[800]
+                              : _finalBalance() > 0
+                                  ? Colors.green
+                                  : Colors.red,
+                          'Saldo final'),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      _value(
+                          _initialBalance() == 0
+                              ? 'R\$ 0,00'
+                              : NumberFormat(' R\$ #.00', 'pt-BR')
+                                  .format(_initialBalance()),
+                          _initialBalance() == 0
+                              ? Colors.yellow[800]
+                              : _initialBalance() > 0
+                                  ? Colors.green
+                                  : Colors.red),
+                      _value(
+                          _finalBalance() == 0
+                              ? 'R\$ 0,00'
+                              : NumberFormat(' R\$ #.00', 'pt-BR')
+                                  .format(_finalBalance()),
+                          _finalBalance() == 0
+                              ? Colors.yellow[800]
+                              : _finalBalance() > 0
+                                  ? Colors.green
+                                  : Colors.red),
+                    ],
+                  ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
