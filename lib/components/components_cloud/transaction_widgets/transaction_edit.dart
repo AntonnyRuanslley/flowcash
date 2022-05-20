@@ -5,6 +5,8 @@ import 'package:cas/components/components_cloud/transaction_widgets/type_file.da
 
 import 'package:cas/data/urls.dart';
 
+import 'package:cas/utils/messages.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -21,14 +23,6 @@ class TransactionEdit extends StatefulWidget {
 }
 
 class _TransactionEditState extends State<TransactionEdit> {
-  final message = SnackBar(
-    content: Text(
-      "Transação editada com sucesso!",
-      textAlign: TextAlign.center,
-    ),
-    backgroundColor: Colors.blueAccent,
-  );
-
   TextEditingController? _inputDescription = TextEditingController();
   TextEditingController? _inputValeu = TextEditingController();
   int? _inputCategory;
@@ -80,7 +74,7 @@ class _TransactionEditState extends State<TransactionEdit> {
         widget.onRefresh();
         Navigator.of(context).pop();
         Navigator.of(context).pop();
-        ScaffoldMessenger.of(context).showSnackBar(message);
+        ScaffoldMessenger.of(context).showSnackBar(transactionEditted);
       } else {
         return;
       }

@@ -1,5 +1,8 @@
 import 'package:cas/components/components_cloud/transaction_widgets/transaction_edit.dart';
+
 import 'package:cas/data/urls.dart';
+
+import 'package:cas/utils/messages.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -18,14 +21,6 @@ class TransactionInformation extends StatefulWidget {
 }
 
 class _TransactionInformationState extends State<TransactionInformation> {
-  final message = SnackBar(
-    content: Text(
-      "Transação excluída com sucesso",
-      textAlign: TextAlign.center,
-    ),
-    backgroundColor: Colors.redAccent,
-  );
-
   _openAlert(context, id) {
     showDialog(
       context: context,
@@ -72,7 +67,7 @@ class _TransactionInformationState extends State<TransactionInformation> {
       widget.onRefresh();
       Navigator.of(context).pop();
       Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(message);
+      ScaffoldMessenger.of(context).showSnackBar(transactionExcluded);
     } else {
       return;
     }

@@ -2,6 +2,8 @@ import 'package:cas/components/components_local/category_widgets/categorys_file.
 import 'package:cas/components/components_local/transaction_widgets/type_file.dart';
 import 'package:cas/components/components_local/category_widgets/category_add.dart';
 
+import 'package:cas/utils/messages.dart';
+
 import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -17,14 +19,6 @@ class TransactionAdd extends StatefulWidget {
 
 class _TransactionAddState extends State<TransactionAdd> {
   final _transactionBox = Hive.box('transactions');
-
-  final message = SnackBar(
-    content: Text(
-      "Nova transação adicionada com sucesso",
-      textAlign: TextAlign.center,
-    ),
-    backgroundColor: Colors.blueAccent,
-  );
 
   final _inputDescription = TextEditingController();
   final _inputValeu = TextEditingController();
@@ -50,7 +44,7 @@ class _TransactionAddState extends State<TransactionAdd> {
     await _transactionBox.add(newTransaction);
     widget.onRefresh();
     Navigator.of(context).pop();
-    ScaffoldMessenger.of(context).showSnackBar(message);
+    ScaffoldMessenger.of(context).showSnackBar(transactionAdded);
   }
 
   @override

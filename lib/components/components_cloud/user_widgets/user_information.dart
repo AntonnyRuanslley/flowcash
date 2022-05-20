@@ -1,5 +1,8 @@
 import 'package:cas/components/components_cloud/user_widgets/user_edit.dart';
+
 import 'package:cas/data/urls.dart';
+
+import 'package:cas/utils/messages.dart';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,14 +19,6 @@ class UserInformation extends StatefulWidget {
 }
 
 class _UserInformationState extends State<UserInformation> {
-  final message = SnackBar(
-    content: Text(
-      "Usuário excluido com sucesso!",
-      textAlign: TextAlign.center,
-    ),
-    backgroundColor: Colors.redAccent,
-  );
-
   Future<void> _deleteUser() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var url = Uri.parse("${urls['users']!}/${widget.user['id']}/destroy");
@@ -36,7 +31,7 @@ class _UserInformationState extends State<UserInformation> {
     if (answer.statusCode == 204) {
       widget.onRefresh();
       Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(message);
+      ScaffoldMessenger.of(context).showSnackBar(userExcluded);
     } else {
       return;
     }

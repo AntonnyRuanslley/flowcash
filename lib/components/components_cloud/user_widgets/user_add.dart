@@ -1,5 +1,8 @@
 import 'package:cas/components/components_cloud/user_widgets/type_user.dart';
+
 import 'package:cas/data/urls.dart';
+
+import 'package:cas/utils/messages.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -15,14 +18,6 @@ class UserAdd extends StatefulWidget {
 }
 
 class _UserAddState extends State<UserAdd> {
-  final message = SnackBar(
-    content: Text(
-      "Novo usuário cadastrado com sucesso",
-      textAlign: TextAlign.center,
-    ),
-    backgroundColor: Colors.blueAccent,
-  );
-
   final _inputName = TextEditingController();
   final _inputEmail = TextEditingController();
   final _inputPassword = TextEditingController();
@@ -58,7 +53,7 @@ class _UserAddState extends State<UserAdd> {
     if (answer.statusCode == 201) {
       widget.onRefresh();
       Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(message);
+      ScaffoldMessenger.of(context).showSnackBar(userAdded);
     } else {
       return;
     }

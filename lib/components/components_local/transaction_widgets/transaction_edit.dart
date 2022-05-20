@@ -2,6 +2,8 @@ import 'package:cas/components/components_local/category_widgets/categorys_file.
 import 'package:cas/components/components_local/transaction_widgets/type_file.dart';
 import 'package:cas/components/components_local/category_widgets/category_add.dart';
 
+import 'package:cas/utils/messages.dart';
+
 import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -18,14 +20,6 @@ class TransactionEdit extends StatefulWidget {
 
 class _TransactionEditState extends State<TransactionEdit> {
   final _transactionsBox = Hive.box('transactions');
-
-  final message = SnackBar(
-    content: Text(
-      "Transação editada feita com sucesso",
-      textAlign: TextAlign.center,
-    ),
-    backgroundColor: Colors.blueAccent,
-  );
 
   TextEditingController? _inputDescription = TextEditingController();
   TextEditingController? _inputValeu = TextEditingController();
@@ -58,7 +52,7 @@ class _TransactionEditState extends State<TransactionEdit> {
     widget.onRefresh();
     Navigator.of(context).pop();
     Navigator.of(context).pop();
-    ScaffoldMessenger.of(context).showSnackBar(message);
+    ScaffoldMessenger.of(context).showSnackBar(transactionEditted);
   }
 
   @override

@@ -1,5 +1,7 @@
 import 'package:cas/components/components_local/transaction_widgets/transaction_edit.dart';
 
+import 'package:cas/utils/messages.dart';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
@@ -17,14 +19,6 @@ class TransactionInformation extends StatefulWidget {
 
 class _TransactionInformationState extends State<TransactionInformation> {
   final _transactionsBox = Hive.box('transactions');
-
-  final message = SnackBar(
-    content: Text(
-      "Transação excluida com sucesso",
-      textAlign: TextAlign.center,
-    ),
-    backgroundColor: Colors.redAccent,
-  );
 
   Future<void> _deleteTransanction(id) async {
     await _transactionsBox.delete(id);
@@ -62,7 +56,7 @@ class _TransactionInformationState extends State<TransactionInformation> {
                 widget.onRefresh();
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(message);
+                ScaffoldMessenger.of(context).showSnackBar(transactionExcluded);
               },
             ),
           ],

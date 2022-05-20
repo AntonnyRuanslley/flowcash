@@ -1,5 +1,8 @@
 import 'package:cas/components/components_cloud/user_widgets/type_user.dart';
+
 import 'package:cas/data/urls.dart';
+
+import 'package:cas/utils/messages.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -16,14 +19,6 @@ class UserEdit extends StatefulWidget {
 }
 
 class _UserEditState extends State<UserEdit> {
-  final message = SnackBar(
-    content: Text(
-      "Usuário editado com sucesso!",
-      textAlign: TextAlign.center,
-    ),
-    backgroundColor: Colors.blueAccent,
-  );
-
   TextEditingController? _inputName = TextEditingController();
   TextEditingController? _inputPassword = TextEditingController();
   int? _inputType;
@@ -78,7 +73,7 @@ class _UserEditState extends State<UserEdit> {
       widget.onRefresh();
       Navigator.of(context).pop();
       Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(message);
+      ScaffoldMessenger.of(context).showSnackBar(userEditted);
     } else {
       return;
     }
