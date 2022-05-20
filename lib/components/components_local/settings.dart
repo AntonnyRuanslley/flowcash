@@ -93,7 +93,7 @@ class _SettingsState extends State<Settings> {
                 height: 1,
                 thickness: 1,
               ),
-              Expanded(
+              /*Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -114,7 +114,7 @@ class _SettingsState extends State<Settings> {
                     ),
                   ],
                 ),
-              ),
+              ),*/
             ],
           ),
         ),

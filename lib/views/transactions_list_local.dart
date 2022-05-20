@@ -42,6 +42,7 @@ class _TransactionsListLocalState extends State<TransactionsListLocal> {
 
     setState(() {
       transactions = data.reversed.toList();
+      _allTransactions = data.reversed.toList();
       transactions.removeWhere((transaction) =>
           DateFormat('dd/MM/yy', 'pt-BR').format(selectDate) !=
           DateFormat('dd/MM/yy', 'pt-BR').format(transaction['date']));

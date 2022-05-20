@@ -1,4 +1,4 @@
-package com.example.cas
+package flowcash.app
 
 import io.flutter.embedding.android.FlutterActivity
 

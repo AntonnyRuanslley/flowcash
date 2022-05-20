@@ -1,4 +1,5 @@
 import 'package:cas/loading.dart';
+import 'package:cas/views/transactions_list_local.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: Loading(),
+      home: TransactionsListLocal()//Loading(),
     );
   }
 }

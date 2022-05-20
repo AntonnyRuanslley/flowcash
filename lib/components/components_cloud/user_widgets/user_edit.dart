@@ -25,7 +25,7 @@ class _UserEditState extends State<UserEdit> {
 
   void initState() {
     _inputName!.text = widget.user['name'];
-    _inputType = widget.user['administrator'] == true ? 0 : 1;
+    _inputType = widget.user['administrator'] == true ? 1 : 0;
   }
 
   _addType(int type) {
@@ -40,34 +40,62 @@ class _UserEditState extends State<UserEdit> {
     if (isReset) {
       name = widget.user['name'];
       password = '123456789';
+      _inputType = widget.user['administrator'] == true ? 1 : 0;
     }
     if (name.isEmpty) {
       return;
     }
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var url = Uri.parse("${urls['users']!}/${widget.user['id']}/update");
-    var answer = widget.isPerfil || password.isEmpty
-        ? await http.post(
-            url,
-            body: {
-              "name": name,
-              "password": password,
-              "administrator": _inputType.toString(),
-            },
-            headers: {
-              "Authorization": "Bearer ${sharedPreferences.getString('token')}",
-            },
-          )
-        : await http.post(
-            url,
-            body: {
-              "name": name,
-              "administrator": _inputType.toString(),
-            },
-            headers: {
-              "Authorization": "Bearer ${sharedPreferences.getString('token')}",
-            },
-          );
+    var answer = widget.isPerfil
+        ? password.isNotEmpty
+            ? await http.post(
+                url,
+                body: {
+                  "name": name,
+                  "password": password,
+                  "administrator": _inputType.toString(),
+                },
+                headers: {
+                  "Authorization":
+                      "Bearer ${sharedPreferences.getString('token')}",
+                },
+              )
+            : await http.post(
+                url,
+                body: {
+                  "name": name,
+                  "administrator": _inputType.toString(),
+                },
+                headers: {
+                  "Authorization":
+                      "Bearer ${sharedPreferences.getString('token')}",
+                },
+              )
+        : password.isNotEmpty
+            ? await http.post(
+                url,
+                body: {
+                  "name": name,
+                  "password": password,
+                  "administrator": _inputType.toString(),
+                },
+                headers: {
+                  "Authorization":
+                      "Bearer ${sharedPreferences.getString('token')}",
+                },
+              )
+            : await http.post(
+                url,
+                body: {
+                  "name": name,
+                  "administrator": _inputType.toString(),
+                },
+                headers: {
+                  "Authorization":
+                      "Bearer ${sharedPreferences.getString('token')}",
+                },
+              );
     print(answer.statusCode);
     if (answer.statusCode == 200) {
       widget.onRefresh();

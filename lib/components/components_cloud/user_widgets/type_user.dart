@@ -21,7 +21,7 @@ class _TypeUUserState extends State<TypeUser> {
   void initState() {
     _choice = widget.isAdd
         ? Type.normal
-        : widget.type == 1
+        : widget.type == 0
             ? Type.normal
             : Type.admin;
   }

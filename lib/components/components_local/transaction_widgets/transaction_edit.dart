@@ -33,7 +33,7 @@ class _TransactionEditState extends State<TransactionEdit> {
     _inputValeu!.text =
         NumberFormat('#.00').format(widget.transaction['value']!);
     _inputType = widget.transaction['type'];
-    _selectDate = widget.transaction['date'];
+    _selectDate = DateTime.parse(widget.transaction['date'].toString());
   }
 
   Future<void> putTransaction() async {
@@ -214,7 +214,7 @@ class _TransactionEditState extends State<TransactionEdit> {
   _showDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateTime.parse(widget.transaction['date']!),
+      initialDate: DateTime.parse(widget.transaction['date']!.toString()),
       firstDate: DateTime(2019),
       lastDate: DateTime.now(),
       locale: const Locale('pt', 'BR'),

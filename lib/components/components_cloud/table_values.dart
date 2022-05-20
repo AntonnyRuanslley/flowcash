@@ -118,7 +118,12 @@ class TableValues extends StatelessWidget {
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.only(left: 18, top: 18, right: 18, bottom: 5),
+              padding: EdgeInsets.only(
+                left: sizeScreen * 0.027,
+                top: sizeScreen * 0.027,
+                right: sizeScreen * 0.027,
+                bottom: sizeScreen * 0.01,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -175,7 +180,12 @@ class TableValues extends StatelessWidget {
               thickness: 2,
             ),
             Padding(
-              padding: EdgeInsets.only(left: 18, top: 5, right: 18, bottom: 18),
+              padding: EdgeInsets.only(
+                left: sizeScreen * 0.027,
+                top: sizeScreen * 0.01,
+                right: sizeScreen * 0.027,
+                bottom: sizeScreen * 0.027,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
