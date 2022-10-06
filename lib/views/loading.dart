@@ -3,11 +3,11 @@ import 'package:cas/views/select.dart';
 import 'package:cas/views/transactions_list.dart';
 import 'package:cas/views/transactions_list_local.dart';
 
-import 'views/no_connection.dart';
-import 'views/home.dart';
-import 'views/login.dart';
+import 'no_connection.dart';
+import 'home.dart';
+import 'login.dart';
 
-import 'data/urls.dart';
+import '../data/urls.dart';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

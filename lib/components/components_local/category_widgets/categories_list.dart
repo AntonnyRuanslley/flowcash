@@ -1,5 +1,6 @@
 import 'package:cas/components/components_local/category_widgets/category_edit.dart';
 import 'package:cas/data/categories.dart';
+import 'package:cas/utils/screen_size.dart';
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -38,8 +39,7 @@ class _CategoriesListState extends State<CategoriesList> {
 
   @override
   Widget build(BuildContext context) {
-    final sizeScreen = MediaQuery.of(context).size.height;
-
+    final sizeScreen = ScreenSizes.getScreenHeightSize(context);
     return AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
@@ -85,23 +85,25 @@ class _CategoriesListState extends State<CategoriesList> {
                     )
                   ],
                 )
-              : ListView.builder(
-                  itemCount: categories.length,
-                  itemBuilder: (ctx, i) {
-                    return TextButton(
-                      onPressed: () {
-                        widget.who == 0
-                            ? _openForm(context, categories[i])
-                            : _openAlert(context, categories[i]['id']);
-                      },
-                      child: Text(
-                        categories[i]['name'],
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary,
-                            fontSize: sizeScreen * 0.03),
-                      ),
-                    );
-                  },
+              : Column(
+                  children: categories.map<Widget>(
+                    (category) {
+                      return TextButton(
+                        onPressed: () {
+                          widget.who == 0
+                              ? _openForm(context, category)
+                              : _openAlert(context, category['id']);
+                        },
+                        child: Text(
+                          category['name'],
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary,
+                              fontSize: sizeScreen * 0.03),
+                          textAlign: TextAlign.center,
+                        ),
+                      );
+                    },
+                  ).toList(),
                 ),
         ),
       ),

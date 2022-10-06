@@ -1,8 +1,12 @@
 import 'dart:convert';
-
+import 'package:cas/controllers/auth_controller.dart';
 import 'package:cas/data/urls.dart';
-import 'package:cas/loading.dart';
-import 'package:cas/views/home.dart';
+import 'package:cas/themes/app_theme.dart';
+import 'package:cas/utils/loading_alert.dart';
+import 'package:cas/utils/screen_size.dart';
+import 'package:cas/views/loading.dart';
+import 'package:cas/views/select.dart';
+import 'package:cas/widgets/loginPage/login_custom_input.dart';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,47 +25,12 @@ class _LoginState extends State<Login> {
   bool passwordVisibility = false;
   bool isChecked = true;
 
-  var _heightTextFild0 = 0.07;
-  var _heightTextFild1 = 0.07;
-  var _heightContainer = 0.17;
-
-  Future<bool> login() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse(urls['login']!);
-    var answer = await http.post(
-      url,
-      body: {
-        "email": _inputEmail.text,
-        "password": _inputPassword.text,
-      },
-    );
-    if (answer.statusCode == 200) {
-      if (isChecked) {
-        await sharedPreferences.setString(
-            'token', jsonDecode(answer.body)['token'].toString().split('|')[1]);
-      }
-      return true;
-    } else {
-      return false;
-    }
-  }
+  double _heightTextFild0 = 0.07;
+  double _heightTextFild1 = 0.07;
 
   @override
   Widget build(BuildContext context) {
-    final sizeScreen = MediaQuery.of(context).size.height;
-
-    _aligment() {
-      return EdgeInsets.only(
-          left: (sizeScreen * _heightTextFild0) * 0.55,
-          top: (sizeScreen * _heightTextFild0) * 0.5,
-          bottom: (sizeScreen * _heightTextFild0) * 0.27,
-          right: (sizeScreen * _heightTextFild0) * 0.55);
-    }
-
-    _border() {
-      return UnderlineInputBorder(
-          borderRadius: BorderRadius.circular(sizeScreen * 0.7));
-    }
+    final sizeScreen = ScreenSizes.getScreenHeightSize(context);
 
     _changeSize(int who, double size) {
       setState(() {
@@ -69,11 +38,6 @@ class _LoginState extends State<Login> {
           _heightTextFild0 = size;
         } else {
           _heightTextFild1 = size;
-        }
-        if (size == 0.1) {
-          _heightContainer = 0.21;
-        } else {
-          _heightContainer = 0.17;
         }
       });
     }
@@ -90,180 +54,170 @@ class _LoginState extends State<Login> {
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: Form(
         key: _formkey,
-        child: Center(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.all(sizeScreen * 0.02),
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: sizeScreen * 0.07),
-                  child: SizedBox(
-                    height: sizeScreen * 0.32,
-                    child: Image(
-                      image: AssetImage(
-                        'assets/icons/flowcash.png',
-                      ),
-                      fit: BoxFit.cover,
-                    ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: ScreenSizes.getDeviceStatucBarHeight(context)),
+            IconButton(
+              icon: Icon(
+                Icons.arrow_back_rounded,
+                color: AppTheme.secondyColor,
+                size: 30,
+              ),
+              onPressed: () async {
+                SharedPreferences sharedPreferences =
+                    await SharedPreferences.getInstance();
+                await sharedPreferences.remove('choice');
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (contex) => Select(),
                   ),
-                ),
-                SizedBox(
-                  height: sizeScreen * _heightContainer,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        height: sizeScreen * _heightTextFild0,
-                        child: TextFormField(
-                          maxLines: 1,
-                          controller: _inputEmail,
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (email) {
-                            if (email == null || email.isEmpty) {
-                              _changeSize(1, 0.1);
-                              return 'Por favor, digite seu email!';
-                            } else if (!RegExp(
-                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                .hasMatch(_inputEmail.text)) {
-                              _changeSize(1, 0.1);
-                              return 'Email inválido!';
-                            }
-                            _changeSize(1, 0.07);
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            hintText: 'Insira seu email',
-                            hintStyle: TextStyle(
-                              fontSize: sizeScreen * 0.03,
+                );
+              },
+            ),
+            Expanded(
+              child: Center(
+                child: LayoutBuilder(builder: (context, constraints) {
+                  return SingleChildScrollView(
+                    padding: EdgeInsets.all(sizeScreen * 0.02),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: sizeScreen * 0.07),
+                          child: SizedBox(
+                            height: sizeScreen * 0.32,
+                            child: Image(
+                              image: AssetImage(
+                                'assets/icons/flowcash.png',
+                              ),
+                              fit: BoxFit.cover,
                             ),
-                            contentPadding: _aligment(),
-                            enabledBorder: _border(),
-                            focusedBorder: _border(),
-                            errorBorder: _border(),
-                            focusedErrorBorder: _border(),
-                            filled: true,
-                            fillColor: Theme.of(context).colorScheme.secondary,
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: sizeScreen * _heightTextFild1,
-                        child: TextFormField(
-                          maxLines: 1,
-                          controller: _inputPassword,
-                          validator: (password) {
-                            if (password == null || password.isEmpty) {
-                              _changeSize(2, 0.1);
-                              return 'Por favor, digite sua senha!';
-                            }
-                            _changeSize(2, 0.07);
-                            return null;
-                          },
-                          obscureText: !passwordVisibility,
-                          decoration: InputDecoration(
-                            hintText: 'Insira sua senha',
-                            hintStyle: TextStyle(
-                              fontSize: sizeScreen * 0.03,
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            LoginCustomInput(
+                              controller: _inputEmail,
+                              hintText: 'Insira seu email',
+                              keyboardType: TextInputType.emailAddress,
+                              heightTextFild: _heightTextFild0,
+                              validator: (email) {
+                                if (email == null || email.isEmpty) {
+                                  _changeSize(1, 0.1);
+                                  return 'Por favor, digite seu email!';
+                                }
+                                if (!RegExp(
+                                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                    .hasMatch(_inputEmail.text)) {
+                                  _changeSize(1, 0.1);
+                                  return 'Email inválido!';
+                                }
+                                _changeSize(1, 0.07);
+                                return null;
+                              },
                             ),
-                            contentPadding: _aligment(),
-                            enabledBorder: _border(),
-                            focusedBorder: _border(),
-                            errorBorder: _border(),
-                            focusedErrorBorder: _border(),
-                            filled: true,
-                            fillColor: Theme.of(context).colorScheme.secondary,
-                            suffixIcon: Padding(
-                              padding:
-                                  EdgeInsets.only(right: sizeScreen * 0.015),
-                              child: InkWell(
-                                onTap: () => setState(
-                                  () =>
-                                      passwordVisibility = !passwordVisibility,
-                                ),
-                                child: Icon(
-                                  passwordVisibility
-                                      ? Icons.visibility_outlined
-                                      : Icons.visibility_off_outlined,
-                                  color: Theme.of(context).colorScheme.primary,
-                                  size: sizeScreen * 0.036,
-                                ),
+                            SizedBox(height: 10),
+                            LoginCustomInput(
+                              controller: _inputPassword,
+                              hintText: 'Insira sua senha',
+                              keyboardType: TextInputType.emailAddress,
+                              heightTextFild: _heightTextFild1,
+                              obscureText: !passwordVisibility,
+                              validator: (password) {
+                                if (password == null || password.isEmpty) {
+                                  _changeSize(2, 0.1);
+
+                                  return 'Por favor, digite sua senha!';
+                                }
+                                _changeSize(2, 0.07);
+                                return null;
+                              },
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Transform.scale(
+                              scale: sizeScreen * 0.0016,
+                              child: Checkbox(
+                                value: isChecked,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isChecked = value!;
+                                  });
+                                },
                               ),
                             ),
+                            Text(
+                              'Salvar login?',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: sizeScreen * 0.026,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          height: sizeScreen * 0.06,
+                          width: sizeScreen * 1,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: Colors.green,
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextButton(
+                                  child: Text('ENTRAR',
+                                      style: TextStyle(
+                                        fontSize: sizeScreen * 0.027,
+                                        color: Colors.white,
+                                      )),
+                                  onPressed: () async {
+                                    FocusScopeNode currentFocus =
+                                        FocusScope.of(context);
+                                    if (_formkey.currentState!.validate()) {
+                                      loadingDialog(context, "Carregando...");
+                                      AuthController.login(
+                                        _inputEmail.text.trim(),
+                                        _inputPassword.text.trim(),
+                                        isChecked,
+                                      ).then((result) {
+                                        if (!currentFocus.hasPrimaryFocus) {
+                                          currentFocus.unfocus();
+                                        }
+                                        Navigator.pop(context);
+                                        if (result) {
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => Loading(),
+                                            ),
+                                          );
+                                        } else {
+                                          _inputPassword.clear();
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(message);
+                                        }
+                                      });
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Transform.scale(
-                      scale: sizeScreen * 0.0016,
-                      child: Checkbox(
-                        value: isChecked,
-                        onChanged: (value) {
-                          setState(() {
-                            isChecked = value!;
-                          });
-                        },
-                      ),
+                      ],
                     ),
-                    Text(
-                      'Salvar login?',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: sizeScreen * 0.026,
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  height: sizeScreen * 0.06,
-                  width: sizeScreen * 1,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: Colors.green,
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextButton(
-                          child: Text('ENTRAR',
-                              style: TextStyle(
-                                fontSize: sizeScreen * 0.027,
-                                color: Colors.white,
-                              )),
-                          onPressed: () async {
-                            FocusScopeNode currentFocus =
-                                FocusScope.of(context);
-                            if (_formkey.currentState!.validate()) {
-                              bool connect = await login();
-                              if (!currentFocus.hasPrimaryFocus) {
-                                currentFocus.unfocus();
-                              }
-                              if (connect) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Loading(),
-                                  ),
-                                );
-                              } else {
-                                _inputPassword.clear();
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(message);
-                              }
-                            }
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                  );
+                }),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

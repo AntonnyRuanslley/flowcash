@@ -1,6 +1,4 @@
-import 'package:cas/loading.dart';
-import 'package:cas/views/transactions_list_local.dart';
-
+import 'package:cas/views/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -39,6 +37,8 @@ class MyApp extends StatelessWidget {
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate
       ],
+      locale: const Locale('pt', 'BR'),
+      supportedLocales: [const Locale('pt', 'BR')],
       theme: tema.copyWith(
         colorScheme: tema.colorScheme.copyWith(
           primary: Color(0XFFB80099),
@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: TransactionsListLocal()//Loading(),
+      home: Loading(),
     );
   }
 }

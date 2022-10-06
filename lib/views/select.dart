@@ -1,4 +1,7 @@
-import 'package:cas/loading.dart';
+import 'package:cas/themes/app_theme.dart';
+import 'package:cas/utils/screen_size.dart';
+import 'package:cas/views/loading.dart';
+import 'package:cas/widgets/selectPage/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,15 +21,15 @@ class Select extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sizeScreen =
-        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
+    final sizeScreen = ScreenSizes.getScreenHeightSize(context);
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: Center(
+      backgroundColor: AppTheme.primaryColor,
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: sizeScreen * 0.05,
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -58,10 +61,7 @@ class Select extends StatelessWidget {
               ),
               Text(
                 'Deseja qual tipo de armazenamento?',
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
-                    fontSize: sizeScreen * 0.033,
-                    fontWeight: FontWeight.bold),
+                style: AppTheme.title2(context),
                 textAlign: TextAlign.center,
               ),
               SizedBox(
@@ -70,46 +70,18 @@ class Select extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    height: sizeScreen * 0.065,
+                  CustomButton(
+                    label: "Nuvem",
+                    height: ScreenSizes.getScreenHeightSize(context) * 0.065,
                     width: sizeScreen * 0.2,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.secondary,
-                        width: 2,
-                      ),
-                    ),
-                    child: TextButton(
-                      onPressed: () => _onChoice(true, context),
-                      child: Text(
-                        "Nuvem",
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary,
-                            fontSize: sizeScreen * 0.03),
-                      ),
-                    ),
+                    onPressed: () => _onChoice(true, context),
                   ),
                   SizedBox(width: sizeScreen * 0.03),
-                  Container(
-                    height: sizeScreen * 0.065,
+                  CustomButton(
+                    label: "Local",
+                    height: ScreenSizes.getScreenHeightSize(context) * 0.065,
                     width: sizeScreen * 0.2,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.secondary,
-                        width: 2,
-                      ),
-                    ),
-                    child: TextButton(
-                      onPressed: () => _onChoice(false, context),
-                      child: Text(
-                        "Local",
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary,
-                            fontSize: sizeScreen * 0.03),
-                      ),
-                    ),
+                    onPressed: () => _onChoice(false, context),
                   ),
                 ],
               )

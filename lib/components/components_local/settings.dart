@@ -1,7 +1,7 @@
 import 'package:cas/components/components_local/category_widgets/category_add.dart';
 import 'package:cas/components/components_local//category_widgets/categories_list.dart';
 
-import 'package:cas/loading.dart';
+import 'package:cas/views/loading.dart';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -93,7 +93,7 @@ class _SettingsState extends State<Settings> {
                 height: 1,
                 thickness: 1,
               ),
-              /*Expanded(
+              Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -114,7 +114,7 @@ class _SettingsState extends State<Settings> {
                     ),
                   ],
                 ),
-              ),*/
+              ),
             ],
           ),
         ),
