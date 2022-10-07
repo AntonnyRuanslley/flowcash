@@ -1,10 +1,10 @@
 import 'package:cas/utils/screen_size.dart';
 import 'package:flutter/material.dart';
 
-class CheckBox extends StatelessWidget {
+class LoginCheckBox extends StatelessWidget {
   final bool isChecked;
   final Function onClick;
-  const CheckBox({
+  const LoginCheckBox({
     Key? key,
     required this.isChecked,
     required this.onClick,

@@ -2,10 +2,13 @@ import 'dart:convert';
 import 'package:cas/controllers/auth_controller.dart';
 import 'package:cas/data/urls.dart';
 import 'package:cas/themes/app_theme.dart';
+import 'package:cas/utils/alert_snack_bar.dart';
 import 'package:cas/utils/loading_alert.dart';
 import 'package:cas/utils/screen_size.dart';
 import 'package:cas/views/loading.dart';
 import 'package:cas/views/select.dart';
+import 'package:cas/widgets/loginPage/login_check_box.dart';
+import 'package:cas/widgets/loginPage/login_custom_button.dart';
 import 'package:cas/widgets/loginPage/login_custom_input.dart';
 
 import 'package:flutter/material.dart';
@@ -41,14 +44,6 @@ class _LoginState extends State<Login> {
         }
       });
     }
-
-    final message = SnackBar(
-      content: Text(
-        "Email ou senha são inválidos",
-        textAlign: TextAlign.center,
-      ),
-      backgroundColor: Colors.red,
-    );
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
@@ -138,78 +133,47 @@ class _LoginState extends State<Login> {
                             ),
                           ],
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Transform.scale(
-                              scale: sizeScreen * 0.0016,
-                              child: Checkbox(
-                                value: isChecked,
-                                onChanged: (value) {
-                                  setState(() {
-                                    isChecked = value!;
-                                  });
-                                },
-                              ),
-                            ),
-                            Text(
-                              'Salvar login?',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: sizeScreen * 0.026,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          height: sizeScreen * 0.06,
-                          width: sizeScreen * 1,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: Colors.green,
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: TextButton(
-                                  child: Text('ENTRAR',
-                                      style: TextStyle(
-                                        fontSize: sizeScreen * 0.027,
-                                        color: Colors.white,
-                                      )),
-                                  onPressed: () async {
-                                    FocusScopeNode currentFocus =
-                                        FocusScope.of(context);
-                                    if (_formkey.currentState!.validate()) {
-                                      loadingDialog(context, "Carregando...");
-                                      AuthController.login(
-                                        _inputEmail.text.trim(),
-                                        _inputPassword.text.trim(),
-                                        isChecked,
-                                      ).then((result) {
-                                        if (!currentFocus.hasPrimaryFocus) {
-                                          currentFocus.unfocus();
-                                        }
-                                        Navigator.pop(context);
-                                        if (result) {
-                                          Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => Loading(),
-                                            ),
-                                          );
-                                        } else {
-                                          _inputPassword.clear();
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(message);
-                                        }
-                                      });
-                                    }
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
+                        LoginCheckBox(
+                            isChecked: isChecked,
+                            onClick: (value) {
+                              setState(() {
+                                isChecked = value!;
+                              });
+                            }),
+                        LoginCustomButton(
+                          label: 'ENTRAR',
+                          onPressed: () async {
+                            FocusScopeNode currentFocus =
+                                FocusScope.of(context);
+                            if (_formkey.currentState!.validate()) {
+                              loadingDialog(context, "Carregando...");
+                              AuthController.login(
+                                _inputEmail.text.trim(),
+                                _inputPassword.text.trim(),
+                                isChecked,
+                              ).then((result) {
+                                if (!currentFocus.hasPrimaryFocus) {
+                                  currentFocus.unfocus();
+                                }
+                                Navigator.pop(context);
+                                if (result) {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Loading(),
+                                    ),
+                                  );
+                                } else {
+                                  _inputPassword.clear();
+                                  alertSnackBar(
+                                    context,
+                                    "Email ou senha inválidos!",
+                                    Colors.red,
+                                  );
+                                }
+                              });
+                            }
+                          },
                         ),
                       ],
                     ),
