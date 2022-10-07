@@ -1,0 +1,3 @@
+class TransactionController {
+  static getTransaction() {}
+}

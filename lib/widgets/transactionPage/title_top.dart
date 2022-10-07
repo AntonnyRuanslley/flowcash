@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 class TitleTop extends StatefulWidget {
-  final Function onDrawer;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
-  TitleTop(this.onDrawer);
+  const TitleTop({
+    Key? key,
+    required this.scaffoldKey,
+  });
 
   @override
   State<TitleTop> createState() => _TitleTopState();
@@ -32,7 +35,7 @@ class _TitleTopState extends State<TitleTop> {
                     size: sizeScreen * 0.045,
                   ),
                   onPressed: () {
-                    widget.onDrawer();
+                    widget.scaffoldKey.currentState!.openDrawer();
                   },
                 ),
                 SizedBox(width: sizeScreen * 0.02),

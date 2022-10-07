@@ -1,20 +1,20 @@
 import 'package:cas/data/categories.dart';
-import 'transaction_information.dart';
+import '../../components/components_local/transaction_widgets/transaction_information.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class TransactionsFile extends StatefulWidget {
+class TransactionsTile extends StatefulWidget {
   final transaction;
   final Function onRefresh;
 
-  TransactionsFile(this.transaction, this.onRefresh);
+  TransactionsTile(this.transaction, this.onRefresh);
 
   @override
-  State<TransactionsFile> createState() => _TransactionsFileState();
+  State<TransactionsTile> createState() => _TransactionsTileState();
 }
 
-class _TransactionsFileState extends State<TransactionsFile> {
+class _TransactionsTileState extends State<TransactionsTile> {
   bool? _banlacePos(type) {
     if (type == 1) {
       return true;

@@ -2,10 +2,12 @@ import 'package:cas/data/categories.dart';
 import 'package:cas/data/transactions.dart';
 
 import 'package:cas/components/components_local/transaction_widgets/transaction_add.dart';
-import 'package:cas/components/components_local/transaction_widgets/transactions_file.dart';
-import 'package:cas/components/components_local/table_values.dart';
-import 'package:cas/components/components_local/title_top.dart';
-import 'package:cas/components/components_local/day_flow.dart';
+import 'package:cas/utils/open_form.dart';
+import 'package:cas/widgets/transactionPage/transactions_list_body.dart';
+import 'package:cas/widgets/transactionPage/transactions_tile.dart';
+import 'package:cas/widgets/transactionPage/tableValues/table_values.dart';
+import 'package:cas/widgets/transactionPage/title_top.dart';
+import 'package:cas/widgets/transactionPage/day_flow.dart';
 import 'package:cas/components/components_local/settings.dart';
 
 import 'package:hive/hive.dart';
@@ -20,7 +22,7 @@ class TransactionsListLocal extends StatefulWidget {
 }
 
 class _TransactionsListLocalState extends State<TransactionsListLocal> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final _transactionsBox = Hive.box('transactions');
   final _categoriesBox = Hive.box('categories');
 
@@ -64,77 +66,6 @@ class _TransactionsListLocalState extends State<TransactionsListLocal> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final sizeScreen =
-        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
-
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      key: _scaffoldKey,
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      body: SafeArea(
-        child: Container(
-          color: Colors.grey[50],
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  TitleTop(_onDrawer),
-                  TableValues(transactions, _allTransactions),
-                ],
-              ),
-              DayFlow(_selectedDate, selectDate),
-              Expanded(
-                child: transactions.isEmpty
-                    ? Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: sizeScreen * 0.25,
-                            child: const Image(
-                              image: AssetImage(
-                                'assets/images/vazio.png',
-                              ),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          Container(
-                            child: Text(
-                              'Sem transações!',
-                              style: TextStyle(
-                                fontSize: sizeScreen * 0.05,
-                                color: Colors.black,
-                              ),
-                            ),
-                          )
-                        ],
-                      )
-                    : ListView.builder(
-                        itemCount: transactions.length,
-                        itemBuilder: (ctx, i) {
-                          return TransactionsFile(transactions[i], _refresh);
-                        },
-                      ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        child: Icon(
-          Icons.add,
-        ),
-        onPressed: () => _openForm(),
-        elevation: 8,
-      ),
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterFloat,
-      drawer: Settings(),
-    );
-  }
-
-  @override
   void initState() {
     super.initState();
     _refresh();
@@ -154,15 +85,45 @@ class _TransactionsListLocalState extends State<TransactionsListLocal> {
     _refresh();
   }
 
-  _onDrawer() {
-    _scaffoldKey.currentState!.openDrawer();
-  }
-
-  _openForm() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return Center(child: TransactionAdd(_refresh));
-        });
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      key: scaffoldKey,
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      body: SafeArea(
+        child: Container(
+          color: Colors.grey[50],
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  TitleTop(
+                    scaffoldKey: scaffoldKey,
+                  ),
+                  TableValues(transactions, _allTransactions),
+                ],
+              ),
+              DayFlow(_selectedDate, selectDate),
+              TransactionsListBody(
+                transactions: transactions,
+                onRefresh: _refresh,
+              ),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        child: Icon(
+          Icons.add,
+        ),
+        onPressed: () => openForm(context, TransactionAdd(_refresh)),
+        elevation: 8,
+      ),
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
+      drawer: Settings(),
+    );
   }
 }
