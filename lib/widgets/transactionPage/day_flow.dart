@@ -1,41 +1,12 @@
+import 'package:cas/utils/select_date_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class DayFlow extends StatefulWidget {
-  final Function selectedDate;
+class DayFlow extends StatelessWidget {
   final DateTime oldDate;
+  final Function(DateTime) selectedDate;
 
   DayFlow(this.selectedDate, this.oldDate);
-
-  @override
-  State<DayFlow> createState() => _DayFlowState();
-}
-
-class _DayFlowState extends State<DayFlow> {
-  DateTime? _inputDate;
-
-  @override
-  initState() {
-    _inputDate = widget.oldDate;
-  }
-
-  _showDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: widget.oldDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-      locale: const Locale('pt', 'BR'),
-    ).then((pickedDate) {
-      if (pickedDate == null) {
-        return;
-      }
-      setState(() {
-        _inputDate = pickedDate;
-      });
-      widget.selectedDate(_inputDate);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,31 +23,30 @@ class _DayFlowState extends State<DayFlow> {
               Icons.arrow_back_ios_new_rounded,
               size: sizeScreen * 0.033,
             ),
-            onPressed: DateFormat("dd 'de' MMMM 'de' yyy", "pt_BR")
-                        .format(_inputDate!) ==
-                    DateFormat("dd 'de' MMMM 'de' yyy", "pt_BR")
-                        .format(DateTime(2000))
-                ? null
-                : () {
-                    setState(() {
-                      _inputDate =
-                          _inputDate!.subtract(const Duration(days: 1));
-                    });
-                    widget.selectedDate(_inputDate);
-                  },
+            onPressed:
+                DateFormat("dd 'de' MMMM 'de' yyy", "pt_BR").format(oldDate) ==
+                        DateFormat("dd 'de' MMMM 'de' yyy", "pt_BR")
+                            .format(DateTime(2000))
+                    ? null
+                    : () {
+                        selectedDate(oldDate.subtract(const Duration(days: 1)));
+                      },
           ),
           Expanded(
             child: Container(
               child: TextButton(
                 child: Text(
-                  DateFormat("dd 'de' MMMM 'de' yyy", "pt_BR")
-                      .format(_inputDate!),
+                  DateFormat("dd 'de' MMMM 'de' yyy", "pt_BR").format(oldDate),
                   style: TextStyle(
                     fontSize: sizeScreen * 0.028,
                     color: Colors.black,
                   ),
                 ),
-                onPressed: _showDatePicker,
+                onPressed: () => selectDateModal(
+                  context: context,
+                  oldDate: oldDate,
+                  selectedDate: selectedDate,
+                ),
               ),
             ),
           ),
@@ -85,17 +55,14 @@ class _DayFlowState extends State<DayFlow> {
               Icons.arrow_forward_ios_rounded,
               size: sizeScreen * 0.033,
             ),
-            onPressed: DateFormat("dd 'de' MMMM 'de' yyy", "pt_BR")
-                        .format(_inputDate!) ==
-                    DateFormat("dd 'de' MMMM 'de' yyy", "pt_BR")
-                        .format(DateTime.now())
-                ? null
-                : () {
-                    setState(() {
-                      _inputDate = _inputDate!.add(const Duration(days: 1));
-                    });
-                    widget.selectedDate(_inputDate);
-                  },
+            onPressed:
+                DateFormat("dd 'de' MMMM 'de' yyy", "pt_BR").format(oldDate) ==
+                        DateFormat("dd 'de' MMMM 'de' yyy", "pt_BR")
+                            .format(DateTime.now())
+                    ? null
+                    : () {
+                        selectedDate(oldDate.add(const Duration(days: 1)));
+                      },
           ),
         ],
       ),

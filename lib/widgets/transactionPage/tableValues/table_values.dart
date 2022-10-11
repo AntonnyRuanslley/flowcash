@@ -1,70 +1,25 @@
-import 'package:cas/data/transactions.dart';
+import 'package:cas/controllers/transactionController/transaction_controller.dart';
+import 'package:cas/utils/format_value.dart';
+import 'package:cas/utils/screen_size.dart';
 import 'package:cas/widgets/transactionPage/tableValues/custom_title.dart';
 import 'package:cas/widgets/transactionPage/tableValues/custom_value.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class TableValues extends StatelessWidget {
-  final List actualTransaction;
-  final List allTransaction;
+  final List<dynamic> actualTransaction;
+  final List<dynamic> allTransaction;
 
   TableValues(this.actualTransaction, this.allTransaction);
 
   @override
   Widget build(BuildContext context) {
-    final sizeScreen =
-        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
+    final sizeScreen = ScreenSizes.getScreenHeightSize(context);
 
-    double _recipeOrExpense(type) {
-      if (actualTransaction.isEmpty) {
-        return 0;
-      } else {
-        var listValues = actualTransaction.map((listValues) {
-          if (listValues['type'] == type) {
-            return double.parse(listValues['value'].toString());
-          }
-        });
-        return listValues
-            .map((values) => (values ?? 0.0))
-            .reduce((total, prox) => total + prox);
-      }
-    }
-
-    double _balance() {
-      return _recipeOrExpense(1) + (_recipeOrExpense(2) * -1);
-    }
-
-    bool _balancePos() {
-      if (_balance() > 0) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-
-    double _initialBalance() {
-      if (allTransaction.isEmpty) {
-        return 0;
-      } else {
-        var listValues = allTransaction.map((listValues) {
-          if (DateTime.parse(listValues['date'].toString())
-              .isBefore(selectDate.subtract(const Duration(days: 1)))) {
-            if (listValues['type'] == 2) {
-              return (double.parse(listValues['value'].toString()) * -1);
-            } else {
-              return double.parse(listValues['value'].toString());
-            }
-          }
-        });
-        return listValues
-            .map((values) => (values ?? 0.0))
-            .reduce((total, prox) => total + prox);
-      }
-    }
-
-    _finalBalance() {
-      return _initialBalance() + _balance();
-    }
+    final transactionCalculations =
+        TransactionController.getTransactionCalculations(
+      actualTransaction: actualTransaction,
+      allTransaction: allTransaction,
+    );
 
     return Padding(
       padding: EdgeInsetsDirectional.only(
@@ -115,11 +70,8 @@ class TableValues extends StatelessWidget {
                       ),
                       CustomTitle(
                         icon: Icons.attach_money_rounded,
-                        color: _balance() == 0
-                            ? Colors.yellow[800]
-                            : _balancePos()
-                                ? Colors.green
-                                : Colors.red,
+                        color: FormatValue.getSelectColor(
+                            transactionCalculations['balance']),
                         label: 'Saldo',
                       ),
                     ],
@@ -130,28 +82,22 @@ class TableValues extends StatelessWidget {
                     children: [
                       CustomValue(
                         color: Colors.green,
-                        label: _recipeOrExpense(1) == 0
-                            ? 'R\$ 0,00'
-                            : NumberFormat('R\$ #.00', 'pt-BR')
-                                .format(_recipeOrExpense(1)),
+                        label: FormatValue.getMoneyFormat(
+                          transactionCalculations['recipe'],
+                        ),
                       ),
                       CustomValue(
                         color: Colors.red,
-                        label: _recipeOrExpense(2) == 0
-                            ? 'R\$ 0,00'
-                            : NumberFormat(' R\$ #.00', 'pt-BR')
-                                .format(_recipeOrExpense(2) * -1),
+                        label: FormatValue.getMoneyFormat(
+                          transactionCalculations['expense'] * -1,
+                        ),
                       ),
                       CustomValue(
-                        color: _balance() == 0
-                            ? Colors.yellow[800]
-                            : _balancePos()
-                                ? Colors.green
-                                : Colors.red,
-                        label: _balance() == 0
-                            ? 'R\$ 0,00'
-                            : NumberFormat(' R\$ #.00', 'pt-BR')
-                                .format(_balance()),
+                        color: FormatValue.getSelectColor(
+                            transactionCalculations['balance']),
+                        label: FormatValue.getMoneyFormat(
+                          transactionCalculations['balance'],
+                        ),
                       ),
                     ],
                   ),
@@ -182,20 +128,14 @@ class TableValues extends StatelessWidget {
                           children: [
                             CustomTitle(
                               icon: Icons.monetization_on_sharp,
-                              color: _initialBalance() == 0
-                                  ? Colors.yellow[800]
-                                  : _initialBalance() > 0
-                                      ? Colors.green
-                                      : Colors.red,
+                              color: FormatValue.getSelectColor(
+                                  transactionCalculations['initialBalance']),
                               label: 'Saldo inicial',
                             ),
                             CustomTitle(
                               icon: Icons.monetization_on_sharp,
-                              color: _initialBalance() == 0
-                                  ? Colors.yellow[800]
-                                  : _initialBalance() > 0
-                                      ? Colors.green
-                                      : Colors.red,
+                              color: FormatValue.getSelectColor(
+                                  transactionCalculations['finalBalance']),
                               label: 'Saldo final',
                             ),
                           ],
@@ -205,26 +145,16 @@ class TableValues extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             CustomValue(
-                                color: _initialBalance() == 0
-                                    ? Colors.yellow[800]
-                                    : _initialBalance() > 0
-                                        ? Colors.green
-                                        : Colors.red,
-                                label: _initialBalance() == 0
-                                    ? 'R\$ 0,00'
-                                    : NumberFormat(' R\$ #.00', 'pt-BR')
-                                        .format(_initialBalance())),
+                                color: FormatValue.getSelectColor(
+                                    transactionCalculations['initialBalance']),
+                                label: FormatValue.getMoneyFormat(
+                                    transactionCalculations['initialBalance'])),
                             CustomValue(
-                              color: _finalBalance() == 0
-                                  ? Colors.yellow[800]
-                                  : _finalBalance() > 0
-                                      ? Colors.green
-                                      : Colors.red,
-                              label: _finalBalance() == 0
-                                  ? 'R\$ 0,00'
-                                  : NumberFormat(' R\$ #.00', 'pt-BR').format(
-                                      _finalBalance(),
-                                    ),
+                              color: FormatValue.getSelectColor(
+                                  transactionCalculations['finalBalance']),
+                              label: FormatValue.getMoneyFormat(
+                                transactionCalculations['finalBalance'],
+                              ),
                             ),
                           ],
                         ),

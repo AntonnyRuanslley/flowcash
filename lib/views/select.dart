@@ -34,7 +34,7 @@ class Select extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(vertical: sizeScreen * 0.06),
+                padding: EdgeInsets.symmetric(vertical: 15),
                 child: Column(
                   children: [
                     SizedBox(

@@ -1,8 +1,10 @@
 import 'package:cas/components/components_local/category_widgets/categorys_file.dart';
 import 'package:cas/components/components_local/transaction_widgets/type_file.dart';
 import 'package:cas/components/components_local/category_widgets/category_add.dart';
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 
 import 'package:cas/utils/messages.dart';
+import 'package:cas/widgets/transactionForm/custom_text_field.dart';
 
 import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
@@ -51,36 +53,6 @@ class _TransactionAddState extends State<TransactionAdd> {
   Widget build(BuildContext context) {
     final sizeScreen = MediaQuery.of(context).size.width;
 
-    _decoration(String label) {
-      return InputDecoration(
-        hintText: label,
-        hintStyle: TextStyle(
-          fontSize: sizeScreen * 0.05,
-          color: Colors.white54,
-        ),
-        counterStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
-        contentPadding: EdgeInsets.only(
-            left: sizeScreen * 0.05,
-            top: sizeScreen * 0.041,
-            bottom: sizeScreen * 0.041,
-            right: sizeScreen * 0.05),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(sizeScreen * 0.04),
-          borderSide: BorderSide(
-            color: Colors.white,
-            width: 2.0,
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(sizeScreen * 0.04),
-          borderSide: BorderSide(
-            color: Colors.white,
-            width: 2.0,
-          ),
-        ),
-      );
-    }
-
     return SingleChildScrollView(
       child: AlertDialog(
         scrollable: true,
@@ -103,14 +75,10 @@ class _TransactionAddState extends State<TransactionAdd> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextField(
-                  maxLines: 1,
-                  maxLength: 25,
-                  cursorColor: Theme.of(context).colorScheme.secondary,
-                  style:
-                      TextStyle(color: Theme.of(context).colorScheme.secondary),
-                  decoration: _decoration("Descrição"),
+                CustomTextField(
+                  hintText: "Descrição",
                   controller: _inputDescription,
+                  keyboardType: TextInputType.name,
                 ),
                 CategorysFile(_addCategory, false),
                 Row(
@@ -121,15 +89,17 @@ class _TransactionAddState extends State<TransactionAdd> {
                           color: Colors.white, fontSize: sizeScreen * 0.06),
                     ),
                     Flexible(
-                      child: TextField(
-                        style: TextStyle(
-                            fontSize: sizeScreen * 0.05,
-                            color: Theme.of(context).colorScheme.secondary),
-                        keyboardType:
-                            TextInputType.numberWithOptions(decimal: true),
-                        maxLines: 1,
-                        decoration: _decoration("0,00"),
+                      child: CustomTextField(
+                        hintText: "0,00",
                         controller: _inputValeu,
+                        keyboardType: TextInputType.numberWithOptions(),
+                        inputFormatters: [
+                          CurrencyTextInputFormatter(
+                            locale: 'pt',
+                            decimalDigits: 2,
+                            symbol: '',
+                          )
+                        ],
                       ),
                     )
                   ],
