@@ -1,5 +1,5 @@
 import 'package:cas/data/categories.dart';
-import '../../components/components_local/transaction_widgets/transaction_information.dart';
+import '../../views/transaction_information.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

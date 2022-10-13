@@ -2,22 +2,23 @@ import 'package:flutter/material.dart';
 
 enum Type { recipe, expense }
 
-class TypeFile extends StatefulWidget {
+class SelectTransactionType extends StatefulWidget {
   final Function onSubmit;
   bool isAdd;
   int? type;
 
-  TypeFile(
-    this.onSubmit,
-    this.isAdd, [
+  SelectTransactionType({
+    Key? key,
+    required this.onSubmit,
+    required this.isAdd,
     this.type,
-  ]);
+  }) : super(key: key);
 
   @override
-  State<TypeFile> createState() => _TypeFileState();
+  State<SelectTransactionType> createState() => _SelectTransactionTypeState();
 }
 
-class _TypeFileState extends State<TypeFile> {
+class _SelectTransactionTypeState extends State<SelectTransactionType> {
   Type? _choice;
   int? inputType = 1;
 
@@ -32,7 +33,8 @@ class _TypeFileState extends State<TypeFile> {
 
   @override
   Widget build(BuildContext context) {
-    final sizeScreen = MediaQuery.of(context).size.width - MediaQuery.of(context).padding.top;
+    final sizeScreen =
+        MediaQuery.of(context).size.width - MediaQuery.of(context).padding.top;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

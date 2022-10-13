@@ -27,7 +27,7 @@ Map<String, dynamic> implementGetTransactionCalculations({
   return transactionsCalculations;
 }
 
-double recipeOrExpense(type, actualTransaction) {
+double recipeOrExpense(type, List<dynamic> actualTransaction) {
   if (actualTransaction.isEmpty) {
     return 0;
   } else {
@@ -42,12 +42,12 @@ double recipeOrExpense(type, actualTransaction) {
   }
 }
 
-double balance(actualTransaction) {
+double balance(List<dynamic> actualTransaction) {
   return recipeOrExpense(1, actualTransaction) +
       (recipeOrExpense(2, actualTransaction) * -1);
 }
 
-double initialBalance(allTransaction) {
+double initialBalance(List<dynamic> allTransaction) {
   if (allTransaction.isEmpty) {
     return 0;
   } else {

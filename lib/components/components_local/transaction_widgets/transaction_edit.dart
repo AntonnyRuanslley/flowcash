@@ -1,5 +1,6 @@
+import 'package:cas/components/components_cloud/transaction_widgets/type_file.dart';
 import 'package:cas/components/components_local/category_widgets/categorys_file.dart';
-import 'package:cas/components/components_local/transaction_widgets/type_file.dart';
+import 'package:cas/widgets/transactionForm/select_transaction_type.dart';
 import 'package:cas/components/components_local/category_widgets/category_add.dart';
 
 import 'package:cas/utils/messages.dart';
@@ -142,7 +143,11 @@ class _TransactionEditState extends State<TransactionEdit> {
                 ),
                 SizedBox(
                   height: sizeScreen * 0.28,
-                  child: TypeFile(_addType, false, widget.transaction['type']!),
+                  child: SelectTransactionType(
+                    onSubmit: _addType,
+                    isAdd: false,
+                    type: widget.transaction['type']!,
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
