@@ -112,7 +112,6 @@ class _TransactionEditState extends State<TransactionEdit> {
               children: [
                 TextField(
                   maxLines: 1,
-                  maxLength: 25,
                   cursorColor: Theme.of(context).colorScheme.secondary,
                   style:
                       TextStyle(color: Theme.of(context).colorScheme.secondary),

@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 
 class TransactionsTile extends StatefulWidget {
   final transaction;
-  final Function onRefresh;
+  final Function() onRefresh;
 
   TransactionsTile(this.transaction, this.onRefresh);
 
@@ -42,7 +42,10 @@ class _TransactionsTileState extends State<TransactionsTile> {
             context: context,
             builder: (context) {
               return TransactionInformation(
-                  widget.transaction, category, widget.onRefresh);
+                transaction: widget.transaction,
+                category: category,
+                onRefresh: widget.onRefresh,
+              );
             });
       });
     }

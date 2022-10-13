@@ -61,7 +61,7 @@ class FormButtons extends StatelessWidget {
                   "type": selectType ?? 1,
                   "date": selectDate,
                 };
-                TransactionController.newTransaction(
+                TransactionController.createTransaction(
                   context: context,
                   newTransaction: newTransaction,
                   onRefresh: onRefresh,

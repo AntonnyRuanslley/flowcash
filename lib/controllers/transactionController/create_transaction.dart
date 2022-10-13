@@ -1,6 +1,6 @@
 part of 'transaction_controller.dart';
 
-Future<void> implementNewTransaction({
+Future<void> implementCreateTransaction({
   required BuildContext context,
   required Map<String, dynamic> newTransaction,
   required Function() onRefresh,
