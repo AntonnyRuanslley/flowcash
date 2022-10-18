@@ -1,7 +1,9 @@
 import 'package:cas/components/components_local/category_widgets/category_add.dart';
 import 'package:cas/components/components_local//category_widgets/categories_list.dart';
+import 'package:cas/utils/open_form.dart';
 
 import 'package:cas/views/loading.dart';
+import 'package:cas/widgets/settingsDrawer/custom_tile.dart';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,30 +20,10 @@ class _SettingsState extends State<Settings> {
     return true;
   }
 
-  _openFormModal(context, widget) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return widget;
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     final sizeScreen =
         MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
-
-    _itemsDrawer(icon, text, onTap) {
-      return ListTile(
-        leading: Icon(icon),
-        iconColor: Theme.of(context).colorScheme.primary,
-        title: Text(
-          text,
-          style: TextStyle(color: Theme.of(context).colorScheme.primary),
-        ),
-        onTap: onTap,
-      );
-    }
 
     return Drawer(
       backgroundColor: Theme.of(context).colorScheme.primary,
@@ -83,12 +65,21 @@ class _SettingsState extends State<Settings> {
                       fontSize: sizeScreen * 0.025),
                 ),
               ),
-              _itemsDrawer(Icons.add, 'Adicionar categoria',
-                  () => _openFormModal(context, CategoryForm())),
-              _itemsDrawer(Icons.edit, 'Editar categoria',
-                  () => _openFormModal(context, CategoriesList(0))),
-              _itemsDrawer(Icons.delete, 'Excluir categoria',
-                  () => _openFormModal(context, CategoriesList(1))),
+              CustomTile(
+                text: 'Adicionar categoria',
+                icon: Icons.add,
+                onTap: () => openForm(context, CategoryForm()),
+              ),
+              CustomTile(
+                text: 'Editar categoria',
+                icon: Icons.edit,
+                onTap: () => openForm(context, CategoriesList(0)),
+              ),
+              CustomTile(
+                text: 'Excluir categoria',
+                icon: Icons.delete,
+                onTap: () => openForm(context, CategoriesList(1)),
+              ),
               Divider(
                 height: 1,
                 thickness: 1,
@@ -97,10 +88,10 @@ class _SettingsState extends State<Settings> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    _itemsDrawer(
-                      Icons.low_priority_sharp,
-                      'Escolher modo',
-                      () async {
+                    CustomTile(
+                      text: 'Escolher modo',
+                      icon: Icons.low_priority_sharp,
+                      onTap: () async {
                         bool logoffed = await _changeChoice();
                         if (logoffed) {
                           Navigator.pushReplacement(

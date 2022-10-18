@@ -7,7 +7,7 @@ import 'package:cas/widgets/transactionPage/transactions_list_body.dart';
 import 'package:cas/widgets/transactionPage/tableValues/table_values.dart';
 import 'package:cas/widgets/transactionPage/title_top.dart';
 import 'package:cas/widgets/transactionPage/day_flow.dart';
-import 'package:cas/components/components_local/settings.dart';
+import 'package:cas/views/settings.dart';
 
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
