@@ -2,22 +2,31 @@ import 'package:cas/data/categories.dart';
 
 import 'package:flutter/material.dart';
 
-class CategorysFile extends StatefulWidget {
+class CategorysSelect extends StatefulWidget {
   final Function(int) onSubmit;
-  final String? category;
+  final int? categoryId;
 
-  const CategorysFile({
+  const CategorysSelect({
     Key? key,
     required this.onSubmit,
-    this.category,
+    this.categoryId,
   }) : super(key: key);
 
   @override
-  State<CategorysFile> createState() => _CategorysFileState();
+  State<CategorysSelect> createState() => _CategorysSelectState();
 }
 
-class _CategorysFileState extends State<CategorysFile> {
+class _CategorysSelectState extends State<CategorysSelect> {
   int? category;
+  @override
+  void initState() {
+    super.initState();
+    if (widget.categoryId != null) {
+      final Map<String, dynamic> categorySelected = categories
+          .firstWhere((category) => category['id'] == widget.categoryId);
+      category = categorySelected['id'];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +41,7 @@ class _CategorysFileState extends State<CategorysFile> {
       ),
       child: DropdownButton(
         hint: Text(
-          widget.category != null ? widget.category! : "Categoria",
+          "Categoria",
           style: TextStyle(
             fontSize: sizeScreen * 0.05,
             color: Colors.white54,

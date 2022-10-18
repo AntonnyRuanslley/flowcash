@@ -14,13 +14,11 @@ import 'package:flutter/material.dart';
 
 class TransactionForm extends StatefulWidget {
   final Map<String, dynamic>? transaction;
-  final String? category;
   final Function() onRefresh;
 
   const TransactionForm({
     Key? key,
     this.transaction,
-    this.category,
     required this.onRefresh,
   }) : super(key: key);
 
@@ -91,13 +89,13 @@ class _TransactionFormState extends State<TransactionForm> {
                     ),
                     SizedBox(width: sizeScreen * 0.05),
                     Expanded(
-                      child: CategorysFile(
+                      child: CategorysSelect(
                         onSubmit: (int category) {
                           setState(() {
                             selectCategory = category;
                           });
                         },
-                        category: widget.category,
+                        categoryId: widget.transaction?['category_id'],
                       ),
                     ),
                   ],

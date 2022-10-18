@@ -68,7 +68,6 @@ class _TransactionInformationState extends State<TransactionInformation> {
       actions: [
         InformationButtonsOptions(
           transaction: widget.transaction,
-          category: widget.category,
           onRefresh: widget.onRefresh,
         ),
       ],

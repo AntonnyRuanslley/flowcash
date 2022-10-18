@@ -7,13 +7,11 @@ import 'package:flutter/material.dart';
 
 class InformationButtonsOptions extends StatelessWidget {
   final transaction;
-  final category;
   final Function() onRefresh;
 
   const InformationButtonsOptions({
     Key? key,
     required this.transaction,
-    required this.category,
     required this.onRefresh,
   }) : super(key: key);
 
@@ -65,7 +63,6 @@ class InformationButtonsOptions extends StatelessWidget {
                 context,
                 TransactionForm(
                   transaction: transaction,
-                  category: category,
                   onRefresh: onRefresh,
                 ),
               ),
