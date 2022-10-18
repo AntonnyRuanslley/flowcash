@@ -17,7 +17,7 @@ class CategorysFile extends StatefulWidget {
 }
 
 class _CategorysFileState extends State<CategorysFile> {
-  int? _category;
+  int? category;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class _CategorysFileState extends State<CategorysFile> {
         underline: Container(height: 0),
         borderRadius: BorderRadius.circular(sizeScreen * 0.04),
         isExpanded: true,
-        value: _category,
+        value: category,
         items: categories.map((categorySelected) {
           return DropdownMenuItem(
             value: int.parse(categorySelected['id'].toString()),
@@ -56,9 +56,9 @@ class _CategorysFileState extends State<CategorysFile> {
         }).toList(),
         onChanged: (int? newCategory) {
           setState(() {
-            _category = newCategory!;
+            category = newCategory!;
           });
-          widget.onSubmit(_category!);
+          widget.onSubmit(category!);
         },
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:cas/controllers/transactionController/transaction_controller.dart';
 import 'package:cas/utils/alert_dialog.dart';
+import 'package:cas/utils/loading_alert.dart';
 import 'package:cas/utils/screen_size.dart';
 import 'package:flutter/material.dart';
 
@@ -69,7 +70,8 @@ class FormButtons extends StatelessWidget {
                   alertDialog(context, "Valor está vazio!");
                   return;
                 }
-
+                FocusScope.of(context).unfocus();
+                loadingDialog(context, "Adicionando transação...");
                 final transaction = {
                   "description": inputDescription.text,
                   "category_id": selectCategory,
@@ -94,6 +96,7 @@ class FormButtons extends StatelessWidget {
                     onRefresh: onRefresh,
                   );
                 }
+                Navigator.pop(context);
               }),
         ],
       ),

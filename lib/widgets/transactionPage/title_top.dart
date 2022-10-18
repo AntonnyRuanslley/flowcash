@@ -1,3 +1,4 @@
+import 'package:cas/utils/screen_size.dart';
 import 'package:flutter/material.dart';
 
 class TitleTop extends StatefulWidget {
@@ -38,7 +39,7 @@ class _TitleTopState extends State<TitleTop> {
                     widget.scaffoldKey.currentState!.openDrawer();
                   },
                 ),
-                SizedBox(width: sizeScreen * 0.02),
+                SizedBox(width: ScreenSizes.getScreenWidthSize(context) * 0.04),
                 Container(
                   width: sizeScreen * 0.35,
                   child: const Image(

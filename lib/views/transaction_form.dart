@@ -1,5 +1,7 @@
 import 'package:cas/components/components_local/category_widgets/categorys_file.dart';
+import 'package:cas/themes/app_theme.dart';
 import 'package:cas/utils/format_value.dart';
+import 'package:cas/utils/open_form.dart';
 import 'package:cas/utils/screen_size.dart';
 import 'package:cas/widgets/transactionForm/select_transaction_type.dart';
 import 'package:cas/components/components_local/category_widgets/category_add.dart';
@@ -32,18 +34,6 @@ class _TransactionFormState extends State<TransactionForm> {
   int? selectCategory;
   int? selectType;
   DateTime selectDate = DateTime.now();
-
-  addCategory(int category) {
-    setState(() {
-      selectCategory = category;
-    });
-  }
-
-  addType(int type) {
-    setState(() {
-      selectType = type;
-    });
-  }
 
   @override
   initState() {
@@ -89,9 +79,28 @@ class _TransactionFormState extends State<TransactionForm> {
                   controller: inputDescription,
                   keyboardType: TextInputType.name,
                 ),
-                CategorysFile(
-                  onSubmit: addCategory,
-                  category: widget.category,
+                Row(
+                  children: [
+                    InkWell(
+                      child: Icon(
+                        Icons.add_circle_outline_rounded,
+                        color: AppTheme.secondyColor,
+                        size: sizeScreen * 0.07,
+                      ),
+                      onTap: () => openForm(context, CategoryForm()),
+                    ),
+                    SizedBox(width: sizeScreen * 0.05),
+                    Expanded(
+                      child: CategorysFile(
+                        onSubmit: (int category) {
+                          setState(() {
+                            selectCategory = category;
+                          });
+                        },
+                        category: widget.category,
+                      ),
+                    ),
+                  ],
                 ),
                 Row(
                   children: [
@@ -120,7 +129,11 @@ class _TransactionFormState extends State<TransactionForm> {
                 SizedBox(
                   height: sizeScreen * 0.28,
                   child: SelectTransactionType(
-                    onSubmit: addType,
+                    onSubmit: (int type) {
+                      setState(() {
+                        selectType = type;
+                      });
+                    },
                     type: widget.transaction?['type'],
                   ),
                 ),
@@ -152,12 +165,4 @@ class _TransactionFormState extends State<TransactionForm> {
       ),
     );
   }
-
-  // _openCategoryFormModal(BuildContext context) {
-  //   showDialog(
-  //       context: context,
-  //       builder: (context) {
-  //         return CategoryForm();
-  //       });
-  // }
 }

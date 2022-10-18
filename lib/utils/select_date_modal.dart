@@ -15,6 +15,9 @@ selectDateModal({
     if (pickedDate == null) {
       return;
     }
+    if (!FocusScope.of(context).hasPrimaryFocus) {
+      FocusScope.of(context).unfocus();
+    }
     selectedDate(pickedDate);
   });
 }
