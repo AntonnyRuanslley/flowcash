@@ -1,3 +1,4 @@
+import 'package:cas/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 
 alertDialog(
@@ -6,10 +7,12 @@ alertDialog(
 ) {
   return showDialog(
       context: context,
-      barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
-          title: Text('Error'),
+          title: Text(
+            msg ?? 'Error',
+            style: AppTheme.title1(context),
+          ),
           actions: [
             TextButton(
               child: const Text('Ok'),

@@ -1,10 +1,9 @@
 import 'package:cas/data/categories.dart';
 import 'package:cas/data/transactions.dart';
 
-import 'package:cas/views/transaction_add.dart';
+import 'package:cas/views/transaction_form.dart';
 import 'package:cas/utils/open_form.dart';
 import 'package:cas/widgets/transactionPage/transactions_list_body.dart';
-import 'package:cas/widgets/transactionPage/transactions_tile.dart';
 import 'package:cas/widgets/transactionPage/tableValues/table_values.dart';
 import 'package:cas/widgets/transactionPage/title_top.dart';
 import 'package:cas/widgets/transactionPage/day_flow.dart';
@@ -116,7 +115,7 @@ class _TransactionsListLocalState extends State<TransactionsListLocal> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).colorScheme.primary,
         child: Icon(Icons.add),
-        onPressed: () => openForm(context, TransactionAdd(onRefresh: _refresh)),
+        onPressed: () => openForm(context, TransactionForm(onRefresh: _refresh)),
         elevation: 8,
       ),
       floatingActionButtonLocation:

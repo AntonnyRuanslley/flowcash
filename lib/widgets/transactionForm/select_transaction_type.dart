@@ -4,13 +4,11 @@ enum Type { recipe, expense }
 
 class SelectTransactionType extends StatefulWidget {
   final Function onSubmit;
-  bool isAdd;
-  int? type;
+  final int? type;
 
   SelectTransactionType({
     Key? key,
     required this.onSubmit,
-    required this.isAdd,
     this.type,
   }) : super(key: key);
 
@@ -19,16 +17,15 @@ class SelectTransactionType extends StatefulWidget {
 }
 
 class _SelectTransactionTypeState extends State<SelectTransactionType> {
-  Type? _choice;
-  int? inputType = 1;
+  Type choice = Type.recipe;
+  int inputType = 1;
 
   @override
   void initState() {
-    _choice = widget.isAdd
-        ? Type.recipe
-        : widget.type == 1
-            ? Type.recipe
-            : Type.expense;
+    super.initState();
+    if (widget.type != null) {
+      choice = widget.type == 1 ? Type.recipe : Type.expense;
+    }
   }
 
   @override
@@ -56,10 +53,10 @@ class _SelectTransactionTypeState extends State<SelectTransactionType> {
             leading: Radio<Type>(
               activeColor: Colors.white,
               value: Type.recipe,
-              groupValue: _choice,
+              groupValue: choice,
               onChanged: (Type? value) {
                 setState(() {
-                  _choice = value;
+                  choice = value!;
                   inputType = 1;
                 });
                 widget.onSubmit(inputType);
@@ -78,10 +75,10 @@ class _SelectTransactionTypeState extends State<SelectTransactionType> {
             leading: Radio<Type>(
               activeColor: Colors.white,
               value: Type.expense,
-              groupValue: _choice,
+              groupValue: choice,
               onChanged: (Type? value) {
                 setState(() {
-                  _choice = value;
+                  choice = value!;
                   inputType = 2;
                 });
                 widget.onSubmit(inputType);

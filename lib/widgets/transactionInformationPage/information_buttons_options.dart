@@ -1,8 +1,8 @@
-import 'package:cas/components/components_cloud/transaction_widgets/transaction_edit.dart';
 import 'package:cas/controllers/transactionController/transaction_controller.dart';
 import 'package:cas/utils/confirmation_alert_dialog.dart';
 import 'package:cas/utils/open_form.dart';
 import 'package:cas/utils/screen_size.dart';
+import 'package:cas/views/transaction_form.dart';
 import 'package:flutter/material.dart';
 
 class InformationButtonsOptions extends StatelessWidget {
@@ -20,7 +20,6 @@ class InformationButtonsOptions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sizeScreen = ScreenSizes.getScreenWidthSize(context);
-
     return Padding(
       padding: EdgeInsets.only(
         left: sizeScreen * 0.03,
@@ -64,10 +63,10 @@ class InformationButtonsOptions extends StatelessWidget {
               ),
               onPressed: () => openForm(
                 context,
-                TransactionEdit(
-                  transaction,
-                  category,
-                  onRefresh,
+                TransactionForm(
+                  transaction: transaction,
+                  category: category,
+                  onRefresh: onRefresh,
                 ),
               ),
             ),

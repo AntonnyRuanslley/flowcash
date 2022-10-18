@@ -1,4 +1,5 @@
 import 'package:cas/controllers/transactionController/transaction_controller.dart';
+import 'package:cas/utils/alert_dialog.dart';
 import 'package:cas/utils/screen_size.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,7 @@ class FormButtons extends StatelessWidget {
   final int? selectType;
   final DateTime selectDate;
   final Function() onRefresh;
+  final int? transactionId;
   const FormButtons({
     Key? key,
     required this.inputDescription,
@@ -17,6 +19,7 @@ class FormButtons extends StatelessWidget {
     required this.selectType,
     required this.selectDate,
     required this.onRefresh,
+    this.transactionId,
   }) : super(key: key);
 
   @override
@@ -42,7 +45,7 @@ class FormButtons extends StatelessWidget {
           SizedBox(width: sizeScreen * 0.03),
           TextButton(
               child: Text(
-                'Adicionar',
+                transactionId == null ? 'Adicionar' : 'Salvar',
                 style: TextStyle(
                     color: Theme.of(context).colorScheme.primary,
                     fontSize: sizeScreen * 0.047,
@@ -52,7 +55,22 @@ class FormButtons extends StatelessWidget {
                 backgroundColor: Theme.of(context).colorScheme.secondary,
               ),
               onPressed: () {
-                final newTransaction = {
+                if (inputDescription.text.isEmpty) {
+                  alertDialog(context, "Descrição está vazia!");
+                  return;
+                }
+
+                if (selectCategory == null) {
+                  alertDialog(context, "Sem categoria selecionada!");
+                  return;
+                }
+
+                if (inputValue.text.isEmpty) {
+                  alertDialog(context, "Valor está vazio!");
+                  return;
+                }
+
+                final transaction = {
                   "description": inputDescription.text,
                   "category_id": selectCategory,
                   "value":
@@ -61,11 +79,21 @@ class FormButtons extends StatelessWidget {
                   "type": selectType ?? 1,
                   "date": selectDate,
                 };
-                TransactionController.createTransaction(
-                  context: context,
-                  newTransaction: newTransaction,
-                  onRefresh: onRefresh,
-                );
+
+                if (transactionId == null) {
+                  TransactionController.createTransaction(
+                    context: context,
+                    newTransaction: transaction,
+                    onRefresh: onRefresh,
+                  );
+                } else {
+                  TransactionController.updateTransaction(
+                    context: context,
+                    transactionId: transactionId!,
+                    updateTransaction: transaction,
+                    onRefresh: onRefresh,
+                  );
+                }
               }),
         ],
       ),

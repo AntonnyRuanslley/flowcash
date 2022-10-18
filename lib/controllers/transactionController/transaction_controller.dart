@@ -6,6 +6,7 @@ import 'package:hive/hive.dart';
 
 part 'get_transaction_calculations.dart';
 part 'create_transaction.dart';
+part 'update_transaction.dart';
 part 'delete_transaction.dart';
 
 class TransactionController {
@@ -31,6 +32,20 @@ class TransactionController {
     return implementCreateTransaction(
       context: context,
       newTransaction: newTransaction,
+      onRefresh: onRefresh,
+    );
+  }
+
+  static Future<void> updateTransaction({
+    required BuildContext context,
+    required int transactionId,
+    required Map<String, dynamic> updateTransaction,
+    required Function() onRefresh,
+  }) {
+    return implementUpdateTransaction(
+      context: context,
+      transactionId: transactionId,
+      updateTransaction: updateTransaction,
       onRefresh: onRefresh,
     );
   }

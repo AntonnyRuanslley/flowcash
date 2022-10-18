@@ -9,7 +9,7 @@ class AppTheme {
   static TextStyle title1(BuildContext context) {
     return TextStyle(
       fontFamily: "OpenSans",
-      fontSize: 19,
+      fontSize: ScreenSizes.getScreenHeightSize(context) * 0.025,
       fontWeight: FontWeight.normal,
       color: tertiaryColor,
     );

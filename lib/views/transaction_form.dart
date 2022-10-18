@@ -1,7 +1,8 @@
 import 'package:cas/components/components_local/category_widgets/categorys_file.dart';
+import 'package:cas/utils/format_value.dart';
+import 'package:cas/utils/screen_size.dart';
 import 'package:cas/widgets/transactionForm/select_transaction_type.dart';
 import 'package:cas/components/components_local/category_widgets/category_add.dart';
-import 'package:cas/controllers/transactionController/transaction_controller.dart';
 import 'package:cas/utils/select_date_modal.dart';
 import 'package:cas/widgets/transactionForm/form_buttons.dart';
 import 'package:cas/widgets/transactionForm/select_date.dart';
@@ -9,28 +10,57 @@ import 'package:currency_text_input_formatter/currency_text_input_formatter.dart
 import 'package:cas/widgets/transactionForm/custom_text_field.dart';
 import 'package:flutter/material.dart';
 
-class TransactionAdd extends StatefulWidget {
+class TransactionForm extends StatefulWidget {
+  final Map<String, dynamic>? transaction;
+  final String? category;
   final Function() onRefresh;
 
-  const TransactionAdd({
+  const TransactionForm({
     Key? key,
+    this.transaction,
+    this.category,
     required this.onRefresh,
   }) : super(key: key);
 
   @override
-  State<TransactionAdd> createState() => _TransactionAddState();
+  State<TransactionForm> createState() => _TransactionFormState();
 }
 
-class _TransactionAddState extends State<TransactionAdd> {
+class _TransactionFormState extends State<TransactionForm> {
   final inputDescription = TextEditingController();
   final inputValue = TextEditingController();
   int? selectCategory;
   int? selectType;
   DateTime selectDate = DateTime.now();
 
+  addCategory(int category) {
+    setState(() {
+      selectCategory = category;
+    });
+  }
+
+  addType(int type) {
+    setState(() {
+      selectType = type;
+    });
+  }
+
+  @override
+  initState() {
+    super.initState();
+    if (widget.transaction != null) {
+      inputDescription.text = widget.transaction!['description'];
+      selectCategory = widget.transaction!['category_id'];
+      inputValue.text =
+          FormatValue.getMoneyFormatNoFigures(widget.transaction!['value']);
+      selectType = widget.transaction!['type'];
+      selectDate = DateTime.parse(widget.transaction!['date'].toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final sizeScreen = MediaQuery.of(context).size.width;
+    final sizeScreen = ScreenSizes.getScreenWidthSize(context);
 
     return SingleChildScrollView(
       child: AlertDialog(
@@ -40,7 +70,7 @@ class _TransactionAddState extends State<TransactionAdd> {
           borderRadius: BorderRadius.circular(20),
         ),
         title: Text(
-          "Nova transação",
+          widget.transaction == null ? "Nova transação" : "Edição de transação",
           textAlign: TextAlign.center,
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -59,15 +89,19 @@ class _TransactionAddState extends State<TransactionAdd> {
                   controller: inputDescription,
                   keyboardType: TextInputType.name,
                 ),
-                CategorysFile(_addCategory, false),
+                CategorysFile(
+                  onSubmit: addCategory,
+                  category: widget.category,
+                ),
                 Row(
                   children: [
                     Text(
-                      "  R\$  ",
+                      "R\$",
                       style: TextStyle(
                           color: Colors.white, fontSize: sizeScreen * 0.06),
                     ),
-                    Flexible(
+                    SizedBox(width: sizeScreen * 0.05),
+                    Expanded(
                       child: CustomTextField(
                         hintText: "0,00",
                         controller: inputValue,
@@ -85,7 +119,10 @@ class _TransactionAddState extends State<TransactionAdd> {
                 ),
                 SizedBox(
                   height: sizeScreen * 0.28,
-                  child: SelectTransactionType(onSubmit: _addType, isAdd: true),
+                  child: SelectTransactionType(
+                    onSubmit: addType,
+                    type: widget.transaction?['type'],
+                  ),
                 ),
                 SelectDate(
                   selectDate: selectDate,
@@ -106,6 +143,7 @@ class _TransactionAddState extends State<TransactionAdd> {
                   selectType: selectType,
                   selectDate: selectDate,
                   onRefresh: widget.onRefresh,
+                  transactionId: widget.transaction?['id'],
                 )
               ],
             ),
@@ -122,16 +160,4 @@ class _TransactionAddState extends State<TransactionAdd> {
   //         return CategoryForm();
   //       });
   // }
-
-  _addCategory(int category) {
-    setState(() {
-      selectCategory = category;
-    });
-  }
-
-  _addType(int type) {
-    setState(() {
-      selectType = type;
-    });
-  }
 }

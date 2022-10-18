@@ -1,4 +1,5 @@
 import 'package:cas/data/categories.dart';
+import 'package:cas/utils/format_value.dart';
 import '../../views/transaction_information.dart';
 
 import 'package:flutter/material.dart';
@@ -101,10 +102,9 @@ class _TransactionsTileState extends State<TransactionsTile> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
-                NumberFormat(' R\$ #.00', 'pt-BR').format(
-                    widget.transaction['type'] == 1
-                        ? widget.transaction['value']
-                        : widget.transaction['value'] * -1),
+                FormatValue.getMoneyFormat(widget.transaction['type'] == 1
+                    ? widget.transaction['value']
+                    : widget.transaction['value'] * -1),
                 style: TextStyle(
                   color: _banlacePos(widget.transaction['type'])!
                       ? Colors.green
