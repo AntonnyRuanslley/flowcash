@@ -1,9 +1,9 @@
-import 'package:cas/components/components_local/category_widgets/category_edit.dart';
 import 'package:cas/controllers/categoryController/category_controller.dart';
 import 'package:cas/data/categories.dart';
 import 'package:cas/utils/confirmation_alert_dialog.dart';
 import 'package:cas/utils/open_form.dart';
 import 'package:cas/utils/screen_size.dart';
+import 'package:cas/views/category_form.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesList extends StatefulWidget {
@@ -22,11 +22,11 @@ class CategoriesList extends StatefulWidget {
 class _CategoriesListState extends State<CategoriesList> {
   @override
   initState() {
-    _refresh();
     super.initState();
+    refresh();
   }
 
-  _refresh() {
+  refresh() {
     setState(() {
       CategoryController.getCategories();
     });
@@ -88,7 +88,10 @@ class _CategoriesListState extends State<CategoriesList> {
                           if (widget.isEdit!)
                             openForm(
                               context,
-                              CategoryEdit(category, _refresh),
+                              CategoryForm(
+                                category: category,
+                                onRefresh: refresh,
+                              ),
                             );
                           if (widget.isDelete!)
                             confirmationAlertDialog(
@@ -100,7 +103,7 @@ class _CategoriesListState extends State<CategoriesList> {
                                 CategoryController.deleteCategory(
                                   context: context,
                                   categoryId: category['id'],
-                                  onRefresh: _refresh,
+                                  onRefresh: refresh,
                                 );
                               },
                             );

@@ -1,4 +1,4 @@
-import 'package:cas/components/components_local/category_widgets/category_add.dart';
+import 'package:cas/views/category_form.dart';
 import 'package:cas/utils/screen_size.dart';
 import 'package:cas/views/categories_list.dart';
 import 'package:cas/utils/open_form.dart';

@@ -1,1 +1,1 @@
-List categories = [];
+List<Map<String, dynamic>> categories = [];
