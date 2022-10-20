@@ -1,4 +1,4 @@
-import 'package:cas/components/components_local/category_widgets/categorys_file.dart';
+import 'package:cas/widgets/transactionForm/categorys_select.dart';
 import 'package:cas/themes/app_theme.dart';
 import 'package:cas/utils/format_value.dart';
 import 'package:cas/utils/open_form.dart';

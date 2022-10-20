@@ -1,9 +1,11 @@
 import 'package:cas/components/components_local/category_widgets/category_add.dart';
-import 'package:cas/components/components_local//category_widgets/categories_list.dart';
+import 'package:cas/utils/screen_size.dart';
+import 'package:cas/views/categories_list.dart';
 import 'package:cas/utils/open_form.dart';
 
 import 'package:cas/views/loading.dart';
 import 'package:cas/widgets/settingsDrawer/custom_tile.dart';
+import 'package:cas/widgets/settingsDrawer/drawer_top.dart';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,8 +24,7 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    final sizeScreen =
-        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
+    final sizeScreen = ScreenSizes.getScreenHeightSize(context);
 
     return Drawer(
       backgroundColor: Theme.of(context).colorScheme.primary,
@@ -33,27 +34,7 @@ class _SettingsState extends State<Settings> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: sizeScreen * 1,
-                color: Theme.of(context).colorScheme.primary,
-                padding: const EdgeInsets.all(9),
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      radius: sizeScreen * 0.048,
-                      backgroundColor: Theme.of(context).colorScheme.secondary,
-                      child: Icon(
-                        Icons.settings,
-                        size: sizeScreen * 0.058,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                    SizedBox(
-                      height: sizeScreen * 0.01,
-                    )
-                  ],
-                ),
-              ),
+              DrawerTop(),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
@@ -66,19 +47,19 @@ class _SettingsState extends State<Settings> {
                 ),
               ),
               CustomTile(
-                text: 'Adicionar categoria',
+                title: 'Adicionar categoria',
                 icon: Icons.add,
                 onTap: () => openForm(context, CategoryForm()),
               ),
               CustomTile(
-                text: 'Editar categoria',
+                title: 'Editar categoria',
                 icon: Icons.edit,
-                onTap: () => openForm(context, CategoriesList(0)),
+                onTap: () => openForm(context, CategoriesList(isEdit: true)),
               ),
               CustomTile(
-                text: 'Excluir categoria',
+                title: 'Excluir categoria',
                 icon: Icons.delete,
-                onTap: () => openForm(context, CategoriesList(1)),
+                onTap: () => openForm(context, CategoriesList(isDelete: true)),
               ),
               Divider(
                 height: 1,
@@ -89,11 +70,11 @@ class _SettingsState extends State<Settings> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     CustomTile(
-                      text: 'Escolher modo',
+                      title: 'Escolher modo',
                       icon: Icons.low_priority_sharp,
                       onTap: () async {
-                        bool logoffed = await _changeChoice();
-                        if (logoffed) {
+                        bool changeChoice = await _changeChoice();
+                        if (changeChoice) {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(

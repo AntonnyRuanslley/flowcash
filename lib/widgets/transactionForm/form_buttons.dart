@@ -75,9 +75,10 @@ class FormButtons extends StatelessWidget {
                 final transaction = {
                   "description": inputDescription.text,
                   "category_id": selectCategory,
-                  "value":
-                      double.tryParse(inputValue.text.replaceAll(",", ".")) ??
-                          0.0,
+                  "value": double.tryParse(inputValue.text
+                          .replaceAll(".", "")
+                          .replaceAll(",", ".")) ??
+                      0.0,
                   "type": selectType ?? 1,
                   "date": selectDate,
                 };

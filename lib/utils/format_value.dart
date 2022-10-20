@@ -6,7 +6,7 @@ class FormatValue {
     if (value == 0.0) {
       return NumberFormat(' R\$ 0.00', 'pt-BR').format(value);
     } else {
-      return NumberFormat(' R\$ #.00', 'pt-BR').format(value);
+      return NumberFormat(' R\$ ###,###,###.00', 'pt-BR').format(value);
     }
   }
 
@@ -14,7 +14,7 @@ class FormatValue {
     if (value == 0.0) {
       return NumberFormat('0.00', 'pt-BR').format(value);
     } else {
-      return NumberFormat('#.00', 'pt-BR').format(value);
+      return NumberFormat('###,###,###.00', 'pt-BR').format(value);
     }
   }
 

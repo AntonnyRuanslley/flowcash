@@ -1,40 +1,35 @@
 import 'package:cas/components/components_local/category_widgets/category_edit.dart';
+import 'package:cas/controllers/categoryController/category_controller.dart';
 import 'package:cas/data/categories.dart';
+import 'package:cas/utils/confirmation_alert_dialog.dart';
+import 'package:cas/utils/open_form.dart';
 import 'package:cas/utils/screen_size.dart';
-
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 
 class CategoriesList extends StatefulWidget {
-  final int who;
-
-  CategoriesList(this.who);
+  final bool? isEdit;
+  final bool? isDelete;
+  const CategoriesList({
+    Key? key,
+    this.isEdit = false,
+    this.isDelete = false,
+  }) : super(key: key);
 
   @override
   State<CategoriesList> createState() => _CategoriesListState();
 }
 
 class _CategoriesListState extends State<CategoriesList> {
-  final _categoriesBox = Hive.box('categories');
-
-  void _getCategories() {
-    final data = _categoriesBox.keys.map((key) {
-      final value = _categoriesBox.get(key);
-      return {
-        "id": key,
-        "name": value["name"],
-      };
-    }).toList();
-
-    setState(() {
-      categories = data.reversed.toList();
-    });
+  @override
+  initState() {
+    _refresh();
+    super.initState();
   }
 
-  Future<void> _deleteCategory(id) async {
-    await _categoriesBox.delete(id);
-    _refresh();
-    Navigator.of(context).pop();
+  _refresh() {
+    setState(() {
+      CategoryController.getCategories();
+    });
   }
 
   @override
@@ -90,9 +85,25 @@ class _CategoriesListState extends State<CategoriesList> {
                     (category) {
                       return TextButton(
                         onPressed: () {
-                          widget.who == 0
-                              ? _openForm(context, category)
-                              : _openAlert(context, category['id']);
+                          if (widget.isEdit!)
+                            openForm(
+                              context,
+                              CategoryEdit(category, _refresh),
+                            );
+                          if (widget.isDelete!)
+                            confirmationAlertDialog(
+                              context: context,
+                              msgTitle: "Deseja realmente excluir?",
+                              completeMsg:
+                                  "A categoria será excluida permanentemente!",
+                              function: () {
+                                CategoryController.deleteCategory(
+                                  context: context,
+                                  categoryId: category['id'],
+                                  onRefresh: _refresh,
+                                );
+                              },
+                            );
                         },
                         child: Text(
                           category['name'],
@@ -107,55 +118,6 @@ class _CategoriesListState extends State<CategoriesList> {
                 ),
         ),
       ),
-    );
-  }
-
-  @override
-  initState() {
-    _refresh();
-    super.initState();
-  }
-
-  _refresh() {
-    _getCategories();
-  }
-
-  _openForm(context, category) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return CategoryEdit(category, _refresh);
-        });
-  }
-
-  _openAlert(context, id) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Deseja realmente excluir?'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: const [
-                Text('A categoria será excluida permanentemente!'),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-                child: const Text('Cancelar'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                }),
-            TextButton(
-              child: const Text('Excluir'),
-              onPressed: () {
-                _deleteCategory(id);
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }

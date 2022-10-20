@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class CustomTile extends StatelessWidget {
-  final String text;
+  final String title;
   final IconData icon;
   final Function() onTap;
   const CustomTile({
     Key? key,
-    required this.text,
+    required this.title,
     required this.icon,
     required this.onTap,
   }) : super(key: key);
@@ -17,7 +17,7 @@ class CustomTile extends StatelessWidget {
       leading: Icon(icon),
       iconColor: Theme.of(context).colorScheme.primary,
       title: Text(
-        text,
+        title,
         style: TextStyle(color: Theme.of(context).colorScheme.primary),
       ),
       onTap: onTap,

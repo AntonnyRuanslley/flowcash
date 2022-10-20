@@ -18,6 +18,7 @@ class _CategoryEditState extends State<CategoryEdit> {
 
   @override
   void initState() {
+    super.initState();
     _inputName!.text = widget.category['name'];
   }
 
