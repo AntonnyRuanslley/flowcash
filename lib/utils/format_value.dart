@@ -27,4 +27,11 @@ class FormatValue {
       return Colors.red;
     }
   }
+
+  static banlaceOrExpanse(int type) {
+    if (type == 1) {
+      return Colors.green;
+    }
+    return Colors.red;
+  }
 }

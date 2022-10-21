@@ -41,7 +41,10 @@ class TransactionsListBody extends StatelessWidget {
           : ListView.builder(
               itemCount: transactions.length,
               itemBuilder: (ctx, i) {
-                return TransactionsTile(transactions[i], onRefresh);
+                return TransactionsTile(
+                  transaction: transactions[i],
+                  onRefresh: onRefresh,
+                );
               },
             ),
     );
