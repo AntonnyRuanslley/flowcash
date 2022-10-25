@@ -1,7 +1,7 @@
-import 'package:cas/data/categories.dart';
 import 'package:cas/utils/format_value.dart';
 import 'package:cas/utils/open_form.dart';
 import 'package:cas/utils/screen_size.dart';
+import 'package:cas/utils/search_category.dart';
 import '../../views/transaction_information.dart';
 import 'package:flutter/material.dart';
 
@@ -20,25 +20,9 @@ class TransactionsTile extends StatefulWidget {
 }
 
 class _TransactionsTileState extends State<TransactionsTile> {
-  bool? banlacePos(type) {
-    if (type == 1) {
-      return true;
-    }
-    return false;
-  }
-
   @override
   Widget build(BuildContext context) {
     final sizeScreen = ScreenSizes.getScreenHeightSize(context);
-
-    searchCategory(id) {
-      for (var category in categories) {
-        if (id == category['id']) {
-          return category['name'];
-        }
-      }
-      return "Sem categoria";
-    }
 
     return TextButton(
       onPressed: () => openForm(
@@ -66,12 +50,10 @@ class _TransactionsTileState extends State<TransactionsTile> {
           child: CircleAvatar(
             radius: 20,
             child: Icon(
-              banlacePos(widget.transaction['type'])!
+              widget.transaction['type'] == 1
                   ? Icons.arrow_downward_rounded
                   : Icons.arrow_upward_rounded,
-              color: banlacePos(widget.transaction['type'])!
-                  ? Colors.green
-                  : Colors.red,
+              color: FormatValue.banlaceOrExpanse(widget.transaction['type']),
             ),
             backgroundColor: Theme.of(context).colorScheme.secondary,
           ),
@@ -102,9 +84,9 @@ class _TransactionsTileState extends State<TransactionsTile> {
                     ? widget.transaction['value']
                     : widget.transaction['value'] * -1),
                 style: TextStyle(
-                  color: banlacePos(widget.transaction['type'])!
-                      ? Colors.green
-                      : Colors.red,
+                  color: FormatValue.banlaceOrExpanse(
+                    widget.transaction['type'],
+                  ),
                   fontSize: sizeScreen * 0.027,
                   fontWeight: FontWeight.bold,
                 ),
