@@ -6,10 +6,12 @@ Future<void> implementUpdateTransaction({
   required Map<String, dynamic> updateTransaction,
   required Function() onRefresh,
 }) async {
+  loadingDialog(context, "Editando transação...");
   final transactionsBox = Hive.box('transactions');
 
   await transactionsBox.put(transactionId, updateTransaction);
   onRefresh();
+  Navigator.of(context).pop();
   Navigator.of(context).pop();
   Navigator.of(context).pop();
   ScaffoldMessenger.of(context).showSnackBar(transactionEditted);

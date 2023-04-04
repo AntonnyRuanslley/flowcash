@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
-alertSnackBar(BuildContext context, String msg, Color backgroundColor) {
+alertSnackBar({
+  required BuildContext context,
+  required String message,
+  Color? backgroundColor,
+}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(
-        msg,
+        message,
         textAlign: TextAlign.center,
       ),
       backgroundColor: backgroundColor,

@@ -71,14 +71,14 @@ class Select extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CustomButton(
-                    label: "Nuvem",
+                    label: "Online",
                     height: ScreenSizes.getScreenHeightSize(context) * 0.065,
                     width: sizeScreen * 0.2,
                     onPressed: () => _onChoice(true, context),
                   ),
                   SizedBox(width: sizeScreen * 0.03),
                   CustomButton(
-                    label: "Local",
+                    label: "Offline",
                     height: ScreenSizes.getScreenHeightSize(context) * 0.065,
                     width: sizeScreen * 0.2,
                     onPressed: () => _onChoice(false, context),

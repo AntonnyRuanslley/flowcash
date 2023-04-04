@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:cas/controllers/auth_controller.dart';
 import 'package:cas/data/urls.dart';
 import 'package:cas/themes/app_theme.dart';
-import 'package:cas/utils/alert_snack_bar.dart';
+import 'package:cas/utils/alert/alert_snack_bar.dart';
 import 'package:cas/utils/loading_alert.dart';
 import 'package:cas/utils/screen_size.dart';
 import 'package:cas/views/loading.dart';
@@ -166,9 +166,9 @@ class _LoginState extends State<Login> {
                                 } else {
                                   _inputPassword.clear();
                                   alertSnackBar(
-                                    context,
-                                    "Email ou senha inválidos!",
-                                    Colors.red,
+                                    context: context,
+                                    message: "Email ou senha inválidos!",
+                                    backgroundColor: Colors.red,
                                   );
                                 }
                               });

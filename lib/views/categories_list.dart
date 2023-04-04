@@ -80,44 +80,47 @@ class _CategoriesListState extends State<CategoriesList> {
                     )
                   ],
                 )
-              : Column(
-                  children: categories.map<Widget>(
-                    (category) {
-                      return TextButton(
-                        onPressed: () {
-                          if (widget.isEdit!)
-                            openForm(
-                              context,
-                              CategoryForm(
-                                category: category,
-                                onRefresh: refresh,
-                              ),
-                            );
-                          if (widget.isDelete!)
-                            confirmationAlertDialog(
-                              context: context,
-                              msgTitle: "Deseja realmente excluir?",
-                              completeMsg:
-                                  "A categoria será excluida permanentemente!",
-                              function: () {
-                                CategoryController.deleteCategory(
-                                  context: context,
-                                  categoryId: category['id'],
+              : SingleChildScrollView(
+                  child: Column(
+                    children: categories.map<Widget>(
+                      (category) {
+                        return TextButton(
+                          onPressed: () {
+                            if (widget.isEdit!)
+                              openForm(
+                                context,
+                                CategoryForm(
+                                  category: category,
                                   onRefresh: refresh,
-                                );
-                              },
-                            );
-                        },
-                        child: Text(
-                          category['name'],
-                          style: TextStyle(
+                                ),
+                              );
+                            if (widget.isDelete!)
+                              confirmationAlertDialog(
+                                context: context,
+                                msgTitle: "Deseja realmente excluir?",
+                                completeMsg:
+                                    "A categoria será excluida permanentemente!",
+                                function: () {
+                                  CategoryController.deleteCategory(
+                                    context: context,
+                                    categoryId: category['id'],
+                                    onRefresh: refresh,
+                                  );
+                                },
+                              );
+                          },
+                          child: Text(
+                            category['name'],
+                            style: TextStyle(
                               color: Theme.of(context).colorScheme.secondary,
-                              fontSize: sizeScreen * 0.03),
-                          textAlign: TextAlign.center,
-                        ),
-                      );
-                    },
-                  ).toList(),
+                              fontSize: sizeScreen * 0.03,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        );
+                      },
+                    ).toList(),
+                  ),
                 ),
         ),
       ),

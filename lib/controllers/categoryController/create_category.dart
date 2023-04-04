@@ -4,6 +4,7 @@ void implementCreateCategory({
   required BuildContext context,
   required String categoryName,
 }) async {
+  loadingDialog(context, "Criando categoria...");
   final categoriesBox = Hive.box('categories');
   if (categoryName.isEmpty) {
     return;
@@ -13,4 +14,10 @@ void implementCreateCategory({
   });
   await categoriesBox.add(newCategory);
   Navigator.of(context).pop();
+  Navigator.of(context).pop();
+  // snackBarAlertII(
+  //   context: context,
+  //   message: "Categoria criada com sucesso!",
+  //   backgroundColor: Colors.blueAccent,
+  // );
 }

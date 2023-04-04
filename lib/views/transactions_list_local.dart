@@ -97,9 +97,7 @@ class _TransactionsListLocalState extends State<TransactionsListLocal> {
             children: [
               Stack(
                 children: [
-                  TitleTop(
-                    scaffoldKey: scaffoldKey,
-                  ),
+                  TitleTop(scaffoldKey: scaffoldKey),
                   TableValues(transactions, _allTransactions),
                 ],
               ),
@@ -115,7 +113,8 @@ class _TransactionsListLocalState extends State<TransactionsListLocal> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).colorScheme.primary,
         child: Icon(Icons.add),
-        onPressed: () => openForm(context, TransactionForm(onRefresh: _refresh)),
+        onPressed: () =>
+            openForm(context, TransactionForm(onRefresh: _refresh)),
         elevation: 8,
       ),
       floatingActionButtonLocation:

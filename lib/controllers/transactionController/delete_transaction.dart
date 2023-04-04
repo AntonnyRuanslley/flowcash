@@ -6,9 +6,11 @@ Future<void> implementDeleteTransaction({
   required Function() onRefresh,
 }) async {
   try {
+    loadingDialog(context, "Deletando transação...");
     final transactionBox = Hive.box('transactions');
     await transactionBox.delete(id);
     onRefresh();
+    Navigator.of(context).pop();
     Navigator.of(context).pop();
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(transactionExcluded);
