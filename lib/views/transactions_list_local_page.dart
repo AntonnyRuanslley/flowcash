@@ -13,14 +13,14 @@ import '../widgets/transactionPage/tableValues/table_values.dart';
 import '../widgets/transactionPage/title_top.dart';
 import '../widgets/transactionPage/day_flow.dart';
 
-class TransactionsListLocal extends StatefulWidget {
-  const TransactionsListLocal({Key? key}) : super(key: key);
+class TransactionsListLocalPage extends StatefulWidget {
+  const TransactionsListLocalPage({Key? key}) : super(key: key);
 
   @override
-  State<TransactionsListLocal> createState() => _TransactionsListLocalState();
+  State<TransactionsListLocalPage> createState() => _TransactionsListLocalPageState();
 }
 
-class _TransactionsListLocalState extends State<TransactionsListLocal> {
+class _TransactionsListLocalPageState extends State<TransactionsListLocalPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final _transactionsBox = Hive.box('transactions');
   final _categoriesBox = Hive.box('categories');

@@ -1,11 +1,13 @@
+import 'package:flowcash/utils/screen_size.dart';
 import 'package:flutter/material.dart';
 
-class NoConnection extends StatelessWidget {
-  const NoConnection({Key? key}) : super(key: key);
+class NoConnectionPage extends StatelessWidget {
+  const NoConnectionPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final sizeScreen = MediaQuery.of(context).size.height;
+    final sizeScreen = ScreenSizes.getScreenHeightSize(context);
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: Center(

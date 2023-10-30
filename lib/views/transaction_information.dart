@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../utils/format_value.dart';
-import '../utils/screen_size.dart';
 import '../widgets/transactionInformationPage/information_buttons_options.dart';
 import '../widgets/transactionInformationPage/information_tile.dart';
 

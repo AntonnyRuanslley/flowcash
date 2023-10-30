@@ -8,11 +8,11 @@ import 'package:http/http.dart' as http;
 import '../data/users.dart';
 import '../data/urls.dart';
 import '../views/select.dart';
-import '../views/transactions_list.dart';
-import '../views/transactions_list_local.dart';
-import '../views/no_connection.dart';
-import '../views/home.dart';
-import '../views/login.dart';
+import 'transactions_list_page.dart';
+import 'transactions_list_local_page.dart';
+import '../views/no_connection_page.dart';
+import '../views/home_page.dart';
+import '../views/login_page.dart';
 
 
 class Loading extends StatefulWidget {
@@ -72,7 +72,7 @@ class _LoadingState extends State<Loading> {
     _onChoice().then((value) {
       if (value) {
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Select()));
+            context, MaterialPageRoute(builder: (context) => SelectionPage()));
       } else {
         if (choice!) {
           _tryConnection().then((value) {
@@ -80,29 +80,29 @@ class _LoadingState extends State<Loading> {
               _onLogin().then((value) {
                 if (value) {
                   Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => Login()));
+                      MaterialPageRoute(builder: (context) => LoginPage()));
                 } else {
                   _getUser().then((value) {
                     if (value) {
                       Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => Home()));
+                          MaterialPageRoute(builder: (context) => HomePage()));
                     } else {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => TransactionsList()));
+                              builder: (context) => TransactionsListPage()));
                     }
                   });
                 }
               });
             } else {
               Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => NoConnection()));
+                  MaterialPageRoute(builder: (context) => NoConnectionPage()));
             }
           });
         } else {
           Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => TransactionsListLocal()));
+              MaterialPageRoute(builder: (context) => TransactionsListLocalPage()));
         }
       }
     });

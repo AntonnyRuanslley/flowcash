@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '../views/transactions_list.dart';
+import 'transactions_list_page.dart';
 import '../views/users_list.dart';
 import '../views/pendents_list.dart';
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  _HomeState createState() => _HomeState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _HomeState extends State<Home> {
+class _HomePageState extends State<HomePage> {
   int _actualView = 1;
 
   _onBottom(int index) {
@@ -22,7 +22,7 @@ class _HomeState extends State<Home> {
 
   final List<Widget> _views = <Widget>[
     UsersList(),
-    TransactionsList(),
+    TransactionsListPage(),
     PendentsList(),
   ];
 

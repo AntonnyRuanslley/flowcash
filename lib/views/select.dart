@@ -6,8 +6,8 @@ import '../utils/screen_size.dart';
 import '../views/loading.dart';
 import '../widgets/selectPage/custom_button.dart';
 
-class Select extends StatelessWidget {
-  const Select({Key? key}) : super(key: key);
+class SelectionPage extends StatelessWidget {
+  const SelectionPage({Key? key}) : super(key: key);
 
   _onChoice(choice, context) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();

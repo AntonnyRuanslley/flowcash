@@ -30,6 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
   auto_size_text: ^3.0.0
+  connectivity_plus: ^5.0.1
   currency_text_input_formatter: ^2.1.10
   dio: ^5.0.3
   flutter_launcher_icons: ^0.13.1

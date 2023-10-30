@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 
 import '../routes/get_page_route.dart';
 import '../routes/routes_names.dart';
-import '../views/loading.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,16 +44,25 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: [const Locale('pt', 'BR')],
       getPages: GetPagesRoute.pages,
-      theme: ThemeData(
-        primarySwatch: generateMaterialColor(
-          color: Color(0XFFB80099),
+      // theme: ThemeData(
+      //   primarySwatch: generateMaterialColor(
+      //     color: Color(0XFFB80099),
+      //   ),
+      // ),
+      theme: tema.copyWith(
+        colorScheme: tema.colorScheme.copyWith(
+          primary: Color(0XFFB80099),
+          secondary: Colors.white,
+        ),
+        appBarTheme: AppBarTheme(
+          titleTextStyle: TextStyle(
+            fontFamily: "OpenSans",
+            fontSize: 19,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
-      initialRoute: RoutesNames.splashPage,
-      // unknownRoute: GetPage(
-      //   name: '/not-found',
-      //   page: () => NotFoundPage(),
-      // ),
+      initialRoute: RoutesNames.splashScreenPage,
     );
   }
 

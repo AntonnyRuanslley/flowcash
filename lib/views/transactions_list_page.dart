@@ -17,14 +17,14 @@ import '../components/components_cloud/transaction_widgets/transactions_file.dar
 import '../components/components_cloud/settings.dart';
 
 
-class TransactionsList extends StatefulWidget {
-  const TransactionsList({Key? key}) : super(key: key);
+class TransactionsListPage extends StatefulWidget {
+  const TransactionsListPage({Key? key}) : super(key: key);
 
   @override
-  State<TransactionsList> createState() => _TransactionsListState();
+  State<TransactionsListPage> createState() => _TransactionsListPageState();
 }
 
-class _TransactionsListState extends State<TransactionsList> {
+class _TransactionsListPageState extends State<TransactionsListPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   Future<String>? getTransaction;
 

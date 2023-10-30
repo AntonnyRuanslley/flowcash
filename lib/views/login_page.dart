@@ -12,12 +12,12 @@ import '../widgets/loginPage/login_check_box.dart';
 import '../widgets/loginPage/login_custom_button.dart';
 import '../widgets/loginPage/login_custom_input.dart';
 
-class Login extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   @override
-  State<Login> createState() => _LoginState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginPageState extends State<LoginPage> {
   final _formkey = GlobalKey<FormState>();
   final _inputEmail = TextEditingController();
   final _inputPassword = TextEditingController();
@@ -63,7 +63,7 @@ class _LoginState extends State<Login> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (contex) => Select(),
+                    builder: (contex) => SelectionPage(),
                   ),
                 );
               },
