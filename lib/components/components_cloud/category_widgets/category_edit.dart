@@ -1,8 +1,8 @@
-import 'package:cas/data/urls.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+
+import '../../../data/urls.dart';
 
 class CategoryEdit extends StatefulWidget {
   final category;
@@ -19,6 +19,7 @@ class _CategoryEditState extends State<CategoryEdit> {
 
   @override
   void initState() {
+    super.initState();
     _inputName!.text = widget.category['name'];
   }
 
@@ -29,7 +30,8 @@ class _CategoryEditState extends State<CategoryEdit> {
     Future<void> _putCategory() async {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
-      var url = Uri.parse("${urls['categories']!}/${widget.category['id']}/update");
+      var url =
+          Uri.parse("${urls['categories']!}/${widget.category['id']}/update");
       var answer = await http.post(
         url,
         body: {

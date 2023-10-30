@@ -1,9 +1,10 @@
-import 'package:cas/controllers/transactionController/transaction_controller.dart';
-import 'package:cas/utils/format_value.dart';
-import 'package:cas/utils/screen_size.dart';
-import 'package:cas/widgets/transactionPage/tableValues/custom_title.dart';
-import 'package:cas/widgets/transactionPage/tableValues/custom_value.dart';
 import 'package:flutter/material.dart';
+
+import '../../../controllers/transactionController/transaction_controller.dart';
+import '../../../utils/format_value.dart';
+import '../../../utils/screen_size.dart';
+import '../../../widgets/transactionPage/tableValues/custom_title.dart';
+import '../../../widgets/transactionPage/tableValues/custom_value.dart';
 
 class TableValues extends StatelessWidget {
   final List<dynamic> actualTransaction;

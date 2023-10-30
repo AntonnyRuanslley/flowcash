@@ -1,6 +1,7 @@
-import 'package:cas/utils/screen_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import '../../../utils/screen_size.dart';
 
 class CustomTextField extends StatelessWidget {
   final String hintText;
@@ -23,7 +24,6 @@ class CustomTextField extends StatelessWidget {
       maxLines: 1,
       cursorColor: Theme.of(context).colorScheme.secondary,
       style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-      
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: TextStyle(

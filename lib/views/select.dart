@@ -1,9 +1,10 @@
-import 'package:cas/themes/app_theme.dart';
-import 'package:cas/utils/screen_size.dart';
-import 'package:cas/views/loading.dart';
-import 'package:cas/widgets/selectPage/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../themes/app_theme.dart';
+import '../utils/screen_size.dart';
+import '../views/loading.dart';
+import '../widgets/selectPage/custom_button.dart';
 
 class Select extends StatelessWidget {
   const Select({Key? key}) : super(key: key);

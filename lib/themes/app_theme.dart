@@ -1,4 +1,4 @@
-import 'package:cas/utils/screen_size.dart';
+import '../utils/screen_size.dart';
 import 'package:flutter/material.dart';
 
 class AppTheme {
@@ -8,7 +8,7 @@ class AppTheme {
 
   static TextStyle title1(BuildContext context) {
     return TextStyle(
-      fontFamily: "OpenSans",
+      fontFamily: "Roboto-Regular",
       fontSize: ScreenSizes.getScreenHeightSize(context) * 0.025,
       fontWeight: FontWeight.normal,
       color: tertiaryColor,
@@ -17,7 +17,7 @@ class AppTheme {
 
   static TextStyle title2(BuildContext context) {
     return TextStyle(
-      fontFamily: "OpenSans",
+      fontFamily: "Roboto-Regular",
       fontSize: ScreenSizes.getScreenHeightSize(context) * 0.03,
       fontWeight: FontWeight.bold,
       color: secondyColor,
@@ -26,7 +26,7 @@ class AppTheme {
 
   static TextStyle subtitle1(BuildContext context) {
     return TextStyle(
-      fontFamily: "OpenSans",
+      fontFamily: "Roboto-Regular",
       fontSize: ScreenSizes.getScreenHeightSize(context) * 0.03,
       fontWeight: FontWeight.normal,
       color: secondyColor,

@@ -23,6 +23,7 @@ class _TypeFileState extends State<TypeFile> {
 
   @override
   void initState() {
+    super.initState();
     _choice = widget.isAdd
         ? Type.recipe
         : widget.type == 1

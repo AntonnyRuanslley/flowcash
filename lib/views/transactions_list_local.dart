@@ -1,17 +1,17 @@
-import 'package:cas/data/categories.dart';
-import 'package:cas/data/transactions.dart';
-
-import 'package:cas/views/transaction_form.dart';
-import 'package:cas/utils/open_form.dart';
-import 'package:cas/widgets/transactionPage/transactions_list_body.dart';
-import 'package:cas/widgets/transactionPage/tableValues/table_values.dart';
-import 'package:cas/widgets/transactionPage/title_top.dart';
-import 'package:cas/widgets/transactionPage/day_flow.dart';
-import 'package:cas/views/settings.dart';
+import '../data/categories.dart';
+import '../data/transactions.dart';
 
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+
+import '../utils/open_form.dart';
+import '../views/transaction_form.dart';
+import '../views/settings.dart';
+import '../widgets/transactionPage/transactions_list_body.dart';
+import '../widgets/transactionPage/tableValues/table_values.dart';
+import '../widgets/transactionPage/title_top.dart';
+import '../widgets/transactionPage/day_flow.dart';
 
 class TransactionsListLocal extends StatefulWidget {
   const TransactionsListLocal({Key? key}) : super(key: key);

@@ -1,16 +1,14 @@
 import 'dart:convert';
 
-import 'package:cas/components/components_cloud/category_widgets/categorys_file.dart';
-import 'package:cas/components/components_cloud/transaction_widgets/type_file.dart';
-
-import 'package:cas/data/urls.dart';
-
-import 'package:cas/utils/messages.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+
+import '../../../utils/messages.dart';
+import '../../../data/urls.dart';
+import '../../../components/components_cloud/category_widgets/categorys_file.dart';
+import '../../../components/components_cloud/transaction_widgets/type_file.dart';
 
 class TransactionEdit extends StatefulWidget {
   final transaction;
@@ -30,6 +28,7 @@ class _TransactionEditState extends State<TransactionEdit> {
   DateTime _selectDate = DateTime.now();
 
   void initState() {
+    super.initState();
     _inputDescription!.text = widget.transaction['description'];
     _inputCategory = widget.transaction['category_id'];
     _inputValeu!.text =

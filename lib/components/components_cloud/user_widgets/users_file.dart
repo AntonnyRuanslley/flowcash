@@ -1,6 +1,6 @@
-import 'package:cas/components/components_cloud/user_widgets/user_information.dart';
-
 import 'package:flutter/material.dart';
+
+import '../../../components/components_cloud/user_widgets/user_information.dart';
 
 class UsersFile extends StatefulWidget {
   final user;

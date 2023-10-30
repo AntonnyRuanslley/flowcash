@@ -1,4 +1,4 @@
-import 'package:cas/data/categories.dart';
+import '../data/categories.dart';
 
 searchCategory(id) {
   for (var category in categories) {

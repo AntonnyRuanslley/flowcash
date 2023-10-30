@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:cas/components/components_cloud/category_widgets/category_edit.dart';
-import 'package:cas/data/categories.dart';
-import 'package:cas/data/urls.dart';
+import '../../../components/components_cloud/category_widgets/category_edit.dart';
+import '../../../data/categories.dart';
+import '../../../data/urls.dart';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

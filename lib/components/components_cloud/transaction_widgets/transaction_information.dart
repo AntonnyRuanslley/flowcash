@@ -1,13 +1,11 @@
-import 'package:cas/components/components_cloud/transaction_widgets/transaction_edit.dart';
-
-import 'package:cas/data/urls.dart';
-
-import 'package:cas/utils/messages.dart';
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+
+import '../../../data/urls.dart';
+import '../../../utils/messages.dart';
+import '../../../components/components_cloud/transaction_widgets/transaction_edit.dart';
 
 class TransactionInformation extends StatefulWidget {
   final transaction;

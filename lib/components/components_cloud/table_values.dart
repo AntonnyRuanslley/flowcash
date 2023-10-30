@@ -1,6 +1,7 @@
-import 'package:cas/data/transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import '../../data/transactions.dart';
 
 class TableValues extends StatelessWidget {
   final List actualTransaction;

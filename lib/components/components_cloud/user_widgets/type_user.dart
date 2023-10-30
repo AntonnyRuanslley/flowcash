@@ -19,6 +19,7 @@ class _TypeUUserState extends State<TypeUser> {
 
   @override
   void initState() {
+    super.initState();
     _choice = widget.isAdd
         ? Type.normal
         : widget.type == 0

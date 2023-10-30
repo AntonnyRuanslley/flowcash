@@ -1,20 +1,19 @@
-import 'package:cas/data/users.dart';
-import 'package:cas/views/select.dart';
-import 'package:cas/views/transactions_list.dart';
-import 'package:cas/views/transactions_list_local.dart';
-
-import 'no_connection.dart';
-import 'home.dart';
-import 'login.dart';
-
-import '../data/urls.dart';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-import 'dart:convert';
-import 'dart:io';
+import '../data/users.dart';
+import '../data/urls.dart';
+import '../views/select.dart';
+import '../views/transactions_list.dart';
+import '../views/transactions_list_local.dart';
+import '../views/no_connection.dart';
+import '../views/home.dart';
+import '../views/login.dart';
+
 
 class Loading extends StatefulWidget {
   const Loading({Key? key}) : super(key: key);

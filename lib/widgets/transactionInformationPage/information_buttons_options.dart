@@ -1,9 +1,10 @@
-import 'package:cas/controllers/transactionController/transaction_controller.dart';
-import 'package:cas/utils/confirmation_alert_dialog.dart';
-import 'package:cas/utils/open_form.dart';
-import 'package:cas/utils/screen_size.dart';
-import 'package:cas/views/transaction_form.dart';
 import 'package:flutter/material.dart';
+
+import '../../controllers/transactionController/transaction_controller.dart';
+import '../../utils/confirmation_alert_dialog.dart';
+import '../../utils/open_form.dart';
+import '../../utils/screen_size.dart';
+import '../../views/transaction_form.dart';
 
 class InformationButtonsOptions extends StatelessWidget {
   final transaction;

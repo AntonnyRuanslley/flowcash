@@ -1,21 +1,21 @@
 import 'dart:convert';
 
-import 'package:cas/components/components_cloud/day_flow.dart';
-import 'package:cas/data/categories.dart';
-import 'package:cas/data/transactions.dart';
-import 'package:cas/data/urls.dart';
-
-import 'package:cas/components/components_cloud/transaction_widgets/transaction_add.dart';
-import 'package:cas/components/components_cloud/status.dart';
-import 'package:cas/components/components_cloud/table_values.dart';
-import 'package:cas/components/components_cloud/title_top.dart';
-import 'package:cas/components/components_cloud/transaction_widgets/transactions_file.dart';
-import 'package:cas/components/components_cloud/settings.dart';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+
+import '../components/components_cloud/day_flow.dart';
+import '../data/categories.dart';
+import '../data/transactions.dart';
+import '../data/urls.dart';
+import '../components/components_cloud/transaction_widgets/transaction_add.dart';
+import '../components/components_cloud/status.dart';
+import '../components/components_cloud/table_values.dart';
+import '../components/components_cloud/title_top.dart';
+import '../components/components_cloud/transaction_widgets/transactions_file.dart';
+import '../components/components_cloud/settings.dart';
+
 
 class TransactionsList extends StatefulWidget {
   const TransactionsList({Key? key}) : super(key: key);

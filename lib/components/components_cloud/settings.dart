@@ -1,16 +1,15 @@
 import 'dart:convert';
 
-import 'package:cas/components/components_cloud/category_widgets/category_add.dart';
-import 'package:cas/components/components_cloud/category_widgets/categories_list.dart';
-import 'package:cas/components/components_cloud/user_widgets/user_edit.dart';
-
-import 'package:cas/data/urls.dart';
-import 'package:cas/data/users.dart';
-
-import 'package:cas/views/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+
+import '../../data/urls.dart';
+import '../../data/users.dart';
+import '../../views/loading.dart';
+import '../../components/components_cloud/category_widgets/category_add.dart';
+import '../../components/components_cloud/category_widgets/categories_list.dart';
+import '../../components/components_cloud/user_widgets/user_edit.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -45,6 +44,7 @@ class _SettingsState extends State<Settings> {
   }
 
   initState() {
+    super.initState();
     _refresh();
   }
 

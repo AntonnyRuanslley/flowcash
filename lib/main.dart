@@ -1,8 +1,13 @@
-import 'package:cas/views/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:material_color_generator/material_color_generator.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:get/get.dart';
+
+import '../routes/get_page_route.dart';
+import '../routes/routes_names.dart';
+import '../views/loading.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,30 +34,54 @@ class MyApp extends StatelessWidget {
       ),
     );
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
+    return GetMaterialApp(
       title: 'FlowCash',
-      color: Color(0XFFB80099),
+      locale: Get.deviceLocale,
+      debugShowCheckedModeBanner: false,
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
-      locale: const Locale('pt', 'BR'),
       supportedLocales: [const Locale('pt', 'BR')],
-      theme: tema.copyWith(
-        colorScheme: tema.colorScheme.copyWith(
-          primary: Color(0XFFB80099),
-          secondary: Colors.white,
-        ),
-        appBarTheme: AppBarTheme(
-          titleTextStyle: TextStyle(
-            fontFamily: "OpenSans",
-            fontSize: 19,
-            fontWeight: FontWeight.bold,
-          ),
+      getPages: GetPagesRoute.pages,
+      theme: ThemeData(
+        primarySwatch: generateMaterialColor(
+          color: Color(0XFFB80099),
         ),
       ),
-      home: Loading(),
+      initialRoute: RoutesNames.splashPage,
+      // unknownRoute: GetPage(
+      //   name: '/not-found',
+      //   page: () => NotFoundPage(),
+      // ),
     );
   }
+
+  //   return MaterialApp(
+  //     debugShowCheckedModeBanner: false,
+  //     title: 'FlowCash',
+  //     color: Color(0XFFB80099),
+  //     localizationsDelegates: [
+  //       GlobalMaterialLocalizations.delegate,
+  //       GlobalWidgetsLocalizations.delegate
+  //     ],
+  //     locale: const Locale('pt', 'BR'),
+  //     supportedLocales: [const Locale('pt', 'BR')],
+  //     theme: tema.copyWith(
+  //       colorScheme: tema.colorScheme.copyWith(
+  //         primary: Color(0XFFB80099),
+  //         secondary: Colors.white,
+  //       ),
+  //       appBarTheme: AppBarTheme(
+  //         titleTextStyle: TextStyle(
+  //           fontFamily: "OpenSans",
+  //           fontSize: 19,
+  //           fontWeight: FontWeight.bold,
+  //         ),
+  //       ),
+  //     ),
+  //     home: Loading(),
+  //   );
+  // }
 }

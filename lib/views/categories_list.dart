@@ -1,10 +1,11 @@
-import 'package:cas/controllers/categoryController/category_controller.dart';
-import 'package:cas/data/categories.dart';
-import 'package:cas/utils/confirmation_alert_dialog.dart';
-import 'package:cas/utils/open_form.dart';
-import 'package:cas/utils/screen_size.dart';
-import 'package:cas/views/category_form.dart';
 import 'package:flutter/material.dart';
+
+import '../utils/confirmation_alert_dialog.dart';
+import '../utils/open_form.dart';
+import '../utils/screen_size.dart';
+import '../data/categories.dart';
+import '../controllers/categoryController/category_controller.dart';
+import '../views/category_form.dart';
 
 class CategoriesList extends StatefulWidget {
   final bool? isEdit;

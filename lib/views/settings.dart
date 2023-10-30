@@ -1,14 +1,13 @@
-import 'package:cas/views/category_form.dart';
-import 'package:cas/utils/screen_size.dart';
-import 'package:cas/views/categories_list.dart';
-import 'package:cas/utils/open_form.dart';
-
-import 'package:cas/views/loading.dart';
-import 'package:cas/widgets/settingsDrawer/custom_tile.dart';
-import 'package:cas/widgets/settingsDrawer/drawer_top.dart';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../utils/screen_size.dart';
+import '../utils/open_form.dart';
+import '../views/categories_list.dart';
+import '../views/category_form.dart';
+import '../views/loading.dart';
+import '../widgets/settingsDrawer/custom_tile.dart';
+import '../widgets/settingsDrawer/drawer_top.dart';
 
 class Settings extends StatefulWidget {
   @override

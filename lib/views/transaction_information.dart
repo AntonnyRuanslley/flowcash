@@ -1,9 +1,10 @@
-import 'package:cas/utils/format_value.dart';
-import 'package:cas/utils/screen_size.dart';
-import 'package:cas/widgets/transactionInformationPage/information_buttons_options.dart';
-import 'package:cas/widgets/transactionInformationPage/information_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import '../utils/format_value.dart';
+import '../utils/screen_size.dart';
+import '../widgets/transactionInformationPage/information_buttons_options.dart';
+import '../widgets/transactionInformationPage/information_tile.dart';
 
 class TransactionInformation extends StatefulWidget {
   final transaction;

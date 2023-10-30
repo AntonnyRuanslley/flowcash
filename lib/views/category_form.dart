@@ -1,6 +1,7 @@
-import 'package:cas/controllers/categoryController/category_controller.dart';
-import 'package:cas/utils/screen_size.dart';
 import 'package:flutter/material.dart';
+
+import '../utils/screen_size.dart';
+import '../controllers/categoryController/category_controller.dart';
 
 class CategoryForm extends StatefulWidget {
   final Map<String, dynamic>? category;

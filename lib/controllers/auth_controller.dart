@@ -1,4 +1,4 @@
-import 'package:cas/api/user_api_request.dart';
+import '../api/user_api_request.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController {

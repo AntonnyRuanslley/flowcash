@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cas/themes/app_theme.dart';
+
+import '../themes/app_theme.dart';
 
 loadingDialog(BuildContext context, String msg) {
   showDialog(

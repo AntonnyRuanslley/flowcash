@@ -1,4 +1,4 @@
-import 'package:cas/data/urls.dart';
+import '../data/urls.dart';
 import 'package:dio/dio.dart';
 
 class UserApiRequest {

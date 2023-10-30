@@ -1,12 +1,10 @@
-import 'package:cas/components/components_cloud/user_widgets/type_user.dart';
-
-import 'package:cas/data/urls.dart';
-
-import 'package:cas/utils/messages.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+
+import '../../../components/components_cloud/user_widgets/type_user.dart';
+import '../../../data/urls.dart';
+import '../../../utils/messages.dart';
 
 class UserEdit extends StatefulWidget {
   final user;
@@ -24,6 +22,7 @@ class _UserEditState extends State<UserEdit> {
   int? _inputType;
 
   void initState() {
+    super.initState();
     _inputName!.text = widget.user['name'];
     _inputType = widget.user['administrator'] == true ? 1 : 0;
   }

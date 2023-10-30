@@ -1,12 +1,10 @@
-import 'package:cas/components/components_cloud/user_widgets/user_edit.dart';
-
-import 'package:cas/data/urls.dart';
-
-import 'package:cas/utils/messages.dart';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+
+import '../../../utils/messages.dart';
+import '../../../data/urls.dart';
+import '../../../components/components_cloud/user_widgets/user_edit.dart';
 
 class UserInformation extends StatefulWidget {
   final user;

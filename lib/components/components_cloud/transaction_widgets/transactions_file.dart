@@ -1,15 +1,13 @@
-import 'package:cas/data/categories.dart';
+import 'dart:convert';
 
-import 'transaction_information.dart';
-
-import 'package:cas/data/urls.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
-import 'dart:convert';
+import '../../../data/categories.dart';
+import '../../../data/urls.dart';
+import '../../../../components/components_cloud/transaction_widgets/transaction_information.dart';
 
 class TransactionsFile extends StatefulWidget {
   final transaction;

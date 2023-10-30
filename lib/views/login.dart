@@ -1,19 +1,16 @@
-import 'dart:convert';
-import 'package:cas/controllers/auth_controller.dart';
-import 'package:cas/data/urls.dart';
-import 'package:cas/themes/app_theme.dart';
-import 'package:cas/utils/alert/alert_snack_bar.dart';
-import 'package:cas/utils/loading_alert.dart';
-import 'package:cas/utils/screen_size.dart';
-import 'package:cas/views/loading.dart';
-import 'package:cas/views/select.dart';
-import 'package:cas/widgets/loginPage/login_check_box.dart';
-import 'package:cas/widgets/loginPage/login_custom_button.dart';
-import 'package:cas/widgets/loginPage/login_custom_input.dart';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
+
+import '../themes/app_theme.dart';
+import '../utils/alert/alert_snack_bar.dart';
+import '../utils/loading_alert.dart';
+import '../utils/screen_size.dart';
+import '../controllers/auth_controller.dart';
+import '../views/loading.dart';
+import '../views/select.dart';
+import '../widgets/loginPage/login_check_box.dart';
+import '../widgets/loginPage/login_custom_button.dart';
+import '../widgets/loginPage/login_custom_input.dart';
 
 class Login extends StatefulWidget {
   @override

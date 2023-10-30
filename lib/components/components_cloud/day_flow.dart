@@ -16,6 +16,7 @@ class _DayFlowState extends State<DayFlow> {
 
   @override
   initState() {
+    super.initState();
     _inputDate = widget.oldDate;
   }
 

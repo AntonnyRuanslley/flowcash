@@ -1,9 +1,10 @@
-import 'package:cas/utils/format_value.dart';
-import 'package:cas/utils/open_form.dart';
-import 'package:cas/utils/screen_size.dart';
-import 'package:cas/utils/search_category.dart';
-import '../../views/transaction_information.dart';
 import 'package:flutter/material.dart';
+
+import '../../utils/format_value.dart';
+import '../../utils/open_form.dart';
+import '../../utils/screen_size.dart';
+import '../../utils/search_category.dart';
+import '../../views/transaction_information.dart';
 
 class TransactionsTile extends StatefulWidget {
   final Map<String, dynamic> transaction;
