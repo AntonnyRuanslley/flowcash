@@ -1,5 +1,5 @@
-name: cas
-description: A new Flutter project.
+name: flowcash
+description: FlowCash App
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.1.0+1
+version: 1.1.5+1
 
 environment:
   sdk: ">=2.16.2 <3.0.0"
@@ -30,17 +30,19 @@ dependencies:
   flutter:
     sdk: flutter
   auto_size_text: ^3.0.0
-  currency_text_input_formatter: ^2.1.7
+  currency_text_input_formatter: ^2.1.10
   dio: ^5.0.3
-  http: ^0.13.5
-  intl: ^0.17.0
+  flutter_launcher_icons: ^0.13.1
+  get: ^4.6.6
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  flutter_native_splash: ^2.2.19
-  flutter_launcher_icons: ^0.12.0
-  path_provider: ^2.0.14
-  permission_handler: ^10.2.0
-  shared_preferences: ^2.0.18
+  http: ^0.13.5
+  intl: ^0.18.0
+  material_color_generator: ^1.1.0
+  path_provider: ^2.1.1
+  shared_preferences: ^2.2.2
+  # flutter_native_splash: ^2.2.19
+  # permission_handler: ^10.2.0
   
 
   # The following adds the Cupertino Icons font to your application.
@@ -108,12 +110,19 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+  fonts: 
+    - family: roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Roboto-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Roboto-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Roboto-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Roboto-Bold.ttf
+          weight: 700
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
