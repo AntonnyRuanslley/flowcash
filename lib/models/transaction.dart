@@ -1,26 +1,40 @@
 class Transaction {
   String id;
-  String category;
+  String categoryId;
   String description;
   DateTime date;
-  int status;
+  int? status;
   double value;
   int type;
 
   Transaction({
     required this.id,
-    required this.category,
+    required this.categoryId,
     required this.description,
     required this.date,
-    required this.status,
+    this.status,
     required this.type,
     required this.value,
   });
 
+  factory Transaction.setTransactionModel({
+    required Map<String, dynamic> data,
+  }) {
+    return Transaction(
+      id: data['id'],
+      categoryId: data['category_id'],
+      description: data['description'],
+      date: data['date'],
+      // status: data['status'],
+      type: data['type'],
+      value: data['value'],
+    );
+  }
+
   Map<String, dynamic> toMap() {
     var map = {
       'id': id,
-      'category': category,
+      'category_id': categoryId,
       'description': description,
       'date': date,
       'status': status,
@@ -29,14 +43,4 @@ class Transaction {
     };
     return map;
   }
-
-  /*Transaction.fromMap(map) {
-    id = map['id'];
-    category = map['category'];
-    description = map['description'];
-    date = map['date'];
-    status = map['status'];
-    value = map['value'];
-    type = map['type'];
-  }*/
 }

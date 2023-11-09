@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../controllers/transactionController/transaction_controller.dart';
+import '../../../controllers/transaction_controller/transaction_controller.dart';
 import '../../../utils/format_value.dart';
 import '../../../utils/screen_size.dart';
 import '../../../widgets/transactionPage/tableValues/custom_title.dart';

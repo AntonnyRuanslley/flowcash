@@ -10,7 +10,9 @@ import '../data/urls.dart';
 import '../routes/routes_names.dart';
 
 class SplashScreenController extends GetxController {
-  bool? _choice;
+  bool? _isOnline;
+
+  bool get isOnline => _isOnline!;
 
   Future<bool> _onLogin() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -39,7 +41,7 @@ class SplashScreenController extends GetxController {
     if (sharedPreferences.getBool('choice') == null) {
       return true;
     } else {
-      _choice = sharedPreferences.getBool('choice');
+      _isOnline = sharedPreferences.getBool('choice');
       return false;
     }
   }
@@ -51,7 +53,7 @@ class SplashScreenController extends GetxController {
       if (result) {
         Get.offAndToNamed(RoutesNames.selectionPage);
       } else {
-        if (_choice!) {
+        if (_isOnline!) {
           final connectivityResult = await Connectivity().checkConnectivity();
           if (connectivityResult == ConnectivityResult.none) {
             Get.offAllNamed(RoutesNames.noConnectionPage);

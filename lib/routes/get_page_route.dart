@@ -1,8 +1,9 @@
-import 'package:flowcash/views/select.dart';
 import 'package:get/get.dart';
 
 import '../routes/routes_names.dart';
 import '../bindings/splash_screen_binding.dart';
+import '../bindings/transaction_binding.dart';
+import '../views/select.dart';
 import '../views/home_page.dart';
 import '../views/login_page.dart';
 import '../views/no_connection_page.dart';
@@ -39,7 +40,8 @@ class GetPagesRoute {
     ),
     GetPage(
       name: RoutesNames.transactionsListLocalPage,
-      page: () => const TransactionsListLocalPage(),
+      page: () => TransactionsListLocalPage(),
+      binding: TransactionBinding(),
     ),
   ];
 }

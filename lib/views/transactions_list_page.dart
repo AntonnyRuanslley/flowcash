@@ -5,10 +5,10 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-import '../components/components_cloud/day_flow.dart';
 import '../data/categories.dart';
 import '../data/transactions.dart';
 import '../data/urls.dart';
+import '../components/components_cloud/day_flow.dart';
 import '../components/components_cloud/transaction_widgets/transaction_add.dart';
 import '../components/components_cloud/status.dart';
 import '../components/components_cloud/table_values.dart';

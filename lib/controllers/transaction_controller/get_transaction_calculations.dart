@@ -52,8 +52,11 @@ double initialBalance(List<dynamic> allTransaction) {
     return 0;
   } else {
     var listValues = allTransaction.map((listValues) {
-      if (DateTime.parse(listValues['date'].toString())
-          .isBefore(selectDate.subtract(const Duration(days: 1)))) {
+      if (DateTime.parse(listValues['date'].toString()).isBefore(
+          Get.find<TransactionController>()
+              .selectedDate
+              .value
+              .subtract(const Duration(days: 1)))) {
         if (listValues['type'] == 2) {
           return (double.parse(listValues['value'].toString()) * -1);
         } else {

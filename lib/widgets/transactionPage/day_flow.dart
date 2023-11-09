@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../utils/screen_size.dart';
 import '../../utils/select_date_modal.dart';
 
 class DayFlow extends StatelessWidget {
   final DateTime oldDate;
   final Function(DateTime) selectedDate;
 
-  DayFlow(this.selectedDate, this.oldDate);
+  DayFlow({
+    required this.oldDate,
+    required this.selectedDate,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final sizeScreen =
-        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
+    final sizeScreen = ScreenSizes.getScreenHeightSize(context);
 
     return Container(
       height: sizeScreen * 0.055,

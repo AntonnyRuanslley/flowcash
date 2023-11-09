@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:material_color_generator/material_color_generator.dart';
+// import 'package:material_color_generator/material_color_generator.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:get/get.dart';
 
@@ -53,13 +53,6 @@ class MyApp extends StatelessWidget {
         colorScheme: tema.colorScheme.copyWith(
           primary: Color(0XFFB80099),
           secondary: Colors.white,
-        ),
-        appBarTheme: AppBarTheme(
-          titleTextStyle: TextStyle(
-            fontFamily: "OpenSans",
-            fontSize: 19,
-            fontWeight: FontWeight.bold,
-          ),
         ),
       ),
       initialRoute: RoutesNames.splashScreenPage,
