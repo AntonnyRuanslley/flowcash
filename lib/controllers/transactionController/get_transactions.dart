@@ -1,7 +1,7 @@
 part of 'transaction_controller.dart';
 
 Future<void> implementGetTransactions() async {
-  if (Get.find<SplashScreenController>().isOnline) {
+  if (Get.find<SettingsService>().isOnline) {
     getOfflineTransactions();
   } else {
     getOnlineTransactions();

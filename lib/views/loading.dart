@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 import '../data/users.dart';
 import '../data/urls.dart';
-import '../views/select.dart';
+import 'selection.dart';
 import 'transactions_list_page.dart';
 import 'transactions_list_local_page.dart';
 import '../views/no_connection_page.dart';

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../controllers/transaction_controller/transaction_controller.dart';
+import '../controllers/transactionController/transaction_controller.dart';
 
 class TransactionBinding extends Bindings {
   @override

@@ -1,9 +1,10 @@
 import 'package:get/get.dart';
 
 import '../routes/routes_names.dart';
+import '../bindings/selection_binding.dart';
 import '../bindings/splash_screen_binding.dart';
 import '../bindings/transaction_binding.dart';
-import '../views/select.dart';
+import '../views/selection.dart';
 import '../views/home_page.dart';
 import '../views/login_page.dart';
 import '../views/no_connection_page.dart';
@@ -29,6 +30,7 @@ class GetPagesRoute {
     GetPage(
       name: RoutesNames.selectionPage,
       page: () => const SelectionPage(),
+      binding: SelectionBinding(),
     ),
     GetPage(
       name: RoutesNames.noConnectionPage,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../controllers/transaction_controller/transaction_controller.dart';
+import '../../../controllers/transactionController/transaction_controller.dart';
 import '../../../utils/alert/alert_dialog.dart';
 import '../../../utils/loading_alert.dart';
 import '../../../utils/screen_size.dart';

@@ -7,12 +7,16 @@ import 'package:get/get.dart';
 
 import '../routes/get_page_route.dart';
 import '../routes/routes_names.dart';
+import '../services/settings_service.dart';
 
 void main() async {
+  print('Starting services...');
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await Hive.openBox('transactions');
   await Hive.openBox('categories');
+  await Get.putAsync(() => SettingsService().init());
+  print('All services started...');
   runApp(const MyApp());
 }
 

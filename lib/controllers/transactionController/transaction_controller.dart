@@ -1,4 +1,5 @@
 import 'package:flowcash/controllers/splash_screen_controller.dart';
+import 'package:flowcash/services/settings_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';

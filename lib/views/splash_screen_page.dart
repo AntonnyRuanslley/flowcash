@@ -8,7 +8,7 @@ class SplashScreenPage extends GetView<SplashScreenController> {
 
   @override
   Widget build(BuildContext context) {
-    controller.onInit();
+    controller.initializeApp();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: Center(

@@ -7,7 +7,7 @@ import '../utils/loading_alert.dart';
 import '../utils/screen_size.dart';
 import '../controllers/auth_controller.dart';
 import '../views/loading.dart';
-import '../views/select.dart';
+import 'selection.dart';
 import '../widgets/loginPage/login_check_box.dart';
 import '../widgets/loginPage/login_custom_button.dart';
 import '../widgets/loginPage/login_custom_input.dart';

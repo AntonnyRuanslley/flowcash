@@ -1,24 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
 
 import '../themes/app_theme.dart';
 import '../utils/screen_size.dart';
-import '../views/loading.dart';
 import '../widgets/selectPage/custom_button.dart';
+import '../controllers/selection_controller.dart';
 
-class SelectionPage extends StatelessWidget {
+class SelectionPage extends GetView<SelectionController> {
   const SelectionPage({Key? key}) : super(key: key);
-
-  _onChoice(choice, context) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    if (choice) {
-      await sharedPreferences.setBool('choice', true);
-    } else {
-      await sharedPreferences.setBool('choice', false);
-    }
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => Loading()));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,14 +64,14 @@ class SelectionPage extends StatelessWidget {
                     label: "Online",
                     height: ScreenSizes.getScreenHeightSize(context) * 0.065,
                     width: sizeScreen * 0.2,
-                    onPressed: () => _onChoice(true, context),
+                    onPressed: () => controller.onChoice(isOnline: true),
                   ),
                   SizedBox(width: sizeScreen * 0.03),
                   CustomButton(
                     label: "Offline",
                     height: ScreenSizes.getScreenHeightSize(context) * 0.065,
                     width: sizeScreen * 0.2,
-                    onPressed: () => _onChoice(false, context),
+                    onPressed: () => controller.onChoice(isOnline: false),
                   ),
                 ],
               )
