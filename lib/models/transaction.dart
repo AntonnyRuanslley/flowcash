@@ -1,6 +1,8 @@
+import 'package:flowcash/models/category.dart';
+
 class Transaction {
   String id;
-  String categoryId;
+  Category category;
   String description;
   DateTime date;
   int? status;
@@ -9,7 +11,7 @@ class Transaction {
 
   Transaction({
     required this.id,
-    required this.categoryId,
+    required this.category,
     required this.description,
     required this.date,
     this.status,
@@ -22,7 +24,7 @@ class Transaction {
   }) {
     return Transaction(
       id: data['id'],
-      categoryId: data['category_id'],
+      category: Category(id: data['category_id']),
       description: data['description'],
       date: data['date'],
       // status: data['status'],
@@ -34,7 +36,7 @@ class Transaction {
   Map<String, dynamic> toMap() {
     var map = {
       'id': id,
-      'category_id': categoryId,
+      'category_id': category.id,
       'description': description,
       'date': date,
       'status': status,

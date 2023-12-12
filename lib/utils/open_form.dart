@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-openForm(
-  BuildContext context,
-  Widget widget,
-) {
-  showDialog(
-    context: context,
+Future<dynamic> openForm(Widget widget) async {
+  return await showDialog(
+    context: Get.context!,
     builder: (context) {
       return Center(
         child: widget,

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../../data/categories.dart';
+import '../../themes/app_theme.dart';
+import '../../models/category.dart';
+import '../../controllers/categoryController/category_controller.dart';
 
 class CategorysSelect extends StatefulWidget {
   final Function(int) onSubmit;
@@ -17,14 +20,16 @@ class CategorysSelect extends StatefulWidget {
 }
 
 class _CategorysSelectState extends State<CategorysSelect> {
+  final categories = Get.find<CategoryController>().categories.value;
   int? category;
+
   @override
   void initState() {
     super.initState();
     if (widget.categoryId != null) {
-      final Map<String, dynamic> categorySelected = categories
-          .firstWhere((category) => category['id'] == widget.categoryId);
-      category = categorySelected['id'];
+      final Category categorySelected =
+          categories.firstWhere((category) => category.id == widget.categoryId);
+      category = categorySelected.id;
     }
   }
 
@@ -36,7 +41,9 @@ class _CategorysSelectState extends State<CategorysSelect> {
       padding: EdgeInsets.symmetric(horizontal: sizeScreen * 0.04),
       decoration: BoxDecoration(
         border: Border.all(
-            width: 2, color: Theme.of(context).colorScheme.secondary),
+          width: 2,
+          color: AppTheme.secondyColor,
+        ),
         borderRadius: BorderRadius.circular(sizeScreen * 0.04),
       ),
       child: DropdownButton(
@@ -47,20 +54,23 @@ class _CategorysSelectState extends State<CategorysSelect> {
             color: Colors.white54,
           ),
         ),
-        dropdownColor: Theme.of(context).colorScheme.primary,
-        icon: Icon(Icons.keyboard_arrow_down_rounded,
-            color: Theme.of(context).colorScheme.secondary),
+        dropdownColor: AppTheme.primaryColor,
+        icon: Icon(
+          Icons.keyboard_arrow_down_rounded,
+          color: AppTheme.secondyColor,
+        ),
         style: TextStyle(
-            fontSize: sizeScreen * 0.05,
-            color: Theme.of(context).colorScheme.secondary),
+          fontSize: sizeScreen * 0.05,
+          color: AppTheme.secondyColor,
+        ),
         underline: Container(height: 0),
         borderRadius: BorderRadius.circular(sizeScreen * 0.04),
         isExpanded: true,
         value: category,
         items: categories.map((categorySelected) {
           return DropdownMenuItem(
-            value: int.parse(categorySelected['id'].toString()),
-            child: Text(categorySelected['name']),
+            value: int.parse(categorySelected.id.toString()),
+            child: Text(categorySelected.name!),
           );
         }).toList(),
         onChanged: (int? newCategory) {

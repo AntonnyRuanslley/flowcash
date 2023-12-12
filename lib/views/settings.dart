@@ -1,11 +1,13 @@
+import 'package:flowcash/routes/routes_names.dart';
+import 'package:flowcash/themes/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/screen_size.dart';
 import '../utils/open_form.dart';
 import '../views/categories_list.dart';
 import '../views/category_form.dart';
-import '../views/loading.dart';
 import '../widgets/settingsDrawer/custom_tile.dart';
 import '../widgets/settingsDrawer/drawer_top.dart';
 
@@ -26,10 +28,10 @@ class _SettingsState extends State<Settings> {
     final sizeScreen = ScreenSizes.getScreenHeightSize(context);
 
     return Drawer(
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: AppTheme.primaryColor,
       child: SafeArea(
         child: Container(
-          color: Colors.grey[50],
+          color: AppTheme.backgroundColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -40,25 +42,26 @@ class _SettingsState extends State<Settings> {
                 child: Text(
                   'Configurações',
                   style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontWeight: FontWeight.w500,
-                      fontSize: sizeScreen * 0.025),
+                    color: AppTheme.primaryColor,
+                    fontWeight: FontWeight.w500,
+                    fontSize: sizeScreen * 0.025,
+                  ),
                 ),
               ),
               CustomTile(
                 title: 'Adicionar categoria',
                 icon: Icons.add,
-                onTap: () => openForm(context, CategoryForm()),
+                onTap: () => openForm(CategoryForm()),
               ),
               CustomTile(
                 title: 'Editar categoria',
                 icon: Icons.edit,
-                onTap: () => openForm(context, CategoriesList(isEdit: true)),
+                onTap: () => openForm(CategoriesList(isEdit: true)),
               ),
               CustomTile(
                 title: 'Excluir categoria',
                 icon: Icons.delete,
-                onTap: () => openForm(context, CategoriesList(isDelete: true)),
+                onTap: () => openForm(CategoriesList(isDelete: true)),
               ),
               Divider(
                 height: 1,
@@ -72,14 +75,9 @@ class _SettingsState extends State<Settings> {
                       title: 'Escolher modo',
                       icon: Icons.low_priority_sharp,
                       onTap: () async {
-                        bool changeChoice = await _changeChoice();
+                        final changeChoice = await _changeChoice();
                         if (changeChoice) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (contex) => Loading(),
-                            ),
-                          );
+                          Get.offAndToNamed(RoutesNames.splashScreenPage);
                         }
                       },
                     ),

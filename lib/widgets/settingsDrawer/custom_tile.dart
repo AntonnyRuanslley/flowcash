@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../themes/app_theme.dart';
+
 class CustomTile extends StatelessWidget {
   final String title;
   final IconData icon;
@@ -15,10 +17,10 @@ class CustomTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(icon),
-      iconColor: Theme.of(context).colorScheme.primary,
+      iconColor: AppTheme.primaryColor,
       title: Text(
         title,
-        style: TextStyle(color: Theme.of(context).colorScheme.primary),
+        style: TextStyle(color: AppTheme.primaryColor),
       ),
       onTap: onTap,
     );

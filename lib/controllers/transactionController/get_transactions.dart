@@ -21,7 +21,7 @@ void getOfflineTransactions() {
       .reversed
       .toList();
 
-  Get.find<TransactionController>().transactions.addAll(_transactions);
+  Get.find<TransactionController>().allTransactions.addAll(_transactions);
   Get.find<TransactionController>()
       .dayTransactions
       .addAll(_transactions.reversed.toList());

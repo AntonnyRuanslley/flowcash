@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'transactions_list_page.dart';
+import 'transactions_list_page_copy.dart';
 import '../views/users_list.dart';
 import '../views/pendents_list.dart';
 
@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _views = <Widget>[
     UsersList(),
-    TransactionsListPage(),
+    TransactionsListPageCopy(),
     PendentsList(),
   ];
 

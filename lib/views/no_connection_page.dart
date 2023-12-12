@@ -1,3 +1,4 @@
+import 'package:flowcash/themes/app_theme.dart';
 import 'package:flowcash/utils/screen_size.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +10,7 @@ class NoConnectionPage extends StatelessWidget {
     final sizeScreen = ScreenSizes.getScreenHeightSize(context);
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: AppTheme.primaryColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -17,13 +18,12 @@ class NoConnectionPage extends StatelessWidget {
             Icon(
               Icons.wifi_off_outlined,
               size: sizeScreen * 0.3,
-              color: Theme.of(context).colorScheme.secondary,
+              color: AppTheme.secondyColor,
             ),
             Text(
               'Sem conexão!',
-              style: TextStyle(
+              style: AppTheme.subtitle1(context).copyWith(
                 fontSize: sizeScreen * 0.05,
-                color: Theme.of(context).colorScheme.secondary,
               ),
             ),
           ],

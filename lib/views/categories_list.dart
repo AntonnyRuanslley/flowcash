@@ -89,10 +89,8 @@ class _CategoriesListState extends State<CategoriesList> {
                           onPressed: () {
                             if (widget.isEdit!)
                               openForm(
-                                context,
                                 CategoryForm(
                                   category: category,
-                                  onRefresh: refresh,
                                 ),
                               );
                             if (widget.isDelete!)

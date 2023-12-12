@@ -7,13 +7,12 @@ import '../routes/routes_names.dart';
 class SplashScreenController extends GetxController {
   final settingsService = Get.find<SettingsService>();
 
-  void initializeApp() async {
+  Future<void> initializeApp() async {
     if (settingsService.hasChoice) {
-      Get.offNamed(RoutesNames.selectionPage);
-    } else {
       if (settingsService.isOnline) {
         final connectivityResult = await Connectivity().checkConnectivity();
         if (connectivityResult == ConnectivityResult.none) {
+          Get.offAllNamed(RoutesNames.noConnectionPage);
           return;
         }
         settingsService.onLogin().then((value) {
@@ -30,8 +29,11 @@ class SplashScreenController extends GetxController {
           }
         });
       } else {
-        Get.offAllNamed(RoutesNames.transactionsListLocalPage);
+        Get.offAllNamed(RoutesNames.transactionsListPage);
+        return;
       }
+    } else {
+      Get.offAllNamed(RoutesNames.selectionPage);
     }
   }
 }

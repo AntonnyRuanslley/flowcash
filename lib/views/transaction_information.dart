@@ -8,13 +8,11 @@ import '../widgets/transactionInformationPage/information_tile.dart';
 class TransactionInformation extends StatefulWidget {
   final transaction;
   final category;
-  final Function() onRefresh;
 
   const TransactionInformation({
     Key? key,
     required this.transaction,
     required this.category,
-    required this.onRefresh,
   }) : super(key: key);
 
   @override
@@ -66,10 +64,7 @@ class _TransactionInformationState extends State<TransactionInformation> {
         ),
       ),
       actions: [
-        InformationButtonsOptions(
-          transaction: widget.transaction,
-          onRefresh: widget.onRefresh,
-        ),
+        InformationButtonsOptions(transaction: widget.transaction),
       ],
     );
   }

@@ -13,6 +13,8 @@ void implementCreateCategory({
     "name": categoryName,
   });
   await categoriesBox.add(newCategory);
+  Get.find<CategoryController>().refresh();
+
   Navigator.of(context).pop();
   Navigator.of(context).pop();
   // snackBarAlertII(

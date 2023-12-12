@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-// import 'package:material_color_generator/material_color_generator.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:get/get.dart';
+import 'package:material_color_generator/material_color_generator.dart';
 
 import '../routes/get_page_route.dart';
 import '../routes/routes_names.dart';
 import '../services/settings_service.dart';
 
 void main() async {
-  print('Starting services...');
+  Get.log('Starting services...');
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await Hive.openBox('transactions');
   await Hive.openBox('categories');
   await Get.putAsync(() => SettingsService().init());
-  print('All services started...');
+  Get.log('All services started...');
   runApp(const MyApp());
 }
 
@@ -25,7 +25,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData tema = ThemeData();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -36,30 +35,24 @@ class MyApp extends StatelessWidget {
         statusBarColor: Color(0XFFB80099),
       ),
     );
-
     return GetMaterialApp(
       title: 'FlowCash',
-      locale: Get.deviceLocale,
       debugShowCheckedModeBanner: false,
-      localizationsDelegates: [
+      localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: [const Locale('pt', 'BR')],
+      locale: Get.deviceLocale,
       getPages: GetPagesRoute.pages,
-      // theme: ThemeData(
-      //   primarySwatch: generateMaterialColor(
-      //     color: Color(0XFFB80099),
-      //   ),
-      // ),
-      theme: tema.copyWith(
-        colorScheme: tema.colorScheme.copyWith(
-          primary: Color(0XFFB80099),
-          secondary: Colors.white,
+      theme: ThemeData(
+        primarySwatch: generateMaterialColor(
+          color: Color(0XFFB80099),
         ),
       ),
       initialRoute: RoutesNames.splashScreenPage,
+      unknownRoute: GetPagesRoute.pages[0],
     );
   }
 

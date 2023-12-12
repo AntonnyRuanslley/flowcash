@@ -1,3 +1,4 @@
+import 'package:flowcash/models/transaction.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/format_value.dart';
@@ -7,13 +8,11 @@ import '../../utils/search_category.dart';
 import '../../views/transaction_information.dart';
 
 class TransactionsTile extends StatefulWidget {
-  final Map<String, dynamic> transaction;
-  final Function() onRefresh;
+  final Transaction transaction;
 
   const TransactionsTile({
     Key? key,
     required this.transaction,
-    required this.onRefresh,
   }) : super(key: key);
 
   @override
@@ -27,12 +26,9 @@ class _TransactionsTileState extends State<TransactionsTile> {
 
     return TextButton(
       onPressed: () => openForm(
-        context,
         TransactionInformation(
           transaction: widget.transaction,
-          category:
-              searchCategory(widget.transaction['category_id']).toString(),
-          onRefresh: widget.onRefresh,
+          category: searchCategory(widget.transaction.category.id),
         ),
       ),
       child: ListTile(
@@ -51,16 +47,16 @@ class _TransactionsTileState extends State<TransactionsTile> {
           child: CircleAvatar(
             radius: 20,
             child: Icon(
-              widget.transaction['type'] == 1
+              widget.transaction.type == 1
                   ? Icons.arrow_downward_rounded
                   : Icons.arrow_upward_rounded,
-              color: FormatValue.banlaceOrExpanse(widget.transaction['type']),
+              color: FormatValue.banlaceOrExpanse(widget.transaction.type),
             ),
             backgroundColor: Theme.of(context).colorScheme.secondary,
           ),
         ),
         title: Text(
-          widget.transaction['description'],
+          widget.transaction.description,
           style: TextStyle(
             fontSize: sizeScreen * 0.025,
             fontWeight: FontWeight.bold,
@@ -68,7 +64,7 @@ class _TransactionsTileState extends State<TransactionsTile> {
           ),
         ),
         subtitle: Text(
-          searchCategory(widget.transaction['category_id']).toString(),
+          searchCategory(widget.transaction.category.id).toString(),
           style: TextStyle(
             fontSize: sizeScreen * 0.027,
             fontWeight: FontWeight.bold,
@@ -81,13 +77,11 @@ class _TransactionsTileState extends State<TransactionsTile> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
-                FormatValue.getMoneyFormat(widget.transaction['type'] == 1
-                    ? widget.transaction['value']
-                    : widget.transaction['value'] * -1),
+                FormatValue.getMoneyFormat(widget.transaction.type == 1
+                    ? widget.transaction.value
+                    : widget.transaction.value * -1),
                 style: TextStyle(
-                  color: FormatValue.banlaceOrExpanse(
-                    widget.transaction['type'],
-                  ),
+                  color: FormatValue.banlaceOrExpanse(widget.transaction.type),
                   fontSize: sizeScreen * 0.027,
                   fontWeight: FontWeight.bold,
                 ),

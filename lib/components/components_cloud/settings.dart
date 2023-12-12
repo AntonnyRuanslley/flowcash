@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 
 import '../../data/urls.dart';
 import '../../data/users.dart';
-import '../../views/loading.dart';
 import '../../components/components_cloud/category_widgets/category_add.dart';
 import '../../components/components_cloud/category_widgets/categories_list.dart';
 import '../../components/components_cloud/user_widgets/user_edit.dart';
@@ -151,12 +150,12 @@ class _SettingsState extends State<Settings> {
                       () async {
                         bool logoffed = await _changeChoice();
                         if (logoffed) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (contex) => Loading(),
-                            ),
-                          );
+                          // Navigator.pushReplacement(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (contex) => Loading(),
+                          //   ),
+                          // );
                         }
                       },
                     ),
@@ -166,12 +165,12 @@ class _SettingsState extends State<Settings> {
                       () async {
                         bool logoffed = await _logoff();
                         if (logoffed) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (contex) => Loading(),
-                            ),
-                          );
+                          // Navigator.pushReplacement(
+                          //   context,
+                          // MaterialPageRoute(
+                          //   builder: (contex) => Loading(),
+                          // ),
+                          // );
                         }
                       },
                     ),

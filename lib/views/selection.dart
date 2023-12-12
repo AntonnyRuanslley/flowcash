@@ -12,7 +12,6 @@ class SelectionPage extends GetView<SelectionController> {
   @override
   Widget build(BuildContext context) {
     final sizeScreen = ScreenSizes.getScreenHeightSize(context);
-
     return Scaffold(
       backgroundColor: AppTheme.primaryColor,
       body: Center(

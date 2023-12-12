@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../themes/app_theme.dart';
 import '../../../utils/screen_size.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -22,8 +23,10 @@ class CustomTextField extends StatelessWidget {
 
     return TextField(
       maxLines: 1,
-      cursorColor: Theme.of(context).colorScheme.secondary,
-      style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+      cursorColor: AppTheme.secondyColor,
+      style: TextStyle(
+        color: AppTheme.secondyColor,
+      ),
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: TextStyle(

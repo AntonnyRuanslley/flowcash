@@ -8,12 +8,10 @@ import '../../views/transaction_form.dart';
 
 class InformationButtonsOptions extends StatelessWidget {
   final transaction;
-  final Function() onRefresh;
 
   const InformationButtonsOptions({
     Key? key,
     required this.transaction,
-    required this.onRefresh,
   }) : super(key: key);
 
   @override
@@ -43,31 +41,32 @@ class InformationButtonsOptions extends StatelessWidget {
                 msgTitle: "Deseja realmente excluir?",
                 completeMsg: "A transação será excluída permanentemente!",
                 function: () {
-                  TransactionController.deleteTransaction(
-                    context: context,
-                    id: transaction['id'],
-                    onRefresh: onRefresh,
-                  );
+                  // TransactionController.deleteTransaction(
+                  //   context: context,
+                  //   id: transaction['id'],
+                  //   onRefresh: onRefresh,
+                  // );
                 },
               ),
             ),
             SizedBox(width: sizeScreen * 0.03),
             TextButton(
-              child: Text(
-                'Editar',
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
-                    fontSize: sizeScreen * 0.051,
-                    fontWeight: FontWeight.bold),
-              ),
-              onPressed: () => openForm(
-                context,
-                TransactionForm(
-                  transaction: transaction,
-                  onRefresh: onRefresh,
+                child: Text(
+                  'Editar',
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                      fontSize: sizeScreen * 0.051,
+                      fontWeight: FontWeight.bold),
                 ),
-              ),
-            ),
+                onPressed: () {}
+                //  openForm(
+                //   context,
+                //   TransactionForm(
+                //     transaction: transaction,
+                //     onRefresh: onRefresh,
+                //   ),
+                // ),
+                ),
           ],
         ),
       ),

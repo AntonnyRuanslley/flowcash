@@ -21,7 +21,7 @@ class UserApiRequest {
       );
 
       return response.data;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return {
         "success": "false",
       };

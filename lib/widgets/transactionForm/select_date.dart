@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../themes/app_theme.dart';
+import '../../utils/screen_size.dart';
+
 class SelectDate extends StatelessWidget {
   final Function() onPressed;
   final DateTime selectDate;
@@ -13,31 +16,30 @@ class SelectDate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sizeScreen = MediaQuery.of(context).size.width;
+    final sizeScreen = ScreenSizes.getScreenWidthSize(context);
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(
-          icon: Icon(
+    return InkWell(
+      onTap: onPressed,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Icon(
             Icons.date_range_outlined,
-            color: Theme.of(context).colorScheme.secondary,
+            color: AppTheme.secondyColor,
             size: sizeScreen * 0.082,
           ),
-          onPressed: onPressed,
-        ),
-        Container(
-          width: sizeScreen * 0.45,
-          child: Text(
-            'Data selecionada: ${DateFormat('dd/MM/y', "pt_BR").format(selectDate)}',
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.secondary,
+          Container(
+            width: sizeScreen * 0.45,
+            child: Text(
+              'Data selecionada: ${DateFormat('dd/MM/y', "pt_BR").format(selectDate)}',
+              style: AppTheme.title1(context).copyWith(
+                fontSize: 15,
+                color: AppTheme.secondyColor,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

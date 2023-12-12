@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.1.5+1
 
 environment:
-  sdk: ">=2.16.2 <3.0.0"
+  sdk: '>=2.19.4 <3.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -30,11 +30,11 @@ dependencies:
   flutter:
     sdk: flutter
   auto_size_text: ^3.0.0
-  connectivity_plus: ^5.0.1
+  connectivity_plus: ^5.0.2
   currency_text_input_formatter: ^2.1.10
-  dio: ^5.0.3
+  dio: ^5.4.0
   flutter_launcher_icons: ^0.13.1
-  get: ^4.6.6
+  get: 4.6.5
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   http: ^0.13.5
@@ -42,8 +42,6 @@ dependencies:
   material_color_generator: ^1.1.0
   path_provider: ^2.1.1
   shared_preferences: ^2.2.2
-  # flutter_native_splash: ^2.2.19
-  # permission_handler: ^10.2.0
   
 
   # The following adds the Cupertino Icons font to your application.
@@ -55,16 +53,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-# flutter_native_splash:
-#   android: true
-#   ios: true
-#   color: "#b80099"
-#   image: "assets/icons/flowcash-branco.png"
-
-#   android_12:
-#     color: "#b80099"
-#     image: "assets/icons/flowcash-branco.png" 
 
 flutter_icons: 
   android: true
@@ -112,17 +100,15 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts: 
-    - family: roboto
+    - family: OpenSans
       fonts:
-        - asset: assets/fonts/Roboto-Thin.ttf
-          weight: 100
-        - asset: assets/fonts/Roboto-Light.ttf
+        - asset: assets/fonts/OpenSans-Light.ttf
           weight: 300
-        - asset: assets/fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/OpenSans-Regular.ttf
           weight: 400
-        - asset: assets/fonts/Roboto-Medium.ttf
+        - asset: assets/fonts/OpenSans-Medium.ttf
           weight: 500
-        - asset: assets/fonts/Roboto-Bold.ttf
+        - asset: assets/fonts/OpenSans-Bold.ttf
           weight: 700
   #   - family: Trajan Pro
   #     fonts:

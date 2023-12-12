@@ -6,8 +6,6 @@ import '../utils/alert/alert_snack_bar.dart';
 import '../utils/loading_alert.dart';
 import '../utils/screen_size.dart';
 import '../controllers/auth_controller.dart';
-import '../views/loading.dart';
-import 'selection.dart';
 import '../widgets/loginPage/login_check_box.dart';
 import '../widgets/loginPage/login_custom_button.dart';
 import '../widgets/loginPage/login_custom_input.dart';
@@ -60,12 +58,12 @@ class _LoginPageState extends State<LoginPage> {
                 SharedPreferences sharedPreferences =
                     await SharedPreferences.getInstance();
                 await sharedPreferences.remove('choice');
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (contex) => SelectionPage(),
-                  ),
-                );
+                // Navigator.pushReplacement(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (contex) => SelectionPage(),
+                //   ),
+                // );
               },
             ),
             Expanded(
@@ -154,12 +152,12 @@ class _LoginPageState extends State<LoginPage> {
                                 }
                                 Navigator.pop(context);
                                 if (result) {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Loading(),
-                                    ),
-                                  );
+                                  // Navigator.pushReplacement(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) => Loading(),
+                                  //   ),
+                                  // );
                                 } else {
                                   _inputPassword.clear();
                                   alertSnackBar(

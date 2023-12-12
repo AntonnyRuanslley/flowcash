@@ -1,87 +1,87 @@
-import 'dart:convert';
+import 'package:flowcash/themes/app_theme.dart';
+import 'package:flowcash/utils/open_form.dart';
+import 'package:flowcash/views/transaction_form.dart';
+import 'package:flowcash/widgets/transactionPage/transactions_list_body.dart';
+import 'package:get/get.dart';
 
+// import 'package:hive/hive.dart';
+// import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
-import '../data/categories.dart';
-import '../data/transactions.dart';
-import '../data/urls.dart';
-import '../components/components_cloud/day_flow.dart';
-import '../components/components_cloud/transaction_widgets/transaction_add.dart';
-import '../components/components_cloud/status.dart';
-import '../components/components_cloud/table_values.dart';
-import '../components/components_cloud/title_top.dart';
-import '../components/components_cloud/transaction_widgets/transactions_file.dart';
-import '../components/components_cloud/settings.dart';
+// import '../utils/open_form.dart';
+// import '../views/transaction_form.dart';
+import '../views/settings.dart';
+import '../controllers/transactionController/transaction_controller.dart';
+// import '../widgets/transactionPage/transactions_list_body.dart';
+import '../widgets/transactionPage/tableValues/table_values.dart';
+import '../widgets/transactionPage/title_top.dart';
+import '../widgets/transactionPage/day_flow.dart';
 
+class TransactionsListPage extends GetView<TransactionController> {
+  TransactionsListPage({Key? key}) : super(key: key);
 
-class TransactionsListPage extends StatefulWidget {
-  const TransactionsListPage({Key? key}) : super(key: key);
+  // final _transactionsBox = Hive.box('transactions');
+  // final _categoriesBox = Hive.box('categories');
 
-  @override
-  State<TransactionsListPage> createState() => _TransactionsListPageState();
-}
+  // Future<String>? getTransaction;
+  // List _allTransactions = [];
 
-class _TransactionsListPageState extends State<TransactionsListPage> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  Future<String>? getTransaction;
+  // void _getTransanctions() {
+  //   final data = _transactionsBox.keys.map((key) {
+  //     final value = _transactionsBox.get(key);
+  //     return {
+  //       "id": key,
+  //       "description": value['description'],
+  //       "category_id": value['category_id'],
+  //       "value": value['value'],
+  //       "type": value['type'],
+  //       "date": value['date'],
+  //     };
+  //   }).toList();
 
-  List _allTransactions = [];
+  //   setState(() {
+  //     transactions = data.reversed.toList();
+  //     _allTransactions = data.reversed.toList();
+  //     transactions.removeWhere((transaction) =>
+  //         DateFormat('dd/MM/yy', 'pt-BR').format(selectDate) !=
+  //         DateFormat('dd/MM/yy', 'pt-BR').format(transaction['date']));
+  //   });
+  // }
 
-  Future<String> _getTransanctions() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse(
-        "${urls['transactions']!}?date=${DateFormat('yyy-MM-dd', 'pt-BR').format(selectDate)}");
-    var answer = await http.get(
-      url,
-      headers: {
-        "Authorization": "Bearer ${sharedPreferences.getString('token')}",
-      },
-    );
-    if (answer.statusCode == 200) {
-      setState(() {
-        transactions = jsonDecode(answer.body)['data'];
-      });
-      url = Uri.parse(
-          "${urls['transactions']!}?month=${DateFormat('MM', 'pt-BR').format(selectDate)}");
-      answer = await http.get(
-        url,
-        headers: {
-          "Authorization": "Bearer ${sharedPreferences.getString('token')}",
-        },
-      );
-      setState(() {
-        _allTransactions = jsonDecode(answer.body)['data'];
-      });
-      url = Uri.parse(urls['categories']!);
-      answer = await http.get(
-        url,
-        headers: {
-          "Authorization": "Bearer ${sharedPreferences.getString('token')}",
-        },
-      );
-      if (answer.statusCode == 200) {
-        setState(() {
-          categories = jsonDecode(answer.body)['data'];
-        });
-      }
-      return "Success";
-    } else {
-      throw Exception(answer.statusCode);
-    }
-  }
+  // void _getCategories() {
+  //   final data = _categoriesBox.keys.map((key) {
+  //     final value = _categoriesBox.get(key);
+  //     return {
+  //       "id": key,
+  //       "name": value["name"],
+  //     };
+  //   }).toList();
+
+  //   setState(() {
+  //     categories = data.reversed.toList();
+  //   });
+  // }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _refresh();
+  //   controller.getTransanctions();
+  // }
+
+  // _refresh() {
+  //   setState(() {
+  //     _getTransanctions();
+  //     _getCategories();
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final sizeScreen =
-        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      key: _scaffoldKey,
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      key: controller.scaffoldKey,
+      backgroundColor: AppTheme.primaryColor,
       body: SafeArea(
         child: Container(
           color: Colors.grey[50],
@@ -89,114 +89,25 @@ class _TransactionsListPageState extends State<TransactionsListPage> {
             children: [
               Stack(
                 children: [
-                  TitleTop(_onDrawer),
-                  TableValues(transactions, _allTransactions),
+                  TitleTop(),
+                  TableValues(),
                 ],
               ),
-              DayFlow(_selectedDate, selectDate),
-              Status(transactions),
-              Expanded(
-                child: FutureBuilder<String>(
-                  future: getTransaction,
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Center(
-                        child: CircularProgressIndicator(
-                            color: Theme.of(context).colorScheme.primary),
-                      );
-                    }
-                    if (snapshot.hasError) {
-                      return Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 16),
-                          child: Text('Erro: ${snapshot.error}'),
-                        ),
-                      );
-                    }
-                    return transactions.isEmpty
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: sizeScreen * 0.01),
-                                child: Container(
-                                  height: sizeScreen * 0.25,
-                                  child: const Image(
-                                    image: AssetImage(
-                                      'assets/images/vazio.png',
-                                    ),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                child: Text(
-                                  'Sem transações!',
-                                  style: TextStyle(
-                                    fontSize: sizeScreen * 0.05,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              )
-                            ],
-                          )
-                        : ListView.builder(
-                            itemCount: transactions.length,
-                            itemBuilder: (ctx, i) {
-                              return TransactionsFile(
-                                  transactions[i], _refresh);
-                            },
-                          );
-                  },
-                ),
-              ),
+              DayFlow(),
+              TransactionsListBody(),
             ],
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        child: Icon(
-          Icons.add,
-        ),
-        onPressed: () => _openForm(),
+        backgroundColor: AppTheme.primaryColor,
+        child: Icon(Icons.add, color: AppTheme.secondyColor),
+        onPressed: () => openForm(TransactionForm()),
         elevation: 8,
       ),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterFloat,
       drawer: Settings(),
     );
-  }
-
-  @override
-  void initState() {
-    _refresh();
-    super.initState();
-  }
-
-  void _refresh() {
-    setState(() {
-      getTransaction = _getTransanctions();
-    });
-  }
-
-  _selectedDate(_newDate) {
-    setState(() {
-      selectDate = _newDate;
-    });
-    _refresh();
-  }
-
-  _onDrawer() {
-    _scaffoldKey.currentState!.openDrawer();
-  }
-
-  _openForm() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return Center(child: TransactionAdd(_refresh));
-        });
   }
 }

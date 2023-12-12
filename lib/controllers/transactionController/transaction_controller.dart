@@ -1,4 +1,5 @@
-import 'package:flowcash/controllers/splash_screen_controller.dart';
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'package:flowcash/services/settings_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,7 +18,10 @@ part 'update_transaction.dart';
 part 'delete_transaction.dart';
 
 class TransactionController extends GetxController {
-  final transactions = <Transaction>[].obs;
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  final showFullTable = false.obs;
+
+  final allTransactions = <Transaction>[].obs;
   final dayTransactions = <Transaction>[].obs;
   final selectedDate = DateTime.now().obs;
 
@@ -27,25 +31,21 @@ class TransactionController extends GetxController {
     super.onInit();
   }
 
-  refreshHome() {
+  void refreshHome() {
     getTransanctions();
   }
 
   void setDate(DateTime _newDate) {
     selectedDate.value = _newDate;
-
-    // getTransanctions();
+    getTransanctions();
   }
 
   void getTransanctions() => implementGetTransactions();
 
-  static Map<String, dynamic> getTransactionCalculations({
-    required List<dynamic> actualTransaction,
-    required List<dynamic> allTransaction,
-  }) {
+  Map<String, dynamic> getTransactionCalculations() {
     return implementGetTransactionCalculations(
-      actualTransaction: actualTransaction,
-      allTransaction: allTransaction,
+      actualTransaction: dayTransactions.value,
+      allTransaction: allTransactions.value,
     );
   }
 

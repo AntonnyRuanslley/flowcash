@@ -1,4 +1,6 @@
+import 'package:flowcash/models/category.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
 import '../../data/categories.dart';
@@ -10,7 +12,19 @@ part 'create_category.dart';
 part 'update_category.dart';
 part 'delete_category.dart';
 
-class CategoryController {
+class CategoryController extends GetxController {
+  final categories = <Category>[].obs;
+
+  @override
+  void onInit() {
+    refresh();
+    super.onInit();
+  }
+
+  void refresh() {
+    getCategories();
+  }
+
   static void getCategories() {
     return implementGetCategories();
   }
@@ -29,13 +43,11 @@ class CategoryController {
     required BuildContext context,
     required String categoryName,
     required int categoryId,
-    required Function() onRefresh,
   }) {
     return implementUpdateCategory(
       context: context,
       categoryName: categoryName,
       categoryId: categoryId,
-      onRefresh: onRefresh,
     );
   }
 

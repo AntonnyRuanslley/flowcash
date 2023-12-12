@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/splash_screen_controller.dart';
+import '../themes/app_theme.dart';
 
 class SplashScreenPage extends GetView<SplashScreenController> {
-  const SplashScreenPage({Key? key}) : super(key: key);
+  const SplashScreenPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    controller.initializeApp();
+    Future.delayed(Duration(milliseconds: 500), () {
+      controller.initializeApp();
+    });
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: AppTheme.primaryColor,
       body: Center(
         child: CircularProgressIndicator(
-          color: Theme.of(context).colorScheme.secondary,
+          color: AppTheme.secondyColor,
         ),
       ),
     );

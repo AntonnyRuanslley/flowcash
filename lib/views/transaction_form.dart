@@ -15,12 +15,10 @@ import '../widgets/transactionForm/custom_text_field.dart';
 
 class TransactionForm extends StatefulWidget {
   final Map<String, dynamic>? transaction;
-  final Function() onRefresh;
 
   const TransactionForm({
     Key? key,
     this.transaction,
-    required this.onRefresh,
   }) : super(key: key);
 
   @override
@@ -54,7 +52,7 @@ class _TransactionFormState extends State<TransactionForm> {
     return SingleChildScrollView(
       child: AlertDialog(
         scrollable: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: AppTheme.primaryColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
@@ -63,7 +61,7 @@ class _TransactionFormState extends State<TransactionForm> {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.secondary,
+            color: AppTheme.secondyColor,
           ),
         ),
         content: SizedBox(
@@ -86,7 +84,7 @@ class _TransactionFormState extends State<TransactionForm> {
                         color: AppTheme.secondyColor,
                         size: sizeScreen * 0.07,
                       ),
-                      onTap: () => openForm(context, CategoryForm()),
+                      onTap: () => openForm(CategoryForm()),
                     ),
                     SizedBox(width: sizeScreen * 0.05),
                     Expanded(
@@ -106,7 +104,9 @@ class _TransactionFormState extends State<TransactionForm> {
                     Text(
                       "R\$",
                       style: TextStyle(
-                          color: Colors.white, fontSize: sizeScreen * 0.06),
+                        color: AppTheme.secondyColor,
+                        fontSize: sizeScreen * 0.06,
+                      ),
                     ),
                     SizedBox(width: sizeScreen * 0.05),
                     Expanded(
@@ -154,7 +154,6 @@ class _TransactionFormState extends State<TransactionForm> {
                   selectCategory: selectCategory,
                   selectType: selectType,
                   selectDate: selectDate,
-                  onRefresh: widget.onRefresh,
                   transactionId: widget.transaction?['id'],
                 )
               ],

@@ -9,7 +9,6 @@ import '../views/home_page.dart';
 import '../views/login_page.dart';
 import '../views/no_connection_page.dart';
 import '../views/splash_screen_page.dart';
-import '../views/transactions_list_local_page.dart';
 import '../views/transactions_list_page.dart';
 
 class GetPagesRoute {
@@ -38,12 +37,8 @@ class GetPagesRoute {
     ),
     GetPage(
       name: RoutesNames.transactionsListPage,
-      page: () => const TransactionsListPage(),
-    ),
-    GetPage(
-      name: RoutesNames.transactionsListLocalPage,
-      page: () => TransactionsListLocalPage(),
-      binding: TransactionBinding(),
+      page: () => TransactionsListPage(),
+      binding: TransactionListBinding(),
     ),
   ];
 }

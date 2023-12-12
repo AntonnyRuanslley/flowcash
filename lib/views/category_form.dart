@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../utils/screen_size.dart';
+import '../themes/app_theme.dart';
 import '../controllers/categoryController/category_controller.dart';
 
-class CategoryForm extends StatefulWidget {
+class CategoryForm
+    extends StatefulWidget /* extends GetView<CategoryController> */ {
   final Map<String, dynamic>? category;
-  final Function()? onRefresh;
   const CategoryForm({
     Key? key,
     this.category,
-    this.onRefresh,
   }) : super(key: key);
 
   @override
@@ -42,7 +43,6 @@ class _CategoryFormState extends State<CategoryForm> {
           context: context,
           categoryName: inputName.text.trim(),
           categoryId: widget.category!['id'],
-          onRefresh: widget.onRefresh!,
         );
       }
     }
@@ -59,7 +59,22 @@ class _CategoryFormState extends State<CategoryForm> {
               onSubmitted: (_) => onSubmit(),
               decoration: InputDecoration(
                 labelText: 'Nome',
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: AppTheme.primaryColor,
+                    width: 2.0,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: AppTheme.primaryColor,
+                    width: 1.5,
+                  ),
+                ),
               ),
+              cursorColor: AppTheme.primaryColor,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
@@ -72,12 +87,10 @@ class _CategoryFormState extends State<CategoryForm> {
                       style: TextStyle(
                         fontSize: sizeScreen * 0.047,
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
+                        color: AppTheme.primaryColor,
                       ),
                     ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
+                    onPressed: () => Get.back(),
                   ),
                   SizedBox(width: sizeScreen * 0.02),
                   TextButton(
@@ -86,11 +99,11 @@ class _CategoryFormState extends State<CategoryForm> {
                       style: TextStyle(
                         fontSize: sizeScreen * 0.047,
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.secondary,
+                        color: AppTheme.secondyColor,
                       ),
                     ),
                     style: TextButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      backgroundColor: AppTheme.primaryColor,
                     ),
                     onPressed: () => onSubmit(),
                   ),

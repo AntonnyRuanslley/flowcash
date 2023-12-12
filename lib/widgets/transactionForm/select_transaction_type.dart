@@ -1,3 +1,5 @@
+import 'package:flowcash/themes/app_theme.dart';
+import 'package:flowcash/utils/screen_size.dart';
 import 'package:flutter/material.dart';
 
 enum Type { recipe, expense }
@@ -30,8 +32,7 @@ class _SelectTransactionTypeState extends State<SelectTransactionType> {
 
   @override
   Widget build(BuildContext context) {
-    final sizeScreen =
-        MediaQuery.of(context).size.width - MediaQuery.of(context).padding.top;
+    final sizeScreen = ScreenSizes.getScreenWidthSize(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,19 +40,21 @@ class _SelectTransactionTypeState extends State<SelectTransactionType> {
         Text(
           "Tipo",
           style: TextStyle(
-              color: Theme.of(context).colorScheme.secondary,
-              fontSize: sizeScreen * 0.05),
+            color: AppTheme.secondyColor,
+            fontSize: sizeScreen * 0.05,
+          ),
         ),
         Flexible(
           child: ListTile(
             title: Text(
               'Receita',
               style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                  fontSize: sizeScreen * 0.045),
+                color: AppTheme.secondyColor,
+                fontSize: sizeScreen * 0.045,
+              ),
             ),
             leading: Radio<Type>(
-              activeColor: Colors.white,
+              activeColor: AppTheme.secondyColor,
               value: Type.recipe,
               groupValue: choice,
               onChanged: (Type? value) {
@@ -69,8 +72,9 @@ class _SelectTransactionTypeState extends State<SelectTransactionType> {
             title: Text(
               'Despesa',
               style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                  fontSize: sizeScreen * 0.045),
+                color: AppTheme.secondyColor,
+                fontSize: sizeScreen * 0.045,
+              ),
             ),
             leading: Radio<Type>(
               activeColor: Colors.white,

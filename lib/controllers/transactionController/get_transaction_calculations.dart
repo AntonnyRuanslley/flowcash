@@ -1,8 +1,8 @@
 part of 'transaction_controller.dart';
 
 Map<String, dynamic> implementGetTransactionCalculations({
-  required List<dynamic> actualTransaction,
-  required List<dynamic> allTransaction,
+  required List<Transaction> actualTransaction,
+  required List<Transaction> allTransaction,
 }) {
   final Map<String, dynamic> transactionsCalculations = {};
 

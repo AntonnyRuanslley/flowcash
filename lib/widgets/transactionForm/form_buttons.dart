@@ -1,3 +1,4 @@
+import 'package:flowcash/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 
 import '../../../controllers/transactionController/transaction_controller.dart';
@@ -11,7 +12,6 @@ class FormButtons extends StatelessWidget {
   final int? selectCategory;
   final int? selectType;
   final DateTime selectDate;
-  final Function() onRefresh;
   final int? transactionId;
   const FormButtons({
     Key? key,
@@ -20,7 +20,6 @@ class FormButtons extends StatelessWidget {
     required this.selectCategory,
     required this.selectType,
     required this.selectDate,
-    required this.onRefresh,
     this.transactionId,
   }) : super(key: key);
 
@@ -37,24 +36,25 @@ class FormButtons extends StatelessWidget {
               child: Text(
                 'Cancelar',
                 style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
+                    color: AppTheme.secondyColor,
                     fontSize: sizeScreen * 0.047,
                     fontWeight: FontWeight.bold),
               ),
               onPressed: () {
-                Navigator.of(context).pop();
+                // Navigator.of(context).pop();
               }),
           SizedBox(width: sizeScreen * 0.03),
           TextButton(
               child: Text(
                 transactionId == null ? 'Adicionar' : 'Salvar',
                 style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontSize: sizeScreen * 0.047,
-                    fontWeight: FontWeight.bold),
+                  color: AppTheme.primaryColor,
+                  fontSize: sizeScreen * 0.047,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               style: TextButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.secondary,
+                backgroundColor: AppTheme.secondyColor,
               ),
               onPressed: () {
                 if (inputDescription.text.isEmpty) {
@@ -85,18 +85,18 @@ class FormButtons extends StatelessWidget {
                 };
 
                 if (transactionId == null) {
-                  TransactionController.createTransaction(
-                    context: context,
-                    newTransaction: transaction,
-                    onRefresh: onRefresh,
-                  );
+                  // TransactionController.createTransaction(
+                  //   context: context,
+                  //   newTransaction: transaction,
+                  //   onRefresh: onRefresh,
+                  // );
                 } else {
-                  TransactionController.updateTransaction(
-                    context: context,
-                    transactionId: transactionId!,
-                    updateTransaction: transaction,
-                    onRefresh: onRefresh,
-                  );
+                  // TransactionController.updateTransaction(
+                  //   context: context,
+                  //   transactionId: transactionId!,
+                  //   updateTransaction: transaction,
+                  //   onRefresh: onRefresh,
+                  // );
                 }
                 Navigator.pop(context);
               }),
