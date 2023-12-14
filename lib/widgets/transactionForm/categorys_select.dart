@@ -1,3 +1,6 @@
+// ignore_for_file: invalid_use_of_protected_member
+
+import 'package:flowcash/utils/screen_size.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,22 +23,24 @@ class CategorysSelect extends StatefulWidget {
 }
 
 class _CategorysSelectState extends State<CategorysSelect> {
-  final categories = Get.find<CategoryController>().categories.value;
   int? category;
 
   @override
   void initState() {
     super.initState();
     if (widget.categoryId != null) {
-      final Category categorySelected =
-          categories.firstWhere((category) => category.id == widget.categoryId);
+      final Category categorySelected = Get.find<CategoryController>()
+          .categories
+          .value
+          .firstWhere((category) => category.id == widget.categoryId);
       category = categorySelected.id;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final sizeScreen = MediaQuery.of(context).size.width;
+    final sizeScreen = ScreenSizes.getScreenWidthSize(context);
+    final categories = Get.find<CategoryController>().categories.value;
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: sizeScreen * 0.04),
@@ -69,8 +74,8 @@ class _CategorysSelectState extends State<CategorysSelect> {
         value: category,
         items: categories.map((categorySelected) {
           return DropdownMenuItem(
-            value: int.parse(categorySelected.id.toString()),
-            child: Text(categorySelected.name!),
+            value: categorySelected.id,
+            child: Text(categorySelected.name ?? ""),
           );
         }).toList(),
         onChanged: (int? newCategory) {

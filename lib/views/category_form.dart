@@ -29,6 +29,12 @@ class _CategoryFormState extends State<CategoryForm> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    inputName.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final sizeScreen = ScreenSizes.getScreenWidthSize(context);
 

@@ -1,19 +1,19 @@
 part of 'transaction_controller.dart';
 
 Future<void> implementDeleteTransaction({
-  required BuildContext context,
   required int id,
-  required Function() onRefresh,
 }) async {
   try {
     loadingDialog(msg: "Deletando transação...");
+
     final transactionBox = Hive.box('transactions');
     await transactionBox.delete(id);
-    onRefresh();
-    Navigator.of(context).pop();
-    Navigator.of(context).pop();
-    Navigator.of(context).pop();
-    ScaffoldMessenger.of(context).showSnackBar(transactionExcluded);
+    Get.find<TransactionController>().refresh();
+    Get.back();
+    Get.back();
+    Get.back();
+
+    Get.showSnackbar(Ui.successSnackBar(message: "Transação excluída!"));
   } catch (e) {
     alertDialog(title: "Algo deu errado!\nTente novamente.");
   }

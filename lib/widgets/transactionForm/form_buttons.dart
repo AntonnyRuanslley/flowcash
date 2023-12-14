@@ -1,12 +1,13 @@
-import 'package:flowcash/themes/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../../controllers/transactionController/transaction_controller.dart';
-import '../../../utils/alert/alert_dialog.dart';
-import '../../../utils/loading_alert.dart';
-import '../../../utils/screen_size.dart';
+import '../../utils/alert/alert_dialog.dart';
+import '../../utils/loading_alert.dart';
+import '../../utils/screen_size.dart';
+import '../../themes/app_theme.dart';
+import '../../controllers/transactionController/transaction_controller.dart';
 
-class FormButtons extends StatelessWidget {
+class FormButtons extends GetView<TransactionController> {
   final TextEditingController inputDescription;
   final TextEditingController inputValue;
   final int? selectCategory;
@@ -33,16 +34,15 @@ class FormButtons extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           TextButton(
-              child: Text(
-                'Cancelar',
-                style: TextStyle(
-                    color: AppTheme.secondyColor,
-                    fontSize: sizeScreen * 0.047,
-                    fontWeight: FontWeight.bold),
-              ),
-              onPressed: () {
-                // Navigator.of(context).pop();
-              }),
+            child: Text(
+              'Cancelar',
+              style: TextStyle(
+                  color: AppTheme.secondyColor,
+                  fontSize: sizeScreen * 0.047,
+                  fontWeight: FontWeight.bold),
+            ),
+            onPressed: () => Get.back(),
+          ),
           SizedBox(width: sizeScreen * 0.03),
           TextButton(
               child: Text(
@@ -71,7 +71,6 @@ class FormButtons extends StatelessWidget {
                   alertDialog(title: "Valor está vazio!");
                   return;
                 }
-                FocusScope.of(context).unfocus();
                 loadingDialog(msg: "Adicionando transação...");
                 final transaction = {
                   "description": inputDescription.text,
@@ -85,18 +84,12 @@ class FormButtons extends StatelessWidget {
                 };
 
                 if (transactionId == null) {
-                  // TransactionController.createTransaction(
-                  //   context: context,
-                  //   newTransaction: transaction,
-                  //   onRefresh: onRefresh,
-                  // );
+                  controller.createTransaction(newTransaction: transaction);
                 } else {
-                  // TransactionController.updateTransaction(
-                  //   context: context,
-                  //   transactionId: transactionId!,
-                  //   updateTransaction: transaction,
-                  //   onRefresh: onRefresh,
-                  // );
+                  controller.updateTransaction(
+                    transactionId: transactionId!,
+                    updateTransaction: transaction,
+                  );
                 }
                 Navigator.pop(context);
               }),

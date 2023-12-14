@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'package:flowcash/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,9 +16,6 @@ class TableValues extends GetView<TransactionController> {
   @override
   Widget build(BuildContext context) {
     final sizeScreen = ScreenSizes.getScreenHeightSize(context);
-
-    final transactionCalculations =
-        TransactionController().getTransactionCalculations();
 
     return Obx(() {
       return Padding(
@@ -70,7 +69,8 @@ class TableValues extends GetView<TransactionController> {
                         CustomTitle(
                           icon: Icons.attach_money_rounded,
                           color: FormatValue.getSelectColor(
-                            transactionCalculations['balance'],
+                            controller
+                                .transactionsCalculations.value['balance'],
                           ),
                           label: 'Saldo',
                         ),
@@ -82,20 +82,23 @@ class TableValues extends GetView<TransactionController> {
                         CustomValue(
                           color: Colors.green,
                           label: FormatValue.getMoneyFormat(
-                            transactionCalculations['recipe'],
+                            controller.transactionsCalculations.value['recipe'],
                           ),
                         ),
                         CustomValue(
                           color: Colors.red,
                           label: FormatValue.getMoneyFormat(
-                            transactionCalculations['expense'] * -1,
+                            controller
+                                    .transactionsCalculations.value['expense'] *
+                                -1,
                           ),
                         ),
                         CustomValue(
-                          color: FormatValue.getSelectColor(
-                              transactionCalculations['balance']),
+                          color: FormatValue.getSelectColor(controller
+                              .transactionsCalculations.value['balance']),
                           label: FormatValue.getMoneyFormat(
-                            transactionCalculations['balance'],
+                            controller
+                                .transactionsCalculations.value['balance'],
                           ),
                         ),
                       ],
@@ -126,14 +129,16 @@ class TableValues extends GetView<TransactionController> {
                             children: [
                               CustomTitle(
                                 icon: Icons.monetization_on_sharp,
-                                color: FormatValue.getSelectColor(
-                                    transactionCalculations['initialBalance']),
+                                color: FormatValue.getSelectColor(controller
+                                    .transactionsCalculations
+                                    .value['initialBalance']),
                                 label: 'Saldo inicial',
                               ),
                               CustomTitle(
                                 icon: Icons.monetization_on_sharp,
-                                color: FormatValue.getSelectColor(
-                                    transactionCalculations['finalBalance']),
+                                color: FormatValue.getSelectColor(controller
+                                    .transactionsCalculations
+                                    .value['finalBalance']),
                                 label: 'Saldo final',
                               ),
                             ],
@@ -143,17 +148,19 @@ class TableValues extends GetView<TransactionController> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               CustomValue(
-                                  color: FormatValue.getSelectColor(
-                                      transactionCalculations[
-                                          'initialBalance']),
-                                  label: FormatValue.getMoneyFormat(
-                                      transactionCalculations[
-                                          'initialBalance'])),
+                                  color: FormatValue.getSelectColor(controller
+                                      .transactionsCalculations
+                                      .value['initialBalance']),
+                                  label: FormatValue.getMoneyFormat(controller
+                                      .transactionsCalculations
+                                      .value['initialBalance'])),
                               CustomValue(
-                                color: FormatValue.getSelectColor(
-                                    transactionCalculations['finalBalance']),
+                                color: FormatValue.getSelectColor(controller
+                                    .transactionsCalculations
+                                    .value['finalBalance']),
                                 label: FormatValue.getMoneyFormat(
-                                  transactionCalculations['finalBalance'],
+                                  controller.transactionsCalculations
+                                      .value['finalBalance'],
                                 ),
                               ),
                             ],

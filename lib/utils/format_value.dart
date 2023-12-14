@@ -28,7 +28,7 @@ class FormatValue {
     }
   }
 
-  static banlaceOrExpanse(int type) {
+  static Color banlaceOrExpanse(int type) {
     if (type == 1) {
       return Colors.green;
     }

@@ -52,4 +52,14 @@ class CategoryController extends GetxController {
       categoryId: categoryId,
     );
   }
+
+  String searchCategory(int id) {
+    // ignore: invalid_use_of_protected_member
+    for (var category in categories.value) {
+      if (id == category.id) {
+        return category.name!;
+      }
+    }
+    return "Sem categoria";
+  }
 }

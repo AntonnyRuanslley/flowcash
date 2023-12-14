@@ -1,7 +1,7 @@
 import 'package:flowcash/models/category.dart';
 
 class Transaction {
-  String id;
+  int? id;
   Category category;
   String description;
   DateTime date;
@@ -10,7 +10,7 @@ class Transaction {
   int type;
 
   Transaction({
-    required this.id,
+    this.id,
     required this.category,
     required this.description,
     required this.date,
@@ -20,7 +20,7 @@ class Transaction {
   });
 
   factory Transaction.setTransactionModel({
-    required Map<String, dynamic> data,
+    required Map<dynamic, dynamic> data,
   }) {
     return Transaction(
       id: data['id'],

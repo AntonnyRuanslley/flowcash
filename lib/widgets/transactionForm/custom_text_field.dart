@@ -9,21 +9,25 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType keyboardType;
   final List<TextInputFormatter>? inputFormatters;
+  final String? Function(String?)? validator;
+
   const CustomTextField({
     Key? key,
     required this.hintText,
     required this.controller,
     required this.keyboardType,
     this.inputFormatters,
+    this.validator,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final sizeScreen = ScreenSizes.getScreenWidthSize(context);
 
-    return TextField(
+    return TextFormField(
       maxLines: 1,
       cursorColor: AppTheme.secondyColor,
+      validator: validator,
       style: TextStyle(
         color: AppTheme.secondyColor,
       ),
@@ -46,6 +50,13 @@ class CustomTextField extends StatelessWidget {
           ),
         ),
         enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(sizeScreen * 0.04),
+          borderSide: BorderSide(
+            color: Colors.white,
+            width: 2.0,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(sizeScreen * 0.04),
           borderSide: BorderSide(
             color: Colors.white,

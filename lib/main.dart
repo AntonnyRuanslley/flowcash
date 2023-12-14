@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
 
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        statusBarColor: Color(0XFFB80099),
+        statusBarColor: const Color(0XFFB80099),
       ),
     );
     return GetMaterialApp(

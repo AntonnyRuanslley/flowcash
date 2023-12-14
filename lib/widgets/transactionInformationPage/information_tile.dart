@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../utils/screen_size.dart';
+import '../../themes/app_theme.dart';
 
 class InformationTile extends StatelessWidget {
   final String title;
@@ -24,14 +25,14 @@ class InformationTile extends StatelessWidget {
           style: TextStyle(
             fontSize: sizeScreen * 0.051,
             fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.secondary,
+            color: AppTheme.secondyColor,
           ),
         ),
         Text(
           content,
           style: TextStyle(
             fontSize: sizeScreen * 0.051,
-            color: Theme.of(context).colorScheme.secondary,
+            color: AppTheme.secondyColor,
           ),
         ),
         SizedBox(height: sizeScreen * 0.03)

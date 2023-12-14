@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../controllers/transactionController/transaction_controller.dart';
-import '../../utils/confirmation_alert_dialog.dart';
+import '../../themes/app_theme.dart';
+import '../../models/transaction.dart';
 import '../../utils/open_form.dart';
 import '../../utils/screen_size.dart';
+import '../../utils/alert/alert_dialog.dart';
+import '../../controllers/transactionController/transaction_controller.dart';
 import '../../views/transaction_form.dart';
 
-class InformationButtonsOptions extends StatelessWidget {
-  final transaction;
+class InformationButtonsOptions extends GetView<TransactionController> {
+  final Transaction transaction;
 
   const InformationButtonsOptions({
-    Key? key,
+    super.key,
     required this.transaction,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     final sizeScreen = ScreenSizes.getScreenWidthSize(context);
     return Padding(
       padding: EdgeInsets.only(
-        left: sizeScreen * 0.03,
-        right: sizeScreen * 0.03,
+        left: sizeScreen * 0.01,
+        right: sizeScreen * 0.01,
         bottom: sizeScreen * 0.03,
       ),
       child: SizedBox(
@@ -28,45 +31,33 @@ class InformationButtonsOptions extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            TextButton(
+            InkWell(
               child: Text(
                 'Excluir',
                 style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
+                    color: AppTheme.secondyColor,
                     fontSize: sizeScreen * 0.051,
                     fontWeight: FontWeight.bold),
               ),
-              onPressed: () => confirmationAlertDialog(
-                context: context,
-                msgTitle: "Deseja realmente excluir?",
-                completeMsg: "A transação será excluída permanentemente!",
-                function: () {
-                  // TransactionController.deleteTransaction(
-                  //   context: context,
-                  //   id: transaction['id'],
-                  //   onRefresh: onRefresh,
-                  // );
-                },
+              onTap: () => alertDialog(
+                title: "Deseja realmente excluir?",
+                subtitle: "A transação será excluída permanentemente!",
+                function: () => controller.deleteTransaction(
+                  id: transaction.id!,
+                ),
               ),
             ),
             SizedBox(width: sizeScreen * 0.03),
-            TextButton(
-                child: Text(
-                  'Editar',
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
-                      fontSize: sizeScreen * 0.051,
-                      fontWeight: FontWeight.bold),
-                ),
-                onPressed: () {}
-                //  openForm(
-                //   context,
-                //   TransactionForm(
-                //     transaction: transaction,
-                //     onRefresh: onRefresh,
-                //   ),
-                // ),
-                ),
+            InkWell(
+              child: Text(
+                'Editar',
+                style: TextStyle(
+                    color: AppTheme.secondyColor,
+                    fontSize: sizeScreen * 0.051,
+                    fontWeight: FontWeight.bold),
+              ),
+              onTap: () => openForm(TransactionForm(transaction: transaction)),
+            ),
           ],
         ),
       ),

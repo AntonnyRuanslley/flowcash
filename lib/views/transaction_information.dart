@@ -1,29 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../utils/format_value.dart';
+import '../themes/app_theme.dart';
+import '../models/transaction.dart';
+import '../controllers/categoryController/category_controller.dart';
 import '../widgets/transactionInformationPage/information_buttons_options.dart';
 import '../widgets/transactionInformationPage/information_tile.dart';
 
-class TransactionInformation extends StatefulWidget {
-  final transaction;
-  final category;
+class TransactionInformation extends GetView<CategoryController> {
+  final Transaction transaction;
 
   const TransactionInformation({
-    Key? key,
+    super.key,
     required this.transaction,
-    required this.category,
-  }) : super(key: key);
+  });
 
-  @override
-  State<TransactionInformation> createState() => _TransactionInformationState();
-}
-
-class _TransactionInformationState extends State<TransactionInformation> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: AppTheme.primaryColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
@@ -32,7 +29,7 @@ class _TransactionInformationState extends State<TransactionInformation> {
         textAlign: TextAlign.center,
         style: TextStyle(
           fontWeight: FontWeight.bold,
-          color: Theme.of(context).colorScheme.secondary,
+          color: AppTheme.secondyColor,
         ),
       ),
       content: SingleChildScrollView(
@@ -41,30 +38,29 @@ class _TransactionInformationState extends State<TransactionInformation> {
           children: [
             InformationTile(
               title: "Descrição",
-              content: widget.transaction['description'],
+              content: transaction.description,
             ),
             InformationTile(
               title: "Categoria",
-              content: widget.category.toString(),
+              content: transaction.category.name!,
             ),
             InformationTile(
               title: "Tipo",
-              content: widget.transaction['type'] == 1 ? "Receita" : "Despesa",
+              content: transaction.type == 1 ? "Receita" : "Despesa",
             ),
             InformationTile(
               title: "Valor",
-              content: FormatValue.getMoneyFormat(widget.transaction['value']),
+              content: FormatValue.getMoneyFormat(transaction.value),
             ),
             InformationTile(
               title: "Data da transação",
-              content: DateFormat('dd/MM/yy', 'pt-BR')
-                  .format(widget.transaction['date']),
+              content: DateFormat('dd/MM/yy', 'pt-BR').format(transaction.date),
             ),
           ],
         ),
       ),
       actions: [
-        InformationButtonsOptions(transaction: widget.transaction),
+        InformationButtonsOptions(transaction: transaction),
       ],
     );
   }

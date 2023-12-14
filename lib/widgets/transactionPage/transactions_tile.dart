@@ -1,40 +1,40 @@
-import 'package:flowcash/models/transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../utils/format_value.dart';
 import '../../utils/open_form.dart';
 import '../../utils/screen_size.dart';
-import '../../utils/search_category.dart';
+import '../../models/transaction.dart';
+import '../../themes/app_theme.dart';
+import '../../controllers/categoryController/category_controller.dart';
 import '../../views/transaction_information.dart';
 
-class TransactionsTile extends StatefulWidget {
+class TransactionTile extends GetView<CategoryController> {
   final Transaction transaction;
 
-  const TransactionsTile({
-    Key? key,
+  const TransactionTile({
+    super.key,
     required this.transaction,
-  }) : super(key: key);
+  });
 
-  @override
-  State<TransactionsTile> createState() => _TransactionsTileState();
-}
-
-class _TransactionsTileState extends State<TransactionsTile> {
   @override
   Widget build(BuildContext context) {
     final sizeScreen = ScreenSizes.getScreenHeightSize(context);
 
+    transaction.category.name = controller.searchCategory(
+      transaction.category.id,
+    );
+
     return TextButton(
       onPressed: () => openForm(
         TransactionInformation(
-          transaction: widget.transaction,
-          category: searchCategory(widget.transaction.category.id),
+          transaction: transaction,
         ),
       ),
       child: ListTile(
         leading: Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.secondary,
+            color: AppTheme.secondyColor,
             borderRadius: BorderRadius.circular(100),
             boxShadow: [
               const BoxShadow(
@@ -47,16 +47,16 @@ class _TransactionsTileState extends State<TransactionsTile> {
           child: CircleAvatar(
             radius: 20,
             child: Icon(
-              widget.transaction.type == 1
+              transaction.type == 1
                   ? Icons.arrow_downward_rounded
                   : Icons.arrow_upward_rounded,
-              color: FormatValue.banlaceOrExpanse(widget.transaction.type),
+              color: FormatValue.banlaceOrExpanse(transaction.type),
             ),
-            backgroundColor: Theme.of(context).colorScheme.secondary,
+            backgroundColor: AppTheme.secondyColor,
           ),
         ),
         title: Text(
-          widget.transaction.description,
+          transaction.description,
           style: TextStyle(
             fontSize: sizeScreen * 0.025,
             fontWeight: FontWeight.bold,
@@ -64,7 +64,7 @@ class _TransactionsTileState extends State<TransactionsTile> {
           ),
         ),
         subtitle: Text(
-          searchCategory(widget.transaction.category.id).toString(),
+          controller.searchCategory(transaction.category.id),
           style: TextStyle(
             fontSize: sizeScreen * 0.027,
             fontWeight: FontWeight.bold,
@@ -77,11 +77,11 @@ class _TransactionsTileState extends State<TransactionsTile> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
-                FormatValue.getMoneyFormat(widget.transaction.type == 1
-                    ? widget.transaction.value
-                    : widget.transaction.value * -1),
+                FormatValue.getMoneyFormat(transaction.type == 1
+                    ? transaction.value
+                    : transaction.value * -1),
                 style: TextStyle(
-                  color: FormatValue.banlaceOrExpanse(widget.transaction.type),
+                  color: FormatValue.banlaceOrExpanse(transaction.type),
                   fontSize: sizeScreen * 0.027,
                   fontWeight: FontWeight.bold,
                 ),

@@ -1,6 +1,5 @@
 // ignore_for_file: invalid_use_of_protected_member
 
-import 'package:flowcash/services/settings_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
@@ -9,10 +8,10 @@ import 'package:intl/intl.dart';
 import '../../models/transaction.dart';
 import '../../utils/alert/alert_dialog.dart';
 import '../../utils/loading_alert.dart';
-import '../../utils/messages.dart';
+import '../../common/ui.dart';
+import '../../services/settings_service.dart';
 
 part 'get_transaction_calculations.dart';
-part 'get_transactions.dart';
 part 'create_transaction.dart';
 part 'update_transaction.dart';
 part 'delete_transaction.dart';
@@ -23,67 +22,77 @@ class TransactionController extends GetxController {
 
   final allTransactions = <Transaction>[].obs;
   final dayTransactions = <Transaction>[].obs;
+  final transactionsCalculations = <String, dynamic>{}.obs;
   final selectedDate = DateTime.now().obs;
 
   @override
   void onInit() {
-    refreshHome();
     super.onInit();
+    refresh();
   }
 
-  void refreshHome() {
+  void refresh() {
     getTransanctions();
+    getTransactionCalculations();
   }
 
   void setDate(DateTime _newDate) {
     selectedDate.value = _newDate;
-    getTransanctions();
+    refresh();
   }
 
-  void getTransanctions() => implementGetTransactions();
+  void getTransanctions() {
+    if (Get.find<SettingsService>().isOnline) {
+      getOnlineTransactions();
+    } else {
+      getOfflineTransactions();
+    }
+  }
 
-  Map<String, dynamic> getTransactionCalculations() {
-    return implementGetTransactionCalculations(
+  void getOfflineTransactions() {
+    final transactionsBox = Hive.box('transactions');
+
+    allTransactions.value = transactionsBox.keys.map((key) {
+      final data = transactionsBox.get(key);
+      data.addAll({"id": key});
+      return Transaction.setTransactionModel(data: data);
+    }).toList();
+
+    dayTransactions.value = [...allTransactions.reversed.toList()];
+    dayTransactions.removeWhere((transaction) =>
+        DateFormat('dd/MM/yy', 'pt-BR').format(selectedDate.value) !=
+        DateFormat('dd/MM/yy', 'pt-BR').format(transaction.date));
+  }
+
+  void getOnlineTransactions() {}
+
+  void getTransactionCalculations() {
+    transactionsCalculations.value = implementGetTransactionCalculations(
       actualTransaction: dayTransactions.value,
       allTransaction: allTransactions.value,
+      selectedDate: selectedDate.value,
     );
   }
 
-  static Future<void> createTransaction({
-    required BuildContext context,
+  Future<void> createTransaction({
     required Map<String, dynamic> newTransaction,
-    required Function() onRefresh,
   }) {
     return implementCreateTransaction(
-      context: context,
       newTransaction: newTransaction,
-      onRefresh: onRefresh,
     );
   }
 
-  static Future<void> updateTransaction({
-    required BuildContext context,
+  Future<void> updateTransaction({
     required int transactionId,
     required Map<String, dynamic> updateTransaction,
-    required Function() onRefresh,
   }) {
     return implementUpdateTransaction(
-      context: context,
       transactionId: transactionId,
       updateTransaction: updateTransaction,
-      onRefresh: onRefresh,
     );
   }
 
-  static Future<void> deleteTransaction({
-    required BuildContext context,
-    required int id,
-    required Function() onRefresh,
-  }) {
-    return implementDeleteTransaction(
-      context: context,
-      id: id,
-      onRefresh: onRefresh,
-    );
+  Future<void> deleteTransaction({required int id}) {
+    return implementDeleteTransaction(id: id);
   }
 }

@@ -33,7 +33,7 @@ class SelectDate extends StatelessWidget {
             child: Text(
               'Data selecionada: ${DateFormat('dd/MM/y', "pt_BR").format(selectDate)}',
               style: AppTheme.title1(context).copyWith(
-                fontSize: 15,
+                fontSize: 17,
                 color: AppTheme.secondyColor,
               ),
             ),

@@ -16,7 +16,5 @@ void implementCreateCategory({
 
   Get.back();
   Get.back();
-  Get.showSnackbar(
-    Ui.successSnackBar(message: "Categoria criada!"),
-  );
+  Get.showSnackbar(Ui.successSnackBar(message: "Categoria criada!"));
 }
