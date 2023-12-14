@@ -5,4 +5,5 @@ class RoutesNames {
   static const loginPage = '/login-page';
   static const noConnectionPage = '/no-connection-page';
   static const transactionsListPage = '/transactions-list-page';
+  static const categoriesPage = '/categories-page';
 }

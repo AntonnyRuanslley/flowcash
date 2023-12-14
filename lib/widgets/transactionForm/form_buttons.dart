@@ -58,21 +58,21 @@ class FormButtons extends StatelessWidget {
               ),
               onPressed: () {
                 if (inputDescription.text.isEmpty) {
-                  alertDialog(context, "Descrição está vazia!");
+                  alertDialog(title: "Descrição está vazia!");
                   return;
                 }
 
                 if (selectCategory == null) {
-                  alertDialog(context, "Sem categoria selecionada!");
+                  alertDialog(title: "Sem categoria selecionada!");
                   return;
                 }
 
                 if (inputValue.text.isEmpty) {
-                  alertDialog(context, "Valor está vazio!");
+                  alertDialog(title: "Valor está vazio!");
                   return;
                 }
                 FocusScope.of(context).unfocus();
-                loadingDialog(context, "Adicionando transação...");
+                loadingDialog(msg: "Adicionando transação...");
                 final transaction = {
                   "description": inputDescription.text,
                   "category_id": selectCategory,

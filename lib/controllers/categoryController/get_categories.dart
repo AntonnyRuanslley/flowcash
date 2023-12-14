@@ -1,7 +1,8 @@
 part of 'category_controller.dart';
 
-void implementGetCategories() {
+List<Category> implementGetCategories() {
   final categoriesBox = Hive.box('categories');
+
   final data = categoriesBox.keys.map((key) {
     final value = categoriesBox.get(key);
 
@@ -11,5 +12,5 @@ void implementGetCategories() {
     });
   }).toList();
 
-  Get.find<CategoryController>().categories.value = data.reversed.toList();
+  return data.reversed.toList();
 }

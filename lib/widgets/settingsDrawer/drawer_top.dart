@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../utils/screen_size.dart';
+import '../../utils/screen_size.dart';
 import '../../themes/app_theme.dart';
 
 class DrawerTop extends StatelessWidget {

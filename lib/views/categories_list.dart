@@ -1,13 +1,15 @@
+import 'package:flowcash/themes/app_theme.dart';
+import 'package:flowcash/widgets/custom/empty_list.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../utils/confirmation_alert_dialog.dart';
 import '../utils/open_form.dart';
 import '../utils/screen_size.dart';
-import '../data/categories.dart';
 import '../controllers/categoryController/category_controller.dart';
 import '../views/category_form.dart';
 
-class CategoriesList extends StatefulWidget {
+class CategoriesList extends GetView<CategoryController> {
   final bool? isEdit;
   final bool? isDelete;
   const CategoriesList({
@@ -16,22 +18,17 @@ class CategoriesList extends StatefulWidget {
     this.isDelete = false,
   }) : super(key: key);
 
-  @override
-  State<CategoriesList> createState() => _CategoriesListState();
-}
+  // @override
+  // initState() {
+  //   super.initState();
+  //   refresh();
+  // }
 
-class _CategoriesListState extends State<CategoriesList> {
-  @override
-  initState() {
-    super.initState();
-    refresh();
-  }
-
-  refresh() {
-    setState(() {
-      CategoryController.getCategories();
-    });
-  }
+  // refresh() {
+  //   setState(() {
+  //     CategoryController.getCategories();
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -40,78 +37,50 @@ class _CategoriesListState extends State<CategoriesList> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: AppTheme.primaryColor,
       title: Text(
         "Selecione a categoria",
         textAlign: TextAlign.center,
         style: TextStyle(
           fontWeight: FontWeight.bold,
-          color: Theme.of(context).colorScheme.secondary,
+          color: AppTheme.secondyColor,
         ),
       ),
       content: SingleChildScrollView(
         child: SizedBox(
           height: sizeScreen * 0.6,
-          child: categories.isEmpty
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: sizeScreen * 0.01),
-                      child: Container(
-                        height: sizeScreen * 0.23,
-                        child: const Image(
-                          image: AssetImage(
-                            'assets/images/vazio.png',
-                          ),
-                          color: Colors.white,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Text(
-                        'Sem categorias!',
-                        style: TextStyle(
-                          fontSize: sizeScreen * 0.045,
-                          color: Colors.white,
-                        ),
-                      ),
-                    )
-                  ],
+          width: double.infinity,
+          child: controller.categories.isEmpty
+              ? EmptyList(
+                  imageSize: sizeScreen * 0.2,
+                  fontSize: sizeScreen * 0.04,
+                  color: AppTheme.backgroundColor,
                 )
               : SingleChildScrollView(
                   child: Column(
-                    children: categories.map<Widget>(
+                    children: controller.categories.map<Widget>(
                       (category) {
                         return TextButton(
                           onPressed: () {
-                            if (widget.isEdit!)
-                              openForm(
-                                CategoryForm(
-                                  category: category,
-                                ),
-                              );
-                            if (widget.isDelete!)
+                            if (isEdit!)
+                            // openForm(CategoryForm(category: category));
+                            if (isDelete!)
                               confirmationAlertDialog(
                                 context: context,
                                 msgTitle: "Deseja realmente excluir?",
                                 completeMsg:
                                     "A categoria será excluida permanentemente!",
                                 function: () {
-                                  CategoryController.deleteCategory(
-                                    context: context,
-                                    categoryId: category['id'],
-                                    onRefresh: refresh,
-                                  );
+                                  // controller.deleteCategory(
+                                  //   categoryId: category['id'],
+                                  // );
                                 },
                               );
                           },
                           child: Text(
-                            category['name'],
+                            category.name ?? "",
                             style: TextStyle(
-                              color: Theme.of(context).colorScheme.secondary,
+                              color: AppTheme.secondyColor,
                               fontSize: sizeScreen * 0.03,
                             ),
                             textAlign: TextAlign.center,

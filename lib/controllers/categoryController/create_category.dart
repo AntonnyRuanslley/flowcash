@@ -1,10 +1,9 @@
 part of 'category_controller.dart';
 
 void implementCreateCategory({
-  required BuildContext context,
   required String categoryName,
 }) async {
-  loadingDialog(context, "Criando categoria...");
+  loadingDialog(msg: "Criando categoria...");
   final categoriesBox = Hive.box('categories');
   if (categoryName.isEmpty) {
     return;
@@ -15,11 +14,9 @@ void implementCreateCategory({
   await categoriesBox.add(newCategory);
   Get.find<CategoryController>().refresh();
 
-  Navigator.of(context).pop();
-  Navigator.of(context).pop();
-  // snackBarAlertII(
-  //   context: context,
-  //   message: "Categoria criada com sucesso!",
-  //   backgroundColor: Colors.blueAccent,
-  // );
+  Get.back();
+  Get.back();
+  Get.showSnackbar(
+    Ui.successSnackBar(message: "Categoria criada!"),
+  );
 }

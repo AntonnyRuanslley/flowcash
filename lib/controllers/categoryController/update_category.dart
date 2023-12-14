@@ -1,7 +1,6 @@
 part of 'category_controller.dart';
 
 void implementUpdateCategory({
-  required BuildContext context,
   required String categoryName,
   required int categoryId,
 }) async {
@@ -9,6 +8,13 @@ void implementUpdateCategory({
   var newCategory = ({
     "name": categoryName,
   });
+  loadingDialog(msg: "Atualizando categoria...");
   await categoriesBox.put(categoryId, newCategory);
-  Navigator.of(context).pop();
+  Get.find<CategoryController>().refresh();
+  Get.back();
+  Get.back();
+
+  Get.showSnackbar(
+    Ui.successSnackBar(message: "Categoria atualizada!"),
+  );
 }

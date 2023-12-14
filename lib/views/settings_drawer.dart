@@ -1,27 +1,17 @@
-import 'package:flowcash/routes/routes_names.dart';
-import 'package:flowcash/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/screen_size.dart';
-import '../utils/open_form.dart';
-import '../views/categories_list.dart';
-import '../views/category_form.dart';
+import '../themes/app_theme.dart';
+import '../services/settings_service.dart';
+import '../routes/routes_names.dart';
 import '../widgets/settingsDrawer/custom_tile.dart';
 import '../widgets/settingsDrawer/drawer_top.dart';
 
-class Settings extends StatefulWidget {
-  @override
-  State<Settings> createState() => _SettingsState();
-}
-
-class _SettingsState extends State<Settings> {
-  Future<bool> _changeChoice() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.remove('choice');
-    return true;
-  }
+class SettingsDrawer extends StatelessWidget {
+  const SettingsDrawer({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,19 +39,9 @@ class _SettingsState extends State<Settings> {
                 ),
               ),
               CustomTile(
-                title: 'Adicionar categoria',
-                icon: Icons.add,
-                onTap: () => openForm(CategoryForm()),
-              ),
-              CustomTile(
-                title: 'Editar categoria',
+                title: 'Categorias',
                 icon: Icons.edit,
-                onTap: () => openForm(CategoriesList(isEdit: true)),
-              ),
-              CustomTile(
-                title: 'Excluir categoria',
-                icon: Icons.delete,
-                onTap: () => openForm(CategoriesList(isDelete: true)),
+                onTap: () => Get.toNamed(RoutesNames.categoriesPage),
               ),
               Divider(
                 height: 1,
@@ -74,11 +54,14 @@ class _SettingsState extends State<Settings> {
                     CustomTile(
                       title: 'Escolher modo',
                       icon: Icons.low_priority_sharp,
-                      onTap: () async {
-                        final changeChoice = await _changeChoice();
-                        if (changeChoice) {
-                          Get.offAndToNamed(RoutesNames.splashScreenPage);
-                        }
+                      onTap: () {
+                        Get.find<SettingsService>()
+                            .cleanChoice()
+                            .then((changeChoice) {
+                          if (changeChoice) {
+                            Get.offAndToNamed(RoutesNames.splashScreenPage);
+                          }
+                        });
                       },
                     ),
                   ],

@@ -1,3 +1,5 @@
+import 'package:flowcash/bindings/category_binding.dart';
+import 'package:flowcash/views/categories_page.dart';
 import 'package:get/get.dart';
 
 import '../routes/routes_names.dart';
@@ -40,5 +42,10 @@ class GetPagesRoute {
       page: () => TransactionsListPage(),
       binding: TransactionListBinding(),
     ),
+    GetPage(
+      name: RoutesNames.categoriesPage,
+      page: () => CategoriesPage(),
+      binding: CategoryBinding(),
+    )
   ];
 }

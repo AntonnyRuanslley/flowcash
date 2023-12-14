@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../themes/app_theme.dart';
 
-loadingDialog(BuildContext context, String msg) {
-  showDialog(
-      context: context,
+Future<dynamic> loadingDialog({
+  required String msg,
+}) async {
+  if (Get.isSnackbarOpen) {
+    Get.closeAllSnackbars();
+  }
+  return await showDialog(
+      context: Get.context!,
       barrierDismissible: false,
       builder: (context) {
         return AlertDialog(

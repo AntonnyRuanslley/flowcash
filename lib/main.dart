@@ -48,38 +48,11 @@ class MyApp extends StatelessWidget {
       getPages: GetPagesRoute.pages,
       theme: ThemeData(
         primarySwatch: generateMaterialColor(
-          color: Color(0XFFB80099),
+          color: const Color(0XFFB80099),
         ),
       ),
       initialRoute: RoutesNames.splashScreenPage,
       unknownRoute: GetPagesRoute.pages[0],
     );
   }
-
-  //   return MaterialApp(
-  //     debugShowCheckedModeBanner: false,
-  //     title: 'FlowCash',
-  //     color: Color(0XFFB80099),
-  //     localizationsDelegates: [
-  //       GlobalMaterialLocalizations.delegate,
-  //       GlobalWidgetsLocalizations.delegate
-  //     ],
-  //     locale: const Locale('pt', 'BR'),
-  //     supportedLocales: [const Locale('pt', 'BR')],
-  //     theme: tema.copyWith(
-  //       colorScheme: tema.colorScheme.copyWith(
-  //         primary: Color(0XFFB80099),
-  //         secondary: Colors.white,
-  //       ),
-  //       appBarTheme: AppBarTheme(
-  //         titleTextStyle: TextStyle(
-  //           fontFamily: "OpenSans",
-  //           fontSize: 19,
-  //           fontWeight: FontWeight.bold,
-  //         ),
-  //       ),
-  //     ),
-  //     home: Loading(),
-  //   );
-  // }
 }

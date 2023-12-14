@@ -6,7 +6,7 @@ Future<void> implementDeleteTransaction({
   required Function() onRefresh,
 }) async {
   try {
-    loadingDialog(context, "Deletando transação...");
+    loadingDialog(msg: "Deletando transação...");
     final transactionBox = Hive.box('transactions');
     await transactionBox.delete(id);
     onRefresh();
@@ -15,6 +15,6 @@ Future<void> implementDeleteTransaction({
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(transactionExcluded);
   } catch (e) {
-    alertDialog(context, "Algo deu errado!\nTente novamente.");
+    alertDialog(title: "Algo deu errado!\nTente novamente.");
   }
 }

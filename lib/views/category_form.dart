@@ -3,11 +3,11 @@ import 'package:get/get.dart';
 
 import '../utils/screen_size.dart';
 import '../themes/app_theme.dart';
+import '../models/category.dart';
 import '../controllers/categoryController/category_controller.dart';
 
-class CategoryForm
-    extends StatefulWidget /* extends GetView<CategoryController> */ {
-  final Map<String, dynamic>? category;
+class CategoryForm extends StatefulWidget {
+  final Category? category;
   const CategoryForm({
     Key? key,
     this.category,
@@ -24,7 +24,7 @@ class _CategoryFormState extends State<CategoryForm> {
   void initState() {
     super.initState();
     if (widget.category != null) {
-      inputName.text = widget.category!['name'];
+      inputName.text = widget.category!.name ?? "";
     }
   }
 
@@ -34,15 +34,13 @@ class _CategoryFormState extends State<CategoryForm> {
 
     onSubmit() {
       if (widget.category == null) {
-        CategoryController.createCategory(
-          context: context,
+        CategoryController().createCategory(
           categoryName: inputName.text.trim(),
         );
       } else {
-        CategoryController.updateCategory(
-          context: context,
+        CategoryController().updateCategory(
+          categoryId: widget.category!.id,
           categoryName: inputName.text.trim(),
-          categoryId: widget.category!['id'],
         );
       }
     }

@@ -8,11 +8,11 @@ import 'package:get/get.dart';
 import '../data/urls.dart';
 
 class SettingsService extends GetxService {
-  bool? _isOnline;
   bool? _hasChoice;
+  bool? _isOnline;
 
-  bool get isOnline => _isOnline ?? false;
   bool get hasChoice => _hasChoice ?? false;
+  bool get isOnline => _isOnline ?? false;
 
   Future<SettingsService> init() async {
     await getChoice();
@@ -38,6 +38,7 @@ class SettingsService extends GetxService {
     } else {
       await sharedPreferences.setBool('choice', false);
     }
+    getChoice();
   }
 
   Future<bool> onLogin() async {
@@ -60,5 +61,12 @@ class SettingsService extends GetxService {
     var isAdmin = jsonDecode(answer.body)['administrator'] as bool;
 
     return isAdmin;
+  }
+
+  Future<bool> cleanChoice() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.remove('choice');
+    getChoice();
+    return true;
   }
 }

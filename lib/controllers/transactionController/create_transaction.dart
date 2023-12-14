@@ -5,7 +5,7 @@ Future<void> implementCreateTransaction({
   required Map<String, dynamic> newTransaction,
   required Function() onRefresh,
 }) async {
-  loadingDialog(context, "Criando transação...");
+  loadingDialog(msg:  "Criando transação...");
   final transactionBox = Hive.box('transactions');
   await transactionBox.add(newTransaction);
   onRefresh();

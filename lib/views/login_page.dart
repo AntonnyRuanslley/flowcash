@@ -1,4 +1,6 @@
+import 'package:flowcash/routes/routes_names.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../themes/app_theme.dart';
@@ -58,12 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                 SharedPreferences sharedPreferences =
                     await SharedPreferences.getInstance();
                 await sharedPreferences.remove('choice');
-                // Navigator.pushReplacement(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (contex) => SelectionPage(),
-                //   ),
-                // );
+                Get.offAllNamed(RoutesNames.selectionPage);
               },
             ),
             Expanded(
@@ -141,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                             FocusScopeNode currentFocus =
                                 FocusScope.of(context);
                             if (_formkey.currentState!.validate()) {
-                              loadingDialog(context, "Carregando...");
+                              loadingDialog(msg: "Carregando...");
                               AuthController.login(
                                 _inputEmail.text.trim(),
                                 _inputPassword.text.trim(),
@@ -152,12 +149,7 @@ class _LoginPageState extends State<LoginPage> {
                                 }
                                 Navigator.pop(context);
                                 if (result) {
-                                  // Navigator.pushReplacement(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) => Loading(),
-                                  //   ),
-                                  // );
+                                  Get.offAllNamed(RoutesNames.splashScreenPage);
                                 } else {
                                   _inputPassword.clear();
                                   alertSnackBar(
